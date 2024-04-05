@@ -29,5 +29,22 @@ export default defineConfig({
       dts: true,
       dirs: "src/components",
       resolvers: [ElementPlusResolver()], // ElementPlus按需加载
-    }),],
+    })
+  ],
+  build: {
+    sourcemap: false,
+    // 消除打包大小超过500kb警告
+    chunkSizeWarningLimit: 4000,
+    rollupOptions: {
+      input: {
+        index: resolve("index.html"),
+      },
+      // 静态资源分类打包
+      output: {
+        chunkFileNames: "static/js/[name]-[hash].js",
+        entryFileNames: "static/js/[name]-[hash].js",
+        assetFileNames: "static/[ext]/[name]-[hash].[ext]",
+      },
+    },
+  },
 })
