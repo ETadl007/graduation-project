@@ -4,7 +4,7 @@
       <div class="sub-avatar">
         <router-link to="/"
           ><el-avatar
-            src="https://thirdqq.qlogo.cn/ek_qqapp/AQRibWhgTA7iaEuSRguFfnx4Kh3JC1S2ayIW5mAnWVWjHSmFPeQ6EsYG4OUmfzPmSViclA2kfBr9oppZHXibo4PWOkW1mC3Z2eKYylt2S9MZQDt8hDjaibUs/0"
+            
             class="el-avatar"
           />
         </router-link>
