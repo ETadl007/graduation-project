@@ -4,7 +4,6 @@
       <div class="sub-avatar">
         <router-link to="/"
           ><el-avatar
-            
             class="el-avatar"
           />
         </router-link>
