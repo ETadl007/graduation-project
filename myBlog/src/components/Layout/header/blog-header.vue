@@ -2,11 +2,7 @@
   <div class="header_box">
     <div class="pc_menu flex_r_between">
       <div class="sub-avatar">
-        <router-link to="/"
-          ><el-avatar
-            class="el-avatar"
-          />
-        </router-link>
+        <router-link to="/"><el-avatar class="el-avatar" /> </router-link>
       </div>
       <div class="flex_r_around">
         <BlogSearch></BlogSearch>
@@ -272,7 +268,7 @@
 import { computed, ref, h } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { ElNotification } from "element-plus";
-import BlogSearch from "../../Search/blog-search.vue"
+import BlogSearch from "../../Search/blog-search.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -349,6 +345,14 @@ const handleSelect = (val, type) => {
   justify-content: space-between;
   align-items: center;
 }
+.el-menu{
+  background: none !important;
+}
+.el-menu--horizontal > .el-menu-item.is-active {
+  border-bottom: none !important;;
+  color: var(--el-menu-active-color) !important;
+}
+
 
 :deep(.el-menu--horizontal > .el-sub-menu .el-sub-menu__title:hover) {
   background-color: transparent;
@@ -385,7 +389,9 @@ const handleSelect = (val, type) => {
 .icon-liuyan {
   font-size: 1.3rem;
 }
-
+.el-menu--horizontal.el-menu {
+  border-bottom: none !important;
+}
 .el-menu .el-menu-item,
 .el-sub-menu {
   border-bottom: none;
@@ -399,9 +405,9 @@ const handleSelect = (val, type) => {
 }
 
 .flex_r_around {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 :deep(.el-drawer__close-btn .el-icon) {
   font-size: 22px;
