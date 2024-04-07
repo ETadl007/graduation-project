@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "predeploy": "yarn build",
-    "deploy": "gh-pages -d dist -r https://github.com/ETadl007/graduation-project.git -b gh.pages"
+    "deploy": "gh-pages -d dist -r https://github.com/ETadl007/graduation-project.git -b gh-pages"
   },
   "dependencies": {
     "axios": "^1.6.8",
