@@ -19,20 +19,17 @@ jobs:
         with:
           node-version: '20'  # 指定所需的 Node.js 版本
 
-      - name: Change directory to project root
-        run: cd myBlog
-        
-      - name: Install Dependencies
-        run: yarn install  # 使用 Yarn 安装依赖项
-
-      - name: Build Project
-        run: yarn build  # 使用 Yarn 构建项目，根据项目配置的脚本命令进行构建
+      - name: Install Dependencies and Build Project
+        run: |
+          cd myBlog
+          yarn install
+          yarn build
 
       - name: Archive Production Files
         uses: actions/upload-artifact@v2  # 将构建生成的文件归档
         with:
           name: production-files  # 归档名称
-          path: dist  # 构建生成的文件所在的目录路径，根据你的项目配置进行修改
+          path: myBlog/dist  # 构建生成的文件所在的目录路径，根据你的项目配置进行修改
 
   deploy:
     name: Deploy
