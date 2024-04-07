@@ -19,6 +19,9 @@ jobs:
         with:
           node-version: '20'  # 指定所需的 Node.js 版本
 
+      - name: Change directory to project root
+        run: cd /myBlog
+
       - name: Install Dependencies
         run: yarn install  # 使用 Yarn 安装依赖项
 
