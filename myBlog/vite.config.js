@@ -7,7 +7,7 @@ import { ElementPlusResolver } from "unplugin-vue-components/resolvers"; // 按�
 
 
 export default defineConfig({
-  base: "graduation-project",
+  base: "./",
   root: process.cwd(), // 绝对路径
   resolve: {
     // 配置路径别名
