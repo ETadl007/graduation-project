@@ -17,7 +17,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2  # 设置 Node.js 环境
         with:
-          node-version: '14'  # 指定所需的 Node.js 版本
+          node-version: '20'  # 指定所需的 Node.js 版本
 
       - name: Install Dependencies
         run: yarn install  # 使用 Yarn 安装依赖项
