@@ -1,0 +1,50 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main  # 触发分支
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2  # 检出代码仓库
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2  # 设置 Node.js 环境
+        with:
+          node-version: '14'  # 指定所需的 Node.js 版本
+
+      - name: Install Dependencies
+        run: yarn install  # 使用 Yarn 安装依赖项
+
+      - name: Build Project
+        run: yarn build  # 使用 Yarn 构建项目，根据项目配置的脚本命令进行构建
+
+      - name: Archive Production Files
+        uses: actions/upload-artifact@v2  # 将构建生成的文件归档
+        with:
+          name: production-files  # 归档名称
+          path: dist  # 构建生成的文件所在的目录路径，根据你的项目配置进行修改
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'  # 仅当提交到 main 分支时触发
+
+    steps:
+      - name: Download Production Files
+        uses: actions/download-artifact@v2  # 下载归档的生成文件
+        with:
+          name: production-files  # 归档的名称，需与上面的保持一致
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3  # 使用 GitHub Pages Action 部署到 GitHub Pages
+        with:
+          github_token: ${{ secrets.PRESS_TOKEN_TEA_BLOG }}  # GitHub Token，用于访问仓库
+          publish_dir: ./dist  # 需要部署的目录路径，根据你的项目配置进行修改
