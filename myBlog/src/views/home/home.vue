@@ -2,22 +2,10 @@
   <div class="home_center_box">
     <el-row>
       <el-col :xs="24" :sm="18">
-        <!-- <el-card
-          class="mobile-top-card mobile-card info-card animate__animated animate__fadeIn"
-          shadow="hover"
-        >
-        </el-card> -->
         <HomeArticleList> </HomeArticleList>
-        <el-card
-          class="mobile-bottom-card card-hover mobile-card info-card animate__animated animate__fadeIn"
-          shadow="hover"
-        >
-        </el-card>
       </el-col>
       <el-col :xs="0" :sm="6">
-        <RightSide>
-            
-        </RightSide>
+        <RightSide> </RightSide>
       </el-col>
     </el-row>
   </div>
@@ -27,6 +15,10 @@
 import { ref, reactive } from "vue";
 import HomeArticleList from "@/components/HomeArticle/home-article-list.vue";
 import RightSide from "@/components/RightSide/right-side.vue";
+import MobileTopSkeleton from "@/components/RightSide/components/skeleton/mobile-top-skeleton.vue";
+import RightSideItem from "@/components/RightSide/components/item/right-side-item.vue";
+import RightSideTop from "@/components/RightSide/components/item/right-side-top.vue";
+import RightSideSkeletonItem from "@/components/RightSide/components/skeleton/right-side-skeleton-item.vue";
 </script>
 
 <style lang="scss" scoped>
