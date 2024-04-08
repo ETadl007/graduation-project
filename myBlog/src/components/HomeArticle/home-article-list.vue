@@ -14,7 +14,7 @@
       </el-col>
     </template>
     <template v-else>
-      <el-col v-for="item in 2" :key="item">
+      <el-col v-for="item in 5" :key="item">
         <el-card class="card-hover">
           <div class="article-box">
             <div class="article-cover">
