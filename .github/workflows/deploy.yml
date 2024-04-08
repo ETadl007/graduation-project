@@ -47,4 +47,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3  # 使用 GitHub Pages Action 部署到 GitHub Pages
         with:
           github_token: ${{ secrets.PRESS_TOKEN_TEA_BLOG }}  # GitHub Token，用于访问仓库
-          publish_dir: ./dist  # 需要部署的目录路径，根据你的项目配置进行修改
+          publish_dir: ./myBlog/dist  # 需要部署的目录路径，根据你的项目配置进行修改
