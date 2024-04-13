@@ -4,52 +4,6 @@ import { useRoute } from "vue-router";
 
 const route = useRoute();
 
-const props = defineProps({
-  loading: {
-    type: Boolean,
-    default: false,
-  },
-  article: {
-    type: Object,
-    default: () => {},
-  },
-  bgUrl: {
-    type: String,
-    default: "",
-  },
-  photoAlbumList: {
-    type: Array,
-    default: () => {
-      [];
-    },
-  },
-});
-
-const toggleMdTheme = (type, theme) => {
-  staticStore[type] = theme;
-};
-
-const finalUrl = ref("");
-
-const readingDuration = (times) => {
-  if (times > 3.6e6) {
-    const hours = (times / 3.6e6).toFixed(0);
-    const minutes = ((times % 3.6e6) / 6e4).toFixed(0);
-    return `${addZero(hours)} 时 ${addZero(minutes)} 分`;
-  } else {
-    const minutes = (times / 6e4).toFixed(0);
-    return `${addZero(minutes)} 分`;
-  }
-};
-
-// 时间小于10的补一个0
-const addZero = (time) => {
-  if (time > 0 && time < 10) {
-    return `0${time}`;
-  } else {
-    return time;
-  }
-};
 </script>
 
 <template>
