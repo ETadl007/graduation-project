@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "vite-plugin-svg-icons": "^2.0.1"
+  }
+}

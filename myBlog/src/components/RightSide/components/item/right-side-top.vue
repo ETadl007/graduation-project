@@ -28,10 +28,7 @@
     </span>
   </div>
   <div class="git-ee flex_r_around">
-    <span
-      class="git-ee__item button-animated"
-      @click="operate('openLink')"
-    >
+    <span class="git-ee__item button-animated" @click="operate('openLink')">
       <i class="iconfont icon-gitee2"> </i>
       <span class="git-ee__item-text"> My Github</span>
     </span>
@@ -47,20 +44,10 @@
     ></i>
 
     <el-popover placement="top" trigger="hover">
-      <el-image
-        style="width: 100%; height: 100%"
-      ></el-image>
-      <template #reference>
-        <i class="iconfont icon-weixin1 to_pointer"></i>
-      </template>
+      <el-image style="width: 100%; height: 100%"></el-image>
     </el-popover>
     <el-popover placement="top" trigger="hover">
-      <el-image
-        style="width: 100%; height: 100%"
-      ></el-image>
-      <template #reference>
-        <i class="iconfont icon-QQ1 to_pointer"></i>
-      </template>
+      <el-image style="width: 100%; height: 100%"></el-image>
     </el-popover>
   </div>
 </template>
@@ -165,7 +152,7 @@ const operate = (type) => {
     }
 
     &-text {
-      font-size: 1.2rem;
+      font-size: 1rem;
       color: var(--global-white);
       padding-left: 0.5rem;
     }
@@ -210,5 +197,11 @@ const operate = (type) => {
   .icon-QQ1 {
     font-size: 1.6rem;
   }
+}
+.flex_c_center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 </style>

@@ -8,6 +8,9 @@ import "element-plus/theme-chalk/dark/css-vars.css";
 // tailwind.css  https://www.tailwindcss.cn/docs
 import "./tailwind.css";
 import "./style.css";
+// svg
+import "virtual:svg-icons-register";
+
 
 const app = createApp(App);
 app.use(router).use(createPinia()).mount("#app");
