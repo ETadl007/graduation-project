@@ -7,9 +7,9 @@ const route = useRoute();
 </script>
 
 <template>
-  <div class="page-header fadeIn" :style="getBgCover">
-    <div class="loading !pt-[80px]" v-image="finalUrl"></div>
-    <div v-if="route.path != '/article'" class="route-font animate__animated animate__fadeIn">
+  <div class="page-header fadeIn">
+    <div class="loading !pt-[80px]"></div>
+    <div class="route-font animate__animated animate__fadeIn">
       <span style="display: inline-block" class="char">
         {{ route.meta.name }}
       </span>
