@@ -595,7 +595,6 @@ onMounted(() => {
   border-bottom: none;
   font-size: 1rem;
   font-weight: 400;
-  padding: 0 10px;
   background-color: transparent;
   i {
     display: flex;
