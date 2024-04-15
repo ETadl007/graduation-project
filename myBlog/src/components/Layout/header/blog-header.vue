@@ -560,7 +560,9 @@ onMounted(() => {
   font-size: 1.2rem;
   margin-right: 5px;
 }
-
+.iconfont{
+  cursor: pointer;
+}
 .icon-menu2 {
   font-size: 1.4rem;
 }
