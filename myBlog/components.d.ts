@@ -32,6 +32,7 @@ declare module 'vue' {
     ElTag: typeof import('element-plus/es')['ElTag']
     ElTimeline: typeof import('element-plus/es')['ElTimeline']
     ElTimelineItem: typeof import('element-plus/es')['ElTimelineItem']
+    ElTooltip: typeof import('element-plus/es')['ElTooltip']
     HomeArticleList: typeof import('./src/components/HomeArticle/home-article-list.vue')['default']
     Layout: typeof import('./src/components/Layout/index.vue')['default']
     Login: typeof import('./src/components/Layout/header/login/index.vue')['default']
@@ -46,5 +47,6 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     SkeletonItem: typeof import('./src/components/SkeletonItem/skeleton-item.vue')['default']
     TimeLine: typeof import('./src/components/TimeLine/time-line.vue')['default']
+    Tooltip: typeof import('./src/components/ToolTip/tooltip.vue')['default']
   }
 }

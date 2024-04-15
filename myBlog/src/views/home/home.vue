@@ -17,7 +17,88 @@
         </el-card>
         <!-- 博客文章 -->
         <HomeArticleList></HomeArticleList>
+        <el-card
+          class="mobile-bottom-card card-hover mobile-card info-card animate__animated animate__fadeIn"
+          shadow="hover"
+        >
+          <el-skeleton :loading="rightSizeLoading" animated>
+            <template #template>
+              <RightSideSkeletonItem />
+            </template>
+            <template #default>
+              <RightSideItem icon="icon-zixun" size="1.4rem" title="网站资讯">
+                <div class="site-info">
+                  <div class="flex_r_between">
+                    <span>文章数目：</span>
+                    <span class="value">10</span>
+                  </div>
+                  <div class="flex_r_between">
+                    <span>运行时间：</span>
+                    <span class="value">50 天</span>
+                  </div>
+                  <div class="flex_r_between">
+                    <span>博客访问次数：</span>
+                    <span class="value">155</span>
+                  </div>
+                  <div class="group">
+                    交流群
+                    <div class="flex justify-end items-start flex-nowrap">
+                      <div >
+                        <el-image
+                          class="img"
+                          
+                          fit="cover"
+                          
+                          preview-teleported
+                          lazy
+                        >
+                        </el-image>
+                      </div>
+                      <div>
+                        <el-image
+                          class="img !ml-[10px]"
+                          
+                          fit="cover"
+                          
+                          preview-teleported
+                          lazy
+                        >
+                        </el-image>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="group">
+                    支持作者
+                    <div class="flex justify-end items-start flex-nowrap">
+                      <div>
+                        <el-image
+                          class="img"
+                          
+                          fit="cover"
+                          
+                          preview-teleported
+                          lazy
+                        >
+                        </el-image>
+                      </div>
+                      <div>
+                        <el-image
+                          class="img !ml-[10px]"
+                          fit="cover"
+                          preview-teleported
+                          lazy
+                        >
+                        </el-image>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </RightSideItem>
+            </template>
+          </el-skeleton>
+        </el-card>
       </el-col>
+
       <el-col :xs="0" :sm="6">
         <RightSide> </RightSide>
       </el-col>
@@ -26,7 +107,8 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted, nextTick } from "vue";
+import { gsapTransY } from "@/utils/transform";
 import HomeArticleList from "@/components/HomeArticle/home-article-list.vue";
 import RightSide from "@/components/RightSide/right-side.vue";
 import MobileTopSkeleton from "@/components/RightSide/components/skeleton/mobile-top-skeleton.vue";
@@ -39,6 +121,22 @@ const rightSizeLoading = ref(false);
 const runtime = ref(0);
 let configDetail = ref({});
 let tags = ref([]);
+
+const observeMobileBox = () => {
+  nextTick(() => {
+    gsapTransY(
+      [".mobile-top-card", ".mobile-bottom-card"],
+      -30,
+      0.5,
+      "bounce.in"
+    );
+    gsapTransY([".mobile-bottom-card"], 30, 0.6, "none");
+  });
+};
+
+onMounted(async () => {
+  await observeMobileBox();
+});
 </script>
 
 <style lang="scss" scoped>
@@ -101,6 +199,13 @@ let tags = ref([]);
   .img {
     width: 80px;
     height: 80px;
+  }
+}
+@media screen and (min-width: 768px) {
+  .avatar-show,
+  .mobile-top-card,
+  .mobile-bottom-card {
+    display: none;
   }
 }
 </style>

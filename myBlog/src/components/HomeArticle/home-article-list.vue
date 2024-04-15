@@ -41,10 +41,52 @@
 </template>
 
 <script setup>
+import { nextTick, watch } from "vue";
 import ArticleSkeleton from "./components/article-skeleton.vue";
+import { numberFormate } from "@/utils/tool";
+import Tooltip from "../ToolTip/tooltip.vue";
+
+import { gsapTransY } from "@/utils/transform";
+import { isMobile } from "@/utils/tool";
+
+const props = defineProps({
+  articleList: {
+    type: Array,
+    default: () => {},
+  },
+  articleTotal: {
+    type: Number,
+    default: 0,
+  },
+  param: {
+    type: Object,
+    default: () => {},
+  },
+});
+
 const param = {
   loading: false
 };
+
+watch(
+  () => props.articleList,
+  () => {
+    if (!props.articleList.length) return;
+    nextTick(() => {
+      let listArticle = [];
+      for (let i = 0; i < props.articleList.length; i++) {
+        if (!isMobile()) {
+          if (i >= 1) {
+            listArticle.push(".article" + i);
+          }
+        } else {
+          listArticle.push(".article" + i);
+        }
+      }
+      gsapTransY(listArticle, 30, 0.6, "none");
+    });
+  }
+);
 </script>
 
 <style lang="scss" scoped>

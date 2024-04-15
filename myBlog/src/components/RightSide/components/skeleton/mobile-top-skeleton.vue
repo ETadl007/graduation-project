@@ -1,10 +1,13 @@
-<script setup>
-import SkeletonItem from "@/components/SkeletonItem/skeleton-item.vue";
-</script>
 <template>
   <SkeletonItem variant="image" height="12rem" />
   <div class="flex_r_start">
-    <SkeletonItem variant="circle" width="60px" height="60px" top="-2rem" left="2rem" />
+    <SkeletonItem
+      variant="circle"
+      width="60px"
+      height="60px"
+      top="-2rem"
+      left="2rem"
+    />
     <SkeletonItem width="40%" height="1rem" left="0.3rem" />
   </div>
   <div style="padding: 5px">
@@ -25,3 +28,6 @@ import SkeletonItem from "@/components/SkeletonItem/skeleton-item.vue";
     <SkeletonItem variant="circle" width="2rem" height="2rem" />
   </div>
 </template>
+<script setup>
+import SkeletonItem from "@/components/SkeletonItem/skeleton-item.vue";
+</script>
