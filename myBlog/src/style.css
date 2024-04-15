@@ -176,6 +176,6 @@ button:focus-visible {
 .el-col-4,
 .el-col-3,
 .el-col-2,
-.el-col-1{
+.el-col-1 {
   padding: 7.5px 3.75px !important;
 }
