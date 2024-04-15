@@ -1,11 +1,11 @@
 <template>
   <div class="info-background">
     <el-image fit="cover" style="width: 100%; height: 100%" preview-teleported>
-      <template #error>
+      <!-- <template #error>
         <div class="w-[100%] h-[100%] grid place-items-center">
           <svg-icon name="image404" :width="10" :height="10"></svg-icon>
         </div>
-      </template>
+      </template> -->
     </el-image>
   </div>
   <div class="info-avatar">
@@ -135,7 +135,16 @@ const operate = (type) => {
     font-size: 1.4rem;
   }
 }
-
+.flex_r_between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.flex_r_around {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
 .git-ee {
   padding: 0 2rem;
 

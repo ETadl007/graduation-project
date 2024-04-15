@@ -2,14 +2,13 @@
   <div class="right-side">
     <el-row>
       <el-col :span="24" class="right-side-space right-side-space1">
-
         <el-card class="info-card card-hover animate__animated animate__fadeIn" shadow="hover">
           <el-skeleton :loading="false" animated>
             <template #template>
               <RightSideTopSkeleton />
             </template>
             <template #default>
-              <RightSideTop :configDetail="configDetail" />
+              <RightSideTop />
             </template>
           </el-skeleton>
         </el-card>
@@ -53,11 +52,11 @@
                         preview-teleported
                         lazy
                       >
-                        <template #error>
+                        <!-- <template #error>
                           <div class="w-[100%] h-[100%] grid place-items-center">
                             <svg-icon name="image404" :width="4" :height="4"></svg-icon>
                           </div>
-                        </template>
+                        </template> -->
                       </el-image>
                     </div>
                     <div class="grid place-items-center">
@@ -68,11 +67,11 @@
                         preview-teleported
                         lazy
                       >
-                        <template #error>
+                        <!-- <template #error>
                           <div class="w-[100%] h-[100%] grid place-items-center">
                             <svg-icon name="image404" :width="4" :height="4"></svg-icon>
                           </div>
-                        </template>
+                        </template> -->
                       </el-image>
                     </div>
                   </div>
@@ -87,11 +86,11 @@
                         preview-teleported
                         lazy
                       >
-                        <template #error>
+                        <!-- <template #error>
                           <div class="w-[100%] h-[100%] grid place-items-center">
                             <svg-icon name="image404" :width="4" :height="4"></svg-icon>
                           </div>
-                        </template>
+                        </template> -->
                       </el-image>
                     </div>
                     <div class="grid place-items-center" >
@@ -101,11 +100,11 @@
                         preview-teleported
                         lazy
                       >
-                        <template #error>
+                        <!-- <template #error>
                           <div class="w-[100%] h-[100%] grid place-items-center">
                             <svg-icon name="image404" :width="4" :height="4"></svg-icon>
                           </div>
-                        </template>
+                        </template> -->
                       </el-image>
                     </div>
                   </div>
@@ -175,24 +174,24 @@ import RightSideTopSkeleton from "@/components/RightSide/components/skeleton/rig
 import RightSideItem from "@/components/RightSide/components/item/right-side-item.vue";
 import RightSideTop from "@/components/RightSide/components/item/right-side-top.vue";
 
-defineProps({
-  configDetail: {
-    type: Object,
-    default: () => {},
-  },
-  runtime: {
-    type: [String, Number],
-    default: "两年半",
-  },
-  loading: {
-    type: Boolean,
-    default: false,
-  },
-  tags: {
-    type: Array,
-    default: () => {},
-  },
-});
+// defineProps({
+//   configDetail: {
+//     type: Object,
+//     default: () => {},
+//   },
+//   runtime: {
+//     type: [String, Number],
+//     default: "两年半",
+//   },
+//   loading: {
+//     type: Boolean,
+//     default: false,
+//   },
+//   tags: {
+//     type: Array,
+//     default: () => {},
+//   },
+// });
 
 </script>
 
@@ -264,5 +263,12 @@ defineProps({
     width: 80px;
     height: 80px;
   }
+}
+.el-card {
+    border: none;
+    border-radius: 5px 5px 8px 8px;
+    box-shadow: var(--card-box-shadow) !important;
+    background: rgba(255, 255, 255, .3);
+    transition: all .3s;
 }
 </style>

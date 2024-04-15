@@ -11,8 +11,25 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+:root {
   --global-white: #fff;
   --hr-border: #a9d5f4;
+  --primary: #5cbfef;
+  --router-color: #dddddd;
+  --font-color: #676767;
+  --dark-font-color: #a7a7a7;
+  --second-font-color: #b3b7ff;
+  --hot-color: #f00;
+  --md-active: #409eff;
+  --global-white: #fff;
+  --global-black: #000;
+  --global-shadow-white: #fafafa;
+  --header-bg-color: #8a7e90;
+  --meta-color: #858585;
+  --comment-grey: #a4a4a4;
+  --border-color: #7ec4f2;
 }
 
 a {
@@ -159,6 +176,6 @@ button:focus-visible {
 .el-col-4,
 .el-col-3,
 .el-col-2,
-.el-col-1 {
+.el-col-1{
   padding: 7.5px 3.75px !important;
 }

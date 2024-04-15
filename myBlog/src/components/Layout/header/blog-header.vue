@@ -1,5 +1,5 @@
 <template>
-  <div class="header_box">
+  <div class="header_box" :class="headerState.headerClass">
     <div class="pc_menu flex_r_between">
       <div class="sub-avatar">
         <router-link to="/"><el-avatar class="el-avatar" /> </router-link>
@@ -214,8 +214,12 @@
           :z-index="9999"
         >
           <div class="flex justify-center items-center">
-            <el-avatar class="el-avatar" :size="80">456</el-avatar>
-            <el-avatar class="el-avatar" :size="80">去登录</el-avatar>
+            <el-avatar class="el-avatar" :size="80" @click="toPersonal"
+              >123</el-avatar
+            >
+            <el-avatar class="el-avatar" :size="80" @click="toLogin"
+              >去登录</el-avatar
+            >
           </div>
           <el-menu class="sub-menu mt-[5px]" :ellipsis="false">
             <el-menu-item index="/home"
@@ -262,13 +266,16 @@
       </div>
     </div>
   </div>
+  <Login v-model:show="showLogin" />
 </template>
 
 <script setup>
-import { computed, ref, h } from "vue";
+import { computed, ref, h, reactive, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { ElNotification } from "element-plus";
 import BlogSearch from "../../Search/blog-search.vue";
+import Login from "./login/index.vue";
+import { _setLocalItem } from "@/utils/tool";
 
 const route = useRoute();
 const router = useRouter();
@@ -276,6 +283,15 @@ const router = useRouter();
 const getPath = computed(() => {
   return route.path;
 });
+
+const headerState = reactive({
+  drawerShow: false,
+  startScrollTop: 0,
+  headerClass: "",
+  activeIndex: 0,
+});
+
+const showLogin = ref(false);
 
 const handleSelect = (val, type) => {
   if (val == "/logout") {
@@ -298,9 +314,38 @@ const handleSelect = (val, type) => {
     headerState.drawerShow = false;
   }
 };
+
+// 去登录
+const toLogin = () => {
+  showLogin.value = true;
+  headerState.drawerShow = false;
+  _setLocalItem("blogLastRouter", route.fullPath);
+};
+
+// 顶部导航固定
+const scroll = () => {
+  let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+  const { startScrollTop } = headerState;
+  if (scrollTop <= 50) {
+    headerState.headerClass = "fixed-header";
+    headerState.startScrollTop = scrollTop;
+    return;
+  }
+  if (startScrollTop > scrollTop) {
+    headerState.headerClass = "fixed-header";
+  } else if (startScrollTop <= scrollTop) {
+    headerState.headerClass = "hide-header";
+  }
+  headerState.startScrollTop = scrollTop;
+};
+
+onMounted(() => {
+  // 页面增加滚动事件
+  window.addEventListener("scroll", scroll);
+});
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .header_box {
   position: fixed;
   top: 0;
@@ -345,19 +390,20 @@ const handleSelect = (val, type) => {
   justify-content: space-between;
   align-items: center;
 }
-.el-menu{
+.el-menu {
   background: none !important;
 }
 .el-menu--horizontal > .el-menu-item.is-active {
-  border-bottom: none !important;;
+  border-bottom: none !important;
   color: var(--el-menu-active-color) !important;
 }
-
 
 :deep(.el-menu--horizontal > .el-sub-menu .el-sub-menu__title:hover) {
   background-color: transparent;
 }
-
+.el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
+  background-color: transparent;
+}
 .iconfont {
   font-size: 1.2rem;
   margin-right: 5px;

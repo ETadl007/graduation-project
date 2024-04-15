@@ -6,7 +6,7 @@ import "element-plus/dist/index.css"; // 引入样式
 import "element-plus/theme-chalk/dark/css-vars.css";
 
 // tailwind.css  https://www.tailwindcss.cn/docs
-import "./tailwind.css";
+import "./index.css";
 import "./style.css";
 // svg
 import "virtual:svg-icons-register";

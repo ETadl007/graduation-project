@@ -11,8 +11,12 @@
     "deploy": "gh-pages -d dist -r https://github.com/ETadl007/graduation-project.git -b gh-pages"
   },
   "dependencies": {
+    "@types/crypto-js": "^4.2.2",
+    "animate.css": "^4.1.1",
     "axios": "^1.6.8",
+    "crypto-js": "^4.2.0",
     "element-plus": "^2.6.3",
+    "gsap": "^3.12.5",
     "nprogress": "^0.2.0",
     "pinia": "^2.1.7",
     "pinia-plugin-persist": "^1.0.0",

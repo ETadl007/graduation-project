@@ -5,7 +5,9 @@
         <HomeArticleList> </HomeArticleList>
       </el-col>
       <el-col :xs="0" :sm="6">
-        <RightSide> </RightSide>
+        <RightSide
+        >
+        </RightSide>
       </el-col>
     </el-row>
   </div>
@@ -19,6 +21,12 @@ import MobileTopSkeleton from "@/components/RightSide/components/skeleton/mobile
 import RightSideItem from "@/components/RightSide/components/item/right-side-item.vue";
 import RightSideTop from "@/components/RightSide/components/item/right-side-top.vue";
 import RightSideSkeletonItem from "@/components/RightSide/components/skeleton/right-side-skeleton-item.vue";
+
+// /** 网站右侧 */
+// const rightSizeLoading = ref(false);
+// const runtime = ref(0);
+// let configDetail = ref({});
+// let tags = ref([]);
 </script>
 
 <style lang="scss" scoped>
@@ -83,4 +91,5 @@ import RightSideSkeletonItem from "@/components/RightSide/components/skeleton/ri
     height: 80px;
   }
 }
+
 </style>

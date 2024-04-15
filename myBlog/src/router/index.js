@@ -200,23 +200,6 @@ const routes = [
       },
     ],
   },
-
-  {
-    path: "/login",
-    name: "Login",
-    meta: {
-      name: "用户登录",
-    },
-    component: () => import("@/views/user/login-register.vue"),
-  },
-  {
-    path: "/register",
-    name: "Register",
-    meta: {
-      name: "用户注册",
-    },
-    component: () => import("@/views/user/login-register.vue"),
-  },
   {
     path: "/:pathMatch(.*)*",
     name: "404",
@@ -232,21 +215,21 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
-  NProgress.start();
-  // if (to.path == "/register" || to.path == "/login") {
-  //   if (user().getUserInfo.id) {
-  //     next("/home");
-  //     ElNotification({
-  //       offset: 60,
-  //       title: "温馨提示",
-  //       message: h("div", { style: "color: #e6c081; font-weight: 600;" }, "请先退出登录"),
-  //     });
-  //     return;
-  //   }
-  // }
-  next();
-});
+// router.beforeEach((to, from, next) => {
+//   NProgress.start();
+//   if (to.path == "/register" || to.path == "/login") {
+//     if (true) {
+//       next("/home");
+//       ElNotification({
+//         offset: 60,
+//         title: "温馨提示",
+//         message: h("div", { style: "color: #e6c081; font-weight: 600;" }, "请先退出登录"),
+//       });
+//       return;
+//     }
+//   }
+//   next();
+// });
 
 // 不滚动到顶部的路由名单
 const whiteList = ["/message/list"];
