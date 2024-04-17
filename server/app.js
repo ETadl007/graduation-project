@@ -3,10 +3,6 @@ const config = require('./src/config/config')
 const POST = config.APP_PORT || 8080
 
 
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-})
-
 
 app.listen(POST, (err, res) => {
     if (err) {
