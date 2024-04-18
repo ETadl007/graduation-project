@@ -14,23 +14,67 @@
       </el-col>
     </template>
     <template v-else>
-      <el-col v-for="item in 5" :key="item">
+      <el-col v-for="item in articleList" :key="item.id">
         <el-card class="card-hover">
           <div class="article-box">
             <div class="article-cover">
-              <el-image class="image"  fit="cover" />
+              <el-image class="image" fit="cover" />
             </div>
             <div class="article-info flex_c_between">
-              <div class="title">文章标题</div>
+              <div class="title">{{ item.article_title }}</div>
               <div class="meta">
-                <span class="iconfont icon-zhiding"></span>
-                <span class="meta-label">置顶</span>
+                <span v-if="item.is_top == 1" class="to_pointer">
+                  <i class="iconfont icon-zhiding"></i>
+                  <span class="meta-label">置顶</span>
+                </span>
+                <span
+                  v-if="item.is_top == 1"
+                  class="article-meta__separator"
+                ></span>
+                <span class="to_pointer">
+                  <i class="iconfont icon-calendar2"></i>
+                  <span class="meta-label">发表于</span>
+                  <span class="meta-value">{{ item.createdAt }}</span>
+                </span>
                 <span class="article-meta__separator"></span>
-                <span class="iconfont icon-icon1"></span>
-                <span class="meta-label">分类</span>
+                <span class="to_pointer">
+                  <i class="iconfont icon-schedule"></i>
+                  <span class="meta-label">更新于</span>
+                  <span class="meta-value">{{ item.updatedAt }}</span>
+                </span>
                 <span class="article-meta__separator"></span>
-                <span class="iconfont icon-chakan"></span>
-                <span class="meta-value">100</span>
+                <span class="to_pointer" @click="operate('category', item)">
+                  <i class="iconfont icon-folder"></i>
+                  <span class="meta-value">{{ item.categoryName }}</span>
+                </span>
+                <span class="to_pointer" @click="operate('tag', item)">
+                  <i class="iconfont icon-label_fill"></i>
+                  <span
+                    class="meta-value"
+                    v-for="(tagName, index) in item.tagNameList"
+                    :key="index"
+                  >
+                    {{
+                      index == item.tagNameList.length - 1
+                        ? tagName
+                        : tagName + "、"
+                    }}
+                  </span>
+                </span>
+                <span class="article-meta__separator"></span>
+                <span class="to_pointer">
+                  <i class="iconfont icon-icon1"></i>
+                  <span class="meta-value">
+                    {{ item.thumbs_up_times }}
+                  </span>
+                </span>
+                <span class="article-meta__separator"></span>
+                <span class="to_pointer">
+                  <i class="iconfont icon-icon1"></i>
+                  <span class="meta-value">
+                    {{ item.view_times }}
+                  </span>
+                </span>
               </div>
             </div>
           </div>
@@ -64,8 +108,24 @@ const props = defineProps({
   },
 });
 
+/* 文章操作 start */
+const operate = (type, item) => {
+  switch (type) {
+    case "detail":
+      router.push({ path: "/article", query: { id: item.id } });
+      break;
+    case "tag":
+      router.push({ path: "/tag" });
+      break;
+    case "category":
+      router.push({ path: "/category" });
+      break;
+  }
+};
+/* 文章操作 end */
+
 const param = {
-  loading: false
+  loading: false,
 };
 
 watch(
@@ -224,15 +284,15 @@ watch(
   transition: all 0.3s;
 }
 .card-hover:hover {
-    box-shadow: var(--card-hover-box-shadow) !important;
-    transform: translateY(-3px);
+  box-shadow: var(--card-hover-box-shadow) !important;
+  transform: translateY(-3px);
 }
 
 .el-card {
-    border: none;
-    border-radius: 5px 5px 8px 8px;
-    box-shadow: var(--card-box-shadow) !important;
-    background: rgba(255, 255, 255, .3);
-    transition: all .3s;
+  border: none;
+  border-radius: 5px 5px 8px 8px;
+  box-shadow: var(--card-box-shadow) !important;
+  background: rgba(255, 255, 255, 0.3);
+  transition: all 0.3s;
 }
 </style>

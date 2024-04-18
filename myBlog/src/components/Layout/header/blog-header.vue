@@ -445,6 +445,11 @@ const headerState = reactive({
 
 const showLogin = ref(false);
 
+// 切换抽屉
+const handleClose = () => {
+  headerState.drawerShow = false;
+};
+
 const handleSelect = (val, type) => {
   if (val == "/logout") {
     ElNotification({

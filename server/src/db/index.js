@@ -1,7 +1,6 @@
 const mysql = require('mysql');
 const { MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE, MYSQL_PORT } = require('../config/config');
 
-console.log(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE, MYSQL_PORT);
 const pool = mysql.createPool({
   host: MYSQL_HOST,
   user: MYSQL_USER,
@@ -17,7 +16,6 @@ const seq = (sql, params) => {
         reject(err);
         return;
       }
-
       connection.query(sql, params, (queryError, results, fields) => {
         connection.release();
         if (queryError) {

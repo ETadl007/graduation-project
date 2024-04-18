@@ -52,11 +52,7 @@
                         preview-teleported
                         lazy
                       >
-                        <!-- <template #error>
-                          <div class="w-[100%] h-[100%] grid place-items-center">
-                            <svg-icon name="image404" :width="4" :height="4"></svg-icon>
-                          </div>
-                        </template> -->
+
                       </el-image>
                     </div>
                     <div class="grid place-items-center">
@@ -67,11 +63,6 @@
                         preview-teleported
                         lazy
                       >
-                        <!-- <template #error>
-                          <div class="w-[100%] h-[100%] grid place-items-center">
-                            <svg-icon name="image404" :width="4" :height="4"></svg-icon>
-                          </div>
-                        </template> -->
                       </el-image>
                     </div>
                   </div>
@@ -86,11 +77,6 @@
                         preview-teleported
                         lazy
                       >
-                        <!-- <template #error>
-                          <div class="w-[100%] h-[100%] grid place-items-center">
-                            <svg-icon name="image404" :width="4" :height="4"></svg-icon>
-                          </div>
-                        </template> -->
                       </el-image>
                     </div>
                     <div class="grid place-items-center" >
@@ -100,11 +86,6 @@
                         preview-teleported
                         lazy
                       >
-                        <!-- <template #error>
-                          <div class="w-[100%] h-[100%] grid place-items-center">
-                            <svg-icon name="image404" :width="4" :height="4"></svg-icon>
-                          </div>
-                        </template> -->
                       </el-image>
                     </div>
                   </div>

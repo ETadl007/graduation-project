@@ -1,11 +1,6 @@
 <template>
   <div class="info-background">
     <el-image fit="cover" style="width: 100%; height: 100%" preview-teleported>
-      <!-- <template #error>
-        <div class="w-[100%] h-[100%] grid place-items-center">
-          <svg-icon name="image404" :width="10" :height="10"></svg-icon>
-        </div>
-      </template> -->
     </el-image>
   </div>
   <div class="info-avatar">
@@ -45,9 +40,15 @@
 
     <el-popover placement="top" trigger="hover">
       <el-image style="width: 100%; height: 100%"></el-image>
+      <template #reference>
+        <i class="iconfont icon-weixin1 to_pointer"></i>
+      </template>
     </el-popover>
     <el-popover placement="top" trigger="hover">
       <el-image style="width: 100%; height: 100%"></el-image>
+      <template #reference>
+        <i class="iconfont icon-QQ1 to_pointer"></i>
+      </template>
     </el-popover>
   </div>
 </template>

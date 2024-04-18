@@ -16,7 +16,11 @@
           </el-skeleton>
         </el-card>
         <!-- 博客文章 -->
-        <HomeArticleList></HomeArticleList>
+        <HomeArticleList
+          :articleList="articleList"
+          :param="param"
+          :articleTotal="articleTotal"
+        ></HomeArticleList>
         <el-card
           class="mobile-bottom-card card-hover mobile-card info-card animate__animated animate__fadeIn"
           shadow="hover"
@@ -43,12 +47,10 @@
                   <div class="group">
                     交流群
                     <div class="flex justify-end items-start flex-nowrap">
-                      <div >
+                      <div>
                         <el-image
                           class="img"
-                          
                           fit="cover"
-                          
                           preview-teleported
                           lazy
                         >
@@ -57,9 +59,7 @@
                       <div>
                         <el-image
                           class="img !ml-[10px]"
-                          
                           fit="cover"
-                          
                           preview-teleported
                           lazy
                         >
@@ -73,9 +73,7 @@
                       <div>
                         <el-image
                           class="img"
-                          
                           fit="cover"
-                          
                           preview-teleported
                           lazy
                         >
@@ -108,6 +106,9 @@
 
 <script setup>
 import { ref, reactive, onMounted, nextTick } from "vue";
+
+import { homeGetArticleList } from "@/api/article";
+
 import { gsapTransY } from "@/utils/transform";
 import HomeArticleList from "@/components/HomeArticle/home-article-list.vue";
 import RightSide from "@/components/RightSide/right-side.vue";
@@ -115,6 +116,28 @@ import MobileTopSkeleton from "@/components/RightSide/components/skeleton/mobile
 import RightSideItem from "@/components/RightSide/components/item/right-side-item.vue";
 import RightSideTop from "@/components/RightSide/components/item/right-side-top.vue";
 import RightSideSkeletonItem from "@/components/RightSide/components/skeleton/right-side-skeleton-item.vue";
+
+/** 文章 */
+const param = reactive({
+  current: 1, // 当前页
+  size: 5, // 每页条目数
+  loading: true, // 加载
+});
+const articleList = ref([]);
+const articleTotal = ref();
+
+const getHomeArticleList = async () => {
+  try {
+    let res = await homeGetArticleList(param.current, param.size);
+    if (res.status == 0) {
+      const { list, total } = res.data;
+      articleList.value = list;
+      articleTotal.value = total;
+    }
+  } finally {
+    param.loading = false;
+  }
+};
 
 /** 网站右侧 */
 const rightSizeLoading = ref(false);
@@ -134,8 +157,15 @@ const observeMobileBox = () => {
   });
 };
 
-onMounted(async () => {
+const init = async () => {
+  param.loading = true;
+  rightSizeLoading.value = true;
+  await getHomeArticleList("init");
   await observeMobileBox();
+};
+
+onMounted(async () => {
+  init();
 });
 </script>
 
