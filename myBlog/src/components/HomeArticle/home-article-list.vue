@@ -64,15 +64,25 @@
                 <span class="article-meta__separator"></span>
                 <span class="to_pointer">
                   <i class="iconfont icon-icon1"></i>
-                  <span class="meta-value">
-                    {{ item.thumbs_up_times }}
+                  <GsapCount
+                    class="meta-value"
+                    v-if="item.thumbs_up_times - 0 < 1000"
+                    :value="numberFormate(item.thumbs_up_times)"
+                  />
+                  <span v-else class="meta-value">
+                    {{ numberFormate(item.thumbs_up_times) }}
                   </span>
                 </span>
                 <span class="article-meta__separator"></span>
                 <span class="to_pointer">
-                  <i class="iconfont icon-icon1"></i>
-                  <span class="meta-value">
-                    {{ item.view_times }}
+                  <i class="iconfont icon-chakan"></i>
+                  <GsapCount
+                    class="meta-value"
+                    v-if="item.view_times - 0 < 1000"
+                    :value="numberFormate(item.view_times)"
+                  />
+                  <span v-else class="meta-value">
+                    {{ numberFormate(item.view_times) }}
                   </span>
                 </span>
               </div>
@@ -86,6 +96,7 @@
 
 <script setup>
 import { nextTick, watch } from "vue";
+import GsapCount from "@/components/GsapCount/index";
 import ArticleSkeleton from "./components/article-skeleton.vue";
 import { numberFormate } from "@/utils/tool";
 import Tooltip from "../ToolTip/tooltip.vue";
