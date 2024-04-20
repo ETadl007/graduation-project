@@ -1,7 +1,6 @@
 const express = require("express")
 const router = express.Router()
 const seq = require("../db/index")
-// 引入控制器
 
 // 获取文章列表
 router.get("/blogHomeGetArticleList/:current/:size", async (req, res) => {
@@ -17,7 +16,6 @@ router.get("/blogHomeGetArticleList/:current/:size", async (req, res) => {
     size = size || 5;
 
     let params = [];
-    let whereSqls = [];
 
     // let whereSqlStr = whereSqls.length > 0 ? " WHERE " + whereSqls.join(" AND ") : "";
 
