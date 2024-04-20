@@ -1,6 +1,6 @@
 const express = require("express")
 const router = express.Router()
-const seq = require("../db/index")
+const { seq } = require("../db/index")
 
 // 获取文章列表
 router.get("/blogHomeGetArticleList/:current/:size", async (req, res) => {
@@ -21,9 +21,9 @@ router.get("/blogHomeGetArticleList/:current/:size", async (req, res) => {
 
     //查分页数据
     let articleListSql = "SELECT a.`id`, a.`category_id`, a.`createdAt`, a.`updatedAt`, a.`author_id`, a.`article_title`, substr(a.`article_description`, 1, 50) AS `article_content`, a.`article_cover`, a.`is_top`, a.`status`, a.`type`, a.`createdAt`, a.`updatedAt`, a.`view_times`, a.`article_description`, a.`thumbs_up_times`, a.`reading_duration`, a.`order`, t.`tag_name` FROM `blog_article` a LEFT JOIN `blog_tag` t ON a.`id` = t.`id` GROUP BY a.`id` ORDER BY a.`createdAt` DESC LIMIT ?, ?";
-    const totalArticlesSql = "SELECT COUNT(*) AS total_articles FROM `blog_article`" 
+    const totalArticlesSql = "SELECT COUNT(*) AS total_articles FROM `blog_article`"
 
-    let articleListSqlParams = params.concat([(current - 1) * size, parseInt(size)]);  
+    let articleListSqlParams = params.concat([(current - 1) * size, parseInt(size)]);
 
     const articleListResult = await seq(articleListSql, articleListSqlParams);
     const totalArticles = await seq(totalArticlesSql)

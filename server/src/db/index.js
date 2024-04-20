@@ -12,11 +12,8 @@ const seq = (sql, params) => {
   return new Promise((resolve, reject) => {
     pool.getConnection((err, connection) => {
       if (err) {
-        console.log('数据库连接失败');
         reject(err);
         return;
-      } else {
-        console.log('数据库连接成功');
       }
       connection.query(sql, params, (queryError, results, fields) => {
         connection.release();
