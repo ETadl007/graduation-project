@@ -12,9 +12,11 @@ const seq = (sql, params) => {
   return new Promise((resolve, reject) => {
     pool.getConnection((err, connection) => {
       if (err) {
-        console.error('Error connecting to MySQL: ' + err.stack);
+        console.log('数据库连接失败');
         reject(err);
         return;
+      } else {
+        console.log('数据库连接成功');
       }
       connection.query(sql, params, (queryError, results, fields) => {
         connection.release();
@@ -29,6 +31,6 @@ const seq = (sql, params) => {
   });
 };
 
-module.exports = seq;
+module.exports = { seq };
 
 
