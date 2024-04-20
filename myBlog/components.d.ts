@@ -12,6 +12,7 @@ declare module 'vue' {
     BlogHeader: typeof import('./src/components/Layout/header/blog-header.vue')['default']
     BlogMain: typeof import('./src/components/Layout/main/blog-main.vue')['default']
     BlogSearch: typeof import('./src/components/Search/blog-search.vue')['default']
+    ElAffix: typeof import('element-plus/es')['ElAffix']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElCard: typeof import('element-plus/es')['ElCard']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']

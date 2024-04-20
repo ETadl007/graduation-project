@@ -65,6 +65,14 @@ const routes = [
         component: () => import("@/views/article/article-list.vue"),
       },
       {
+        path: "/test",
+        name: "test",
+        meta: {
+          name: "文章列表",
+        },
+        component: () => import("@/views/index.vue"),
+      },
+      {
         path: "/photoAlbum",
         name: "PhotoAlbum",
         meta: {

@@ -37,6 +37,45 @@ export default defineConfig({
       iconDirs: [resolve(process.cwd(), "src/icons/svg")],
     }),
   ],
+  css: {
+    preprocessorOptions: {
+      // 引入全局scss
+      scss: {
+        additionalData: `@import "./src/styles/base.scss";`,
+      },
+    },
+  },
+  server: {
+    port: 8080,
+    host: "0.0.0.0",
+    https: false,
+    open: true,
+    // 热更新
+    hmr: {
+      overlay: false,
+    },
+    proxy: {
+      // 本地后端代理
+      "/api": {
+        //要访问的跨域的域名
+        target: "http://localhost:8888",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+      // minio 代理
+      "/blog-images": {
+        target: "http://mrzym.top:9000/blog-images",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/blog-images/, ""),
+      },
+      "/wapi": {
+        // 网易云的音乐代理
+        target: "http://mrzym.top:3000",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/wapi/, ""),
+      },
+    },
+  },
   build: {
     sourcemap: false,
     // 消除打包大小超过500kb警告

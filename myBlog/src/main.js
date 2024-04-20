@@ -11,6 +11,10 @@ import "./style.css";
 // svg
 import "virtual:svg-icons-register";
 
+import image from "./directives/imageLoading";
+
 
 const app = createApp(App);
+app.directive("image", image);
+
 app.use(router).use(createPinia()).mount("#app");

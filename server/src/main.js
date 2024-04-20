@@ -5,7 +5,7 @@ const cors = require('cors');
 
 
 const corsConfig = { 
-    origin: "http://localhost:5173",
+    origin: "http://localhost:8080",
     credentials: true,
 }
 // 设置跨域访问
