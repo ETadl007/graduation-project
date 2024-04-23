@@ -3,20 +3,11 @@ import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import { createRouter, createWebHashHistory } from "vue-router";
 import Layout from "@/components/Layout/index.vue";
-import navPage from "@/views/index.vue";
 import { h } from "vue";
 import { user } from "@/store/index";
 import { ElNotification } from "element-plus";
 
 const routes = [
-  {
-    path: "/",
-    name: "Nav",
-    meta: {
-      name: "导航",
-    },
-    component: navPage,
-  },
   {
     path: "/",
     name: "Layout",
