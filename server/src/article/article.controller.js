@@ -1,4 +1,4 @@
-import * as articleService from './article.service';
+import * as articleService from './article.service.js';
 
 /**
  *  获取文章列表
@@ -21,10 +21,19 @@ export const getArticleList = async (req, res, next) => {
     // 获取文章列表
     try {
         const articleList = await articleService.getArticleListService(current, size);
-        res.status(201).send(articleList);
+        res.status(200).send({
+            status: 0,
+            msg: "获取文章列表成功",
+            data: {
+                current,
+                size,
+                list:articleList,
+                total: articleList.length
+            }
+        });
 
-    } catch (err) {
-        next(err);
-    }
+} catch (err) {
+    next(err);
+}
 
 }

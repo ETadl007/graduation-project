@@ -129,6 +129,7 @@ const articleTotal = ref();
 const getHomeArticleList = async () => {
   try {
     let res = await homeGetArticleList(param.current, param.size);
+    console.log(res);
     if (res.status == 0) {
       const { list, total } = res.data;
       articleList.value = list;

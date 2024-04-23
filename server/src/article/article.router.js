@@ -1,12 +1,12 @@
 import express from 'express';
-import * as articleController from './article.controller';
+import * as articleController from './article.controller.js';
 
 const router = express.Router();
 
 /**
  * 获取文章列表
  */
-router.get('/articleList', articleController.getArticleList);
+router.get('/blogHomeGetArticleList/:current/:size', articleController.getArticleList);
 
 /**
  * 导出路由
