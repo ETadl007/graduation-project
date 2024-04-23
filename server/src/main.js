@@ -1,21 +1,18 @@
-const express = require('express');
-const path = require("path")
-const app = express();
-const cors = require('cors');
+import app from "./app/index.js";
+import { APP_PORT } from "./app/app.config.js";
+import { connecttion } from "./app/database/mysql.js";
 
+app.listen(APP_PORT, () => {
+    console.log(`服务已启动！ http://localhost:${APP_PORT}`);
+});
 
-const corsConfig = { 
-    origin: "http://localhost:8080",
-    credentials: true,
-}
-// 设置跨域访问
-app.use(cors(corsConfig))
-
-// 设置静态文件目录
-app.use(express.static(path.join(__dirname, "public")))
-
-// 设置路由
-app.use("/api/article", require("./router/article"));
-
-
-module.exports = app
+/**
+ * 测试连接数据库
+ */
+connecttion.connect((err) => {
+    if (err) {
+        console.log("数据库连接失败", err.message);
+        return;
+    }
+    console.log("数据库连接成功！");
+});
