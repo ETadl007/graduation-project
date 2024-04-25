@@ -14,7 +14,7 @@ const app = express();
  */
 
 app.use(cors({
-  origin: ['http://localhost:8080','http://localhost:8081'],//可设置多个跨域
+  origin: ['http://localhost:8080','https://www.xinux.icu'],//可设置多个跨域
   credentials: true//允许客户端携带验证信息
 }))
 
