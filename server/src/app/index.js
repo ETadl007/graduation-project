@@ -29,7 +29,9 @@ app.use(express.json());
 /**
  *  处理路由
  */
-
+app.use("/", (req, res) =>{
+  res.send("hello world");
+});
 app.use("/api/article", articleRouter);
 
 

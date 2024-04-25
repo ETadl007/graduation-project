@@ -17,9 +17,11 @@ export const getArticleList = async (req, res, next) => {
 
     const params = [limit, offset]
 
-    // 获取文章列表
     try {
+        // 获取文章列表
         const articleList = await articleService.blogArticleListService(params);
+        // 获取文章数量
+        const articleCount = await articleService.blogArticleTotalService();
         res.status(200).send({
             status: 0,
             message: "获取文章列表成功",
@@ -27,7 +29,7 @@ export const getArticleList = async (req, res, next) => {
                 current,
                 size,
                 list: articleList,
-                total: articleList.length
+                total: articleCount
             }
         });
 
@@ -52,16 +54,19 @@ export const getArticleTimeLineList = async (req, res, next) => {
 
     const params = [limit, offset]
 
-    // 获取前台时间轴列表
     try {
+        // 获取前台时间轴列表
         const articleTimeLineList = await articleService.blogTimelineGetArticleList(params);
+        // 获取文章数量
+        const articleCount = await articleService.blogArticleTotalService();
         res.status(200).send({
             status: 0,
             message: "获取文章时间轴列表成功",
             data: {
                 current,
                 size,
-                list: articleTimeLineList
+                list: articleTimeLineList,
+                total: articleCount
             }
         });
     }

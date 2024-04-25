@@ -73,9 +73,15 @@ export const blogTimelineGetArticleList = async (params) => {
     // 执行查询
     const [TimelineResult] = await connecttion.promise().query(TimelineSql, params);
 
-
-
     // 返回结果
     return TimelineResult
 
+}
+
+/**
+ * 获取文章总数
+ */
+export const blogArticleTotalService = async (params) => {
+    const [totalResult] = await connecttion.promise().query("SELECT COUNT(*) AS total FROM blog_article");
+    return totalResult[0].total
 }
