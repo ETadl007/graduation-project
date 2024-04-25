@@ -2,11 +2,12 @@
   <div class="app">
     <router-view></router-view>
   </div>
+  <SpeedInsights />
 </template>
 
 
 <script setup>
-
+import { SpeedInsights } from '@vercel/speed-insights/vue';
 </script>
 
 
