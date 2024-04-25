@@ -32,43 +32,52 @@
       },
 */
 
-
-
-// 获取分页文章列表
-const getAllArticles = async (req, res,) => {
-    
-};
-
-// 根据id获取文章
-const getArticleById = async (req, res,) => {
-
-};
-
-// 创建文章
-const createArticle = async (req, res,) => {
-
-};
-
-// 更新文章
-const updateArticle = async (req, res,) => {
-
-};
-
-// 删除文章
-const deleteArticle = async (req, res,) => {
-
-};
-
-// 更新文章置顶状态
-const updateArticleTopStatus = async (req, res,) => {
-
-};
-
-module.exports = {
-    getAllArticles,
-    getArticleById,
-    createArticle,
-    updateArticle,
-    deleteArticle,
-    updateArticleTopStatus
-};
+// 时间轴
+/**
+ * {
+  "code": 0,
+  "message": "获取文章时间轴列表成功",
+  "result": {
+    "current": "1",
+    "size": "5",
+    "list": [
+      {
+        "year": "2024",
+        "articleList": [
+          {
+            "createdAt": "2024-04-17 18:11:23",
+            "id": 26,
+            "article_title": "如何使用js写一个消息提示",
+            "article_cover": "/blog-images/AvfLwjeTIamO"
+          },
+          {
+            "createdAt": "2024-04-11 16:58:02",
+            "id": 25,
+            "article_title": "利用 css 渐变背景写好看的按钮",
+            "article_cover": "/blog-images/WcsLberMWQjt"
+          },
+          {
+            "createdAt": "2024-04-03 21:19:52",
+            "id": 24,
+            "article_title": "博客音乐播放器的状态管理",
+            "article_cover": "/blog-images/GUAmZjyhAIWN"
+          },
+          {
+            "createdAt": "2024-03-27 23:13:02",
+            "id": 23,
+            "article_title": "如何制作水煮牛肉",
+            "article_cover": "/blog-images/XXhBhNHaeQHo"
+          },
+          {
+            "createdAt": "2024-03-25 23:05:35",
+            "id": 22,
+            "article_title": "Sort函数",
+            "article_cover": "/blog-images/zSATDnYjZSFy"
+          }
+        ]
+      }
+    ],
+    "total": 17
+  }
+}
+ */

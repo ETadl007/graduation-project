@@ -9,6 +9,11 @@ const router = express.Router();
 router.get('/blogHomeGetArticleList/:current/:size', articleController.getArticleList);
 
 /**
+ * 获取前台时间轴列表
+ */
+router.get('/blogTimelineGetArticleList/:current/:size', articleController.getArticleTimeLineList);
+
+/**
  * 导出路由
  */
 export default router;
