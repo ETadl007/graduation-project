@@ -80,18 +80,6 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
-      // minio 代理
-      "/blog-images": {
-        target: "http://mrzym.top:9000/blog-images",
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/blog-images/, ""),
-      },
-      "/wapi": {
-        // 网易云的音乐代理
-        target: "http://mrzym.top:3000",
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/wapi/, ""),
-      },
     },
   },
   // 打包输出
