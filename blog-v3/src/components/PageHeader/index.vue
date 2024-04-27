@@ -65,7 +65,7 @@ const getBgCover = computed(() => {
   const bgList = getPageHeaderList.value;
   // 做一个根据路由来判断判断页面背景图片
   let url;
-  let myUrl = "http://img.mrzym.top/FvmVKfygxBKoJbFVXJwzjgAASL9S";
+  let myUrl = "https://bpic.588ku.com/back_our/20211004/bg/7a104e9fc5c33e0080044d526eb7e029_110891.png";
   if (route.path == "/article") {
     url = props.article.article_cover || myUrl;
   } else if (props.bgUrl) {
