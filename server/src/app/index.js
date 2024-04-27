@@ -1,6 +1,9 @@
 import express from 'express';
 import cors from 'cors'; 
 import articleRouter from '../article/article.router.js';
+import configRouter from '../config/config.router.js';
+import tagRouter from '../tag/tag.router.js';
+import homeStatistic from '../home/home.router.js'
 import { defaultErrorHandler } from './app.middleware.js';
 
 /**
@@ -30,7 +33,7 @@ app.use(express.json());
  *  处理路由
  */
 
-app.use("/api/article", articleRouter);
+app.use(articleRouter, configRouter, tagRouter, homeStatistic);
 
 /**
  *  默认异常处理

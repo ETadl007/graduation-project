@@ -6,12 +6,12 @@ const router = express.Router();
 /**
  * 获取文章列表
  */
-router.get('/blogHomeGetArticleList/:current/:size', articleController.getArticleList);
+router.get('/api/article/blogHomeGetArticleList/:current/:size', articleController.getArticleList);
 
 /**
  * 获取前台时间轴列表
  */
-router.get('/blogTimelineGetArticleList/:current/:size', articleController.getArticleTimeLineList);
+router.get('/api/article/blogTimelineGetArticleList/:current/:size', articleController.getArticleTimeLineList);
 
 /**
  * 导出路由

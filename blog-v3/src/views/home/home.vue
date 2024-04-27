@@ -55,9 +55,9 @@ let tags = ref([]);
 const getConfigDetail = async () => {
   try {
     let res = await homeGetConfig();
-    if (res.code == 0 && typeof res.result != "string") {
-      configDetail.value = res.result;
-      userStore.setBlogAvatar(res.result.blog_avatar);
+    if (res.status == 0 && typeof res.data != "string") {
+      configDetail.value = res.data;
+      userStore.setBlogAvatar(res.data.blog_avatar);
       calcRuntimeDays(configDetail.value.createdAt);
     }
   } finally {
@@ -66,22 +66,23 @@ const getConfigDetail = async () => {
 };
 // 获取文章数、分类数、标签数
 const getStatistic = async () => {
-  let res = await homeGetStatistic();
-  if (res.code == 0) {
-    Object.assign(configDetail.value, res.result);
+  let res = await homeGetStatistic();;
+  if (res.status == 0) {
+    Object.assign(configDetail.value, res.data);
   }
 };
 
 // 获取所有的标签
 const getAllTags = async () => {
   let res = await getAllTag();
-  if (res.code == 0) {
-    tags.value = res.result.map((r) => {
+  if (res.status == 0) {
+    tags.value = res.data.map((r) => {
       r.color = randomFontColor();
       return r;
     });
   }
 };
+
 // 计算出网站运行天数
 const calcRuntimeDays = (time) => {
   if (time) {
@@ -98,6 +99,9 @@ const init = async () => {
   param.loading = true;
   rightSizeLoading.value = true;
   await getHomeArticleList("init");
+  await getConfigDetail();
+  await getAllTags();
+  await getStatistic();
 };
 
 const observeMobileBox = () => {

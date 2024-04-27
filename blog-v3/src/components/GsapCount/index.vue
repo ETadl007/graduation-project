@@ -51,6 +51,6 @@ watch(
 
 <template>
   <span :class="'num-' + id">
-    {{ d.num.toFixed(0) }}
+   {{ typeof d.num === 'number' ? d.num.toFixed(0) : '' }}
   </span>
 </template>
