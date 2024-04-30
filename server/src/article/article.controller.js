@@ -74,3 +74,57 @@ export const getArticleTimeLineList = async (req, res, next) => {
         next(err);
     }
 }
+
+/**
+ * 根据文章id获取文章详情
+ */
+
+export const getArticleDetail = async (req, res, next) => {
+    const { id } = req.params;
+    try {
+        const articleDetail = await articleService.blogArticleByIdService(id);
+        // 如果文章不存在，直接返回失败响应
+        if (!articleDetail) {
+            return res.status(500).send({
+                status: 1,
+                message: "获取文章详情失败"
+            });
+        }
+        res.status(200).send({
+            status: 0,
+            message: "获取文章详情成功",
+            data: articleDetail
+
+        });
+
+    } catch (err) {
+        next(err);
+    }
+}
+
+/**
+ * 根据文章id获取推荐文章
+ */
+
+export const getArticleRecommend = async (req, res, next) => {
+    const { id } = req.params;
+    try {
+        const articleRecommend = await articleService.blogArticleRecommendService(id);
+        // 如果文章推荐不存在，直接返回失败响应
+        if (!articleRecommend) {
+            return res.status(500).send({
+                status: 1,
+                message: "获取文章推荐失败"
+            });
+        }
+        res.status(200).send({
+            status: 0,
+            message: "获取文章推荐成功",
+            data: articleRecommend
+
+        });
+
+    } catch (err) {
+        next(err);
+    }
+}

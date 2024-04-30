@@ -85,3 +85,78 @@ export const blogArticleTotalService = async (params) => {
     const [totalResult] = await connecttion.promise().query("SELECT COUNT(*) AS total FROM blog_article");
     return totalResult[0].total
 }
+
+/**
+ * 根据文章id获取文章详情
+ */
+
+export const blogArticleByIdService = async (params) => {
+    let articleByIdSql = `
+        SELECT
+            a.id, a.category_id, 
+            a.createdAt,
+            a.updatedAt, 
+            a.author_id,
+            a.article_title, 
+            substr(a.article_content, 1, 50) AS article_content,
+            a.article_cover, 
+            a.is_top, 
+            a.status, 
+            a.type, 
+            a.view_times, 
+            a.article_description, 
+            a.thumbs_up_times,
+            a.reading_duration, 
+            a.order, 
+            JSON_ARRAYAGG(IFNULL(t.id, '')) AS tagIdList,
+            JSON_ARRAYAGG(IFNULL(t.tag_name, '')) AS tagNameList,
+            u.username AS authorName,
+            c.category_name AS categoryName
+        fROM
+            blog_article a
+        LEFT JOIN
+            blog_tag t ON a.id = t.id
+        LEFT JOIN
+            blog_category c ON a.id = c.id
+        LEFT JOIN
+            blog_user u ON a.id = u.id
+        WHERE
+            a.id = ?
+        GROUP BY
+            a.id
+        `
+    const [articleByIdResult] = await connecttion.promise().query(articleByIdSql, params);
+    return articleByIdResult[0]
+}
+
+/**
+ * 根据文章id获取推荐文章
+ */
+
+export const blogArticleRecommendService = async (params) => {
+    let articleRecommendSql = `
+    SELECT
+    CASE
+        WHEN id = 1 THEN JSON_OBJECT('id', id, 'article_title', article_title, 'article_cover', article_cover)
+        ELSE JSON_OBJECT('id', id - 1, 'article_title', (SELECT article_title FROM blog_article WHERE id = a.id - 1), 'article_cover', (SELECT article_cover FROM blog_article WHERE id = a.id - 1))
+    END AS previous,
+    CASE
+        WHEN id = (SELECT MAX(id) FROM blog_article) THEN NULL
+        ELSE JSON_OBJECT('id', id + 1, 'article_title', (SELECT article_title FROM blog_article WHERE id = a.id + 1), 'article_cover', (SELECT article_cover FROM blog_article WHERE id = a.id + 1))
+    END AS next,
+    JSON_ARRAYAGG(JSON_OBJECT('createdAt', createdAt, 'id', id, 'article_title', article_title, 'article_cover', article_cover)) AS recommend
+    FROM
+        blog_article AS a
+    WHERE
+        id = ?
+        `
+    //查询文章id是否存在
+    const [articleExistResult] = await connecttion.promise().query("SELECT * FROM blog_article WHERE id = ?", params);
+    
+    if (articleExistResult.length === 0) {
+        return false
+    }
+
+    const [articleRecommendResult] = await connecttion.promise().query(articleRecommendSql, params);
+    return articleRecommendResult[0]
+}

@@ -103,17 +103,17 @@ const like = async () => {
 // 文章详情
 const getArticleDetails = async (id) => {
   let res = await getArticleById(id);
-  if (res.code == 0) {
-    mdState.text = res.result.article_content;
-    articleInfo.value = res.result;
+  if (res.status == 0) {
+    mdState.text = res.data.article_content;
+    articleInfo.value = res.data;
     if (getUserInfo.value.id) {
       const res = await getIsLikeByIdAndType({
         for_id: articleInfo.value.id,
         type: 1,
         user_id: getUserInfo.value.id,
       });
-      if (res.code == 0) {
-        isLike.value = res.result;
+      if (res.status == 0) {
+        isLike.value = res.data;
       }
     }
   }
@@ -129,8 +129,8 @@ const addReadingDuration = async (id) => {
 // 推荐文章
 const getRecommendArticle = async (id) => {
   let res = await getRecommendArticleById(id);
-  if (res.code == 0) {
-    const { previous, next, recommend } = res.result;
+  if (res.status == 0) {
+    const { previous, next, recommend } = res.data;
     recommendList.value = recommend;
     previousArticle.value = previous;
     nextArticle.value = next;
@@ -207,7 +207,7 @@ watch(
             <div class="article-info-inner">
               <div>
                 <span>文章作者：</span>
-                <a class="to_pointer" href="https://gitee.com/mrzym">{{
+                <a class="to_pointer" href="https://github.com/ETadl007/">{{
                   articleInfo.authorName
                 }}</a>
               </div>

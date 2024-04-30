@@ -136,8 +136,8 @@ const getCommentTotal = async () => {
     type: getCurrentType(props.type),
     for_id: props.id,
   });
-  if (res && res.code == 0) {
-    const total = res.result;
+  if (res && res.status == 0) {
+    const total = res.data;
     getTotal(total - 0);
   } else {
     ElNotification({

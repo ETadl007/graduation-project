@@ -5,6 +5,7 @@ import configRouter from '../config/config.router.js';
 import tagRouter from '../tag/tag.router.js';
 import homeStatistic from '../home/home.router.js'
 import { defaultErrorHandler } from './app.middleware.js';
+import commentRouter from '../comment/comment.router.js';
 
 /**
  *  创建应用
@@ -33,7 +34,7 @@ app.use(express.json());
  *  处理路由
  */
 
-app.use(articleRouter, configRouter, tagRouter, homeStatistic);
+app.use(articleRouter, configRouter, tagRouter, homeStatistic, commentRouter);
 
 /**
  *  默认异常处理
