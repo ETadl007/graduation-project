@@ -16,3 +16,9 @@ export const { MYSQL_HOST, MYSQL_PORT, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABAS
  * 内容分页
  */
 export const PAGE_SIZE = process.env.PAGE_SIZE
+
+
+/**
+ * 父级评论分页
+ */
+export const PARENT_COMMENT_PAGE_SIZE = process.env.PARENT_COMMENT_PAGE_SIZE

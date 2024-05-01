@@ -25,8 +25,7 @@ import GsapCount from "@/components/GsapCount/index";
 const MdCatalog = MdEditor.MdCatalog;
 let setUpTimes = null;
 let lastArticleId = null;
-let comment = null,
-  observe = null; // 用于监听评论是否出现在可视区域内
+let comment = null,observe = null; // 用于监听评论是否出现在可视区域内
 const commentRef = ref(null);
 const commentIsOpen = ref(false);
 

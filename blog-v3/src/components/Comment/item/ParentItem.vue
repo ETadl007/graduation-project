@@ -64,13 +64,13 @@ const getComment = async (type) => {
   }
   params.type = getCurrentType(props.type);
   const res = await frontGetParentComment(params);
-  if (res && res.code == 0) {
-    const { list, total } = res.result;
+  if (res && res.status == 0) {
+    const { list, total } = res.data;
     list.forEach((l) => {
       l.showApplyInput = false;
     });
     commentList.value = params.current == 1 ? list : commentList.value.concat(list);
-    commentTotal.value = total - 0;
+    commentTotal.value = total - 1;
   } else {
     ElNotification({
       offset: 60,
@@ -285,7 +285,6 @@ defineExpose({
               </TextOverflow>
             </div>
             <div class="!mt-[0.5rem]">
-              <span class="!mr-[1rem] ip">{{ `IP: ${comment.ipAddress}` }}</span>
               <span
                 :class="[
                   'thumbs',

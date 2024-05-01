@@ -86,8 +86,8 @@ const getComment = async (type) => {
   }
   params.type = getCurrentType(props.type);
   const res = await frontGetChildrenComment(params);
-  if (res && res.code == 0) {
-    const { list, total } = res.result;
+  if (res && res.status == 0) {
+    const { list, total } = res.data;
     commentList.value = list;
     commentTotal.value = total - 0;
   } else {
