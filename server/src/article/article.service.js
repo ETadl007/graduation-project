@@ -5,32 +5,34 @@ import { connecttion } from "../app/database/mysql.js"
  */
 export const blogArticleListService = async (params) => {
 
-    // SQL 语句
     let articleListSql = `
     SELECT 
-    a.id, a.category_id, 
-    a.createdAt,
-    a.updatedAt, 
-    a.author_id,
-    a.article_title, 
-    substr(a.article_content, 1, 50) AS article_content,
-    a.article_cover, 
-    a.is_top, 
-    a.status, 
-    a.type, 
-    a.view_times, 
-    a.article_description, 
-    a.thumbs_up_times,
-    a.reading_duration, 
-    a.order, JSON_ARRAYAGG(IFNULL(t.tag_name, '')) AS tagNameList
+        a.id, a.category_id, 
+        a.createdAt,
+        a.updatedAt, 
+        a.author_id,
+        a.article_title, 
+        substr(a.article_content, 1, 50) AS article_content,
+        a.article_cover, 
+        a.is_top, 
+        a.status, 
+        a.type, 
+        a.view_times, 
+        a.article_description, 
+        a.thumbs_up_times,
+        a.reading_duration, 
+        a.order AS article_order,
+        JSON_ARRAYAGG(IFNULL(t.tag_name, '')) AS tagNameList
     FROM 
         blog_article a 
+    LEFT JOIN
+        blog_article_tag at ON a.id = at.article_id
     LEFT JOIN 
-        blog_tag t ON a.id = t.id 
+        blog_tag t ON at.tag_id = t.id
     GROUP BY 
         a.id 
     ORDER BY 
-        a.createdAt DESC 
+        a.is_top ASC, article_order ASC, a.createdAt DESC
     LIMIT ?
     OFFSET ?
     `;
@@ -152,11 +154,58 @@ export const blogArticleRecommendService = async (params) => {
         `
     //查询文章id是否存在
     const [articleExistResult] = await connecttion.promise().query("SELECT * FROM blog_article WHERE id = ?", params);
-    
+
     if (articleExistResult.length === 0) {
         return false
     }
 
     const [articleRecommendResult] = await connecttion.promise().query(articleRecommendSql, params);
     return articleRecommendResult[0]
+}
+
+/**
+ * 通过标签id 获取到文章列表
+ */
+
+export const blogArticleByTagIdService = async (params) => {
+    const ArticleByTagIdSql = `
+    SELECT 
+        ba.createdAt,
+        ba.article_title,
+        ba.id,
+        ba.article_cover
+    FROM 
+        blog_article_tag bat
+    INNER JOIN 
+        blog_article ba ON bat.article_id = ba.id
+    WHERE 
+        bat.tag_id = ?
+
+    ORDER BY
+        ba.createdAt DESC
+    LIMIT ?
+    OFFSET ?
+    `;
+
+    const [ArticleByTagIdResult] = await connecttion.promise().query(ArticleByTagIdSql, params);
+    return ArticleByTagIdResult
+}
+
+/**
+ * 通过标签id 获取到文章总数
+ */
+
+export const blogArticleByTagIdTotalService = async (id) => {
+    const ArticleByTagIdTotalSql = `
+        SELECT 
+            COUNT(*) AS total_count
+        FROM
+            blog_article a
+        JOIN 
+            blog_tag t ON t.id = a.id
+        WHERE
+            t.id = ?
+    `;
+    const [ArticleByTagIdTotalResult] = await connecttion.promise().query(ArticleByTagIdTotalSql, id);
+    return ArticleByTagIdTotalResult[0].total_count
 }

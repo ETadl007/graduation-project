@@ -128,3 +128,46 @@ export const getArticleRecommend = async (req, res, next) => {
         next(err);
     }
 }
+
+/**
+ * 通过标签id 获取到文章列表
+ */
+
+export const getArticleByTagId = async (req, res, next) => {
+    // 当前页码
+    let { current = 1, size, id } = req.body;
+
+    // 每页内容数量
+    const limit = parseInt(PAGE_SIZE, 10) || 10;
+
+    // 偏移量
+    const offset = (current - 1) * limit;
+
+    const params = [id, limit, offset]
+
+    try {
+        const articleByTagId = await articleService.blogArticleByTagIdService(params);
+        const total = await articleService.blogArticleByTagIdTotalService(id);
+        // 如果文章不存在，直接返回失败响应
+        if (!articleByTagId.length) {
+            return res.status(500).send({
+                status: 1,
+                message: "根据标签获取文章列表失败"
+            });
+        }
+
+        res.status(200).send({
+            status: 0,
+            message: "根据标签获取文章列表成功",
+            data: {
+                current,
+                size,
+                list: articleByTagId,
+                total
+            }
+        })
+
+    } catch (err) {
+        next(err);
+    }
+}

@@ -23,6 +23,7 @@ export const blogCommentTotalService = async (params) => {
  */
 
 export const blogCommentParentListService = async (params) => {
+
     const commentParentListSql = `
     SELECT
         id,
@@ -43,12 +44,13 @@ export const blogCommentParentListService = async (params) => {
         blog_comment
     WHERE
         for_id = ?
+    ORDER BY
+        ${params[3]}
     LIMIT ?
     OFFSET ?
     `;
-    
     const [data] = await connecttion.promise().query(commentParentListSql, params);
-    
+
     return data;
 
 }
@@ -83,13 +85,12 @@ export const blogCommentChildrenListService = async (params) => {
         
     ORDER BY
         createdAt DESC
-        
     LIMIT ?
     OFFSET ?
     `;
-        
+
     const [data] = await connecttion.promise().query(commentChildrenListSql, params);
-    
+
     return data;
 
 }

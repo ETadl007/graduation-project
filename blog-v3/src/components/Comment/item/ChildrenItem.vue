@@ -279,7 +279,6 @@ defineExpose({
             <span class="content" v-html="comment.content"></span>
           </div>
           <div class="!mt-[0.5rem]">
-            <span class="!mr-[1rem] ip">{{ `IP: ${comment.ipAddress}` }}</span>
             <span
               :class="[
                 'thumbs',

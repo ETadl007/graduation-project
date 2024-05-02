@@ -20,8 +20,8 @@ const randomFontSize = () => {
 const getCategoryList = async () => {
   loading.value = true;
   let res = await getAllCategory();
-  if (res.code == 0) {
-    categoryList.value = res.result.map((r) => {
+  if (res.status == 0) {
+    categoryList.value = res.data.map((r) => {
       return {
         id: r.id,
         category_name: r.category_name,

@@ -24,6 +24,11 @@ router.get('/api/article/getArticleById/:id', articleController.getArticleDetail
 
 router.get('/api/article/getRecommendArticleById/:id', articleController.getArticleRecommend);
 
+/**
+ * 通过标签id 获取到文章列表
+ */
+
+router.post('/api/article/getArticleListByTagId', articleController.getArticleByTagId);
 
 /**
  * 导出路由

@@ -39,9 +39,9 @@ const getArticleListById = async () => {
   } else {
     res = await getArticleListByCategoryId(param);
   }
-  if (res.code == 0) {
-    articleList.value = res.result.list;
-    total.value = res.result.total;
+  if (res.status == 0) {
+    articleList.value = res.data.list;
+    total.value = res.data.total;
     loading.value = false;
   }
 };

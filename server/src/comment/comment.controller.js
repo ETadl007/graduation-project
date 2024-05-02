@@ -1,5 +1,6 @@
 import * as commentService from './comment.service.js';
 import { PARENT_COMMENT_PAGE_SIZE } from '../app/app.config.js';
+import { sqlFragment } from './comment.provider.js';
 
 /**
  * 获取评论总数
@@ -24,7 +25,7 @@ export const getCommentTotal = async (req, res, next) => {
 
 export const getParentCommentList = async (req, res, next) => {
     // 当前页码
-    let { current = 1, size, for_id } = req.body;
+    let { current = 1, size, for_id, order } = req.body;
 
     // 每页内容数量
     const limit = parseInt(PARENT_COMMENT_PAGE_SIZE, 10) || 3;
@@ -32,7 +33,10 @@ export const getParentCommentList = async (req, res, next) => {
     // 偏移量
     const offset = (current - 1) * limit;
 
-    const params = [for_id, limit, offset]
+    // 排序
+    const orderArr = order == 'new' ? sqlFragment.commentOrderNew :sqlFragment.commentOrderHot
+
+    const params = [for_id, limit, offset, orderArr]
 
     try {
         const list = await commentService.blogCommentParentListService(params);
