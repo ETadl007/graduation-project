@@ -4,11 +4,14 @@ import { sqlFragment } from './comment.provider.js';
 
 /**
  * 获取评论总数
+ * type: 1 文章评论 2 说说评论
+ * for_id: 文章id 或者 说说id
  */
 export const getCommentTotal = async (req, res, next) => {
-    const { for_id } = req.body;
+    const { for_id, type } = req.body;
+
     try {
-        const commentTotal = await commentService.blogCommentTotalService(for_id);
+        const commentTotal = await commentService.blogCommentTotalService(for_id, type);
         res.send({
             status: 0,
             msg: '获取评论总数成功',
@@ -21,11 +24,12 @@ export const getCommentTotal = async (req, res, next) => {
 
 /**
  * 分页查找父级评论成功
+ * type: 1 文章评论 2 说说评论
  */
 
 export const getParentCommentList = async (req, res, next) => {
     // 当前页码
-    let { current = 1, size, for_id, order } = req.body;
+    let { current = 1, size, for_id, order, type } = req.body;
 
     // 每页内容数量
     const limit = parseInt(PARENT_COMMENT_PAGE_SIZE, 10) || 3;
@@ -33,14 +37,14 @@ export const getParentCommentList = async (req, res, next) => {
     // 偏移量
     const offset = (current - 1) * limit;
 
-    // 排序
+    // 排序方式
     const orderArr = order == 'new' ? sqlFragment.commentOrderNew :sqlFragment.commentOrderHot
 
-    const params = [for_id, limit, offset, orderArr]
+    const params = [for_id, type, limit, offset, orderArr]
 
     try {
         const list = await commentService.blogCommentParentListService(params);
-        const total = await commentService.blogCommentTotalService(for_id);
+        const total = await commentService.blogCommentTotalService(for_id, type);
         res.send({
             status: 0,
             msg: '分页查找评论成功',

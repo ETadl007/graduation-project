@@ -19,8 +19,8 @@ const goToPhotos = (item) => {
 const getAll = async () => {
   loading.value = true;
   let res = await getAllAlbum();
-  if (res.code == 0) {
-    albumList.value = res.result;
+  if (res.status == 0) {
+    albumList.value = res.data;
     loading.value = false;
   }
 };

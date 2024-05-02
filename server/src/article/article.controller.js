@@ -171,3 +171,46 @@ export const getArticleByTagId = async (req, res, next) => {
         next(err);
     }
 }
+
+/**
+ *  根据分类id获取该标签下的文章
+ */
+
+export const getArticleByCategoryId = async (req, res, next) => {
+    // 当前页码
+    let { current = 1, size, id } = req.body;
+
+    // 每页内容数量
+    const limit = parseInt(PAGE_SIZE, 10) || 6;
+
+    // 偏移量
+    const offset = (current - 1) * limit;
+
+    const params = [id, limit, offset]
+    
+    try {
+        const articleByCategoryId = await articleService.blogArticleByCategoryIdService(params);
+        const total = await articleService.blogArticleByCategoryIdTotalService(id);
+
+        // 如果文章不存在，直接返回失败响应
+        if (!articleByCategoryId.length) {
+            return res.status(500).send({
+                status: 1,
+                message: "根据分类获取文章列表失败"
+            });
+        }
+        res.status(200).send({
+            status: 0,
+            message: "根据分类获取文章列表成功",
+            data: {
+                current,
+                size,
+                list: articleByCategoryId,
+                total
+            }
+        })
+    }
+    catch (err) {
+        next(err);
+    }
+}

@@ -4,18 +4,19 @@ import { connecttion } from "../app/database/mysql.js";
  * 获取评论总数
  */
 
-export const blogCommentTotalService = async (params) => {
+export const blogCommentTotalService = async (params, type) => {
     const commentTotalSql = `
     SELECT 
         COUNT(*) AS total
     FROM 
         blog_comment
-        
     WHERE
-        for_id = ? OR parent_id IN (SELECT id FROM blog_comment WHERE for_id = ?)
-        `;
-    const [data] = await connecttion.promise().query(commentTotalSql, [params, params]);
-    return data[0]['total']
+        (for_id = ? AND type = ?) 
+        OR 
+        (parent_id IN (SELECT id FROM blog_comment WHERE for_id = ? AND type = ?))
+    `;
+    const [data] = await connecttion.promise().query(commentTotalSql, [params, type, params, type]);
+    return data[0]['total'];
 }
 
 /**
@@ -43,16 +44,15 @@ export const blogCommentParentListService = async (params) => {
     FROM
         blog_comment
     WHERE
-        for_id = ?
+        for_id = ? AND type = ?
     ORDER BY
-        ${params[3]}
+        ${params[4]}
     LIMIT ?
     OFFSET ?
     `;
     const [data] = await connecttion.promise().query(commentParentListSql, params);
 
     return data;
-
 }
 
 /**

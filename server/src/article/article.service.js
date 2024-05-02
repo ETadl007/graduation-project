@@ -209,3 +209,50 @@ export const blogArticleByTagIdTotalService = async (id) => {
     const [ArticleByTagIdTotalResult] = await connecttion.promise().query(ArticleByTagIdTotalSql, id);
     return ArticleByTagIdTotalResult[0].total_count
 }
+
+/**
+ * 根据分类id获取该标签下的文章
+ */
+
+export const blogArticleByCategoryIdService = async (params) => {
+    const ArticleByCategoryIdSql = `
+    SELECT 
+        ba.createdAt,
+        ba.article_title,
+        ba.id,
+        ba.article_cover
+    FROM 
+        blog_article ba 
+    INNER JOIN
+        blog_category c ON c.id = ba.category_id
+    WHERE
+        c.id = ?
+        
+    ORDER BY
+        ba.createdAt DESC
+    LIMIT ?
+    OFFSET ?
+    `;
+    const [ArticleByCategoryIdResult] = await connecttion.promise().query(ArticleByCategoryIdSql, params);
+    return ArticleByCategoryIdResult
+}
+
+/**
+ * 根据分类id获取该标签下的文章总数
+ */
+
+export const blogArticleByCategoryIdTotalService = async (id) => {
+    const ArticleByCategoryIdTotalSql = `
+        SELECT 
+            COUNT(*) AS total_count
+        FROM
+            blog_article a  
+        INNER JOIN
+            blog_category c ON c.id = a.category_id
+        WHERE
+            c.id = ?    
+    `;
+                    
+    const [ArticleByCategoryIdTotalResult] = await connecttion.promise().query(ArticleByCategoryIdTotalSql, id);
+    return ArticleByCategoryIdTotalResult[0].total_count
+}

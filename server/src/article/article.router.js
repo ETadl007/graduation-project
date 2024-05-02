@@ -31,6 +31,12 @@ router.get('/api/article/getRecommendArticleById/:id', articleController.getArti
 router.post('/api/article/getArticleListByTagId', articleController.getArticleByTagId);
 
 /**
+ * 通过分类id 获取到文章列表
+ */
+
+router.post('/api/article/getArticleListByCategoryId', articleController.getArticleByCategoryId);
+
+/**
  * 导出路由
  */
 export default router;

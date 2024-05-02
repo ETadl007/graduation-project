@@ -52,10 +52,9 @@ const pageGetTalkList = async () => {
       scrollLoading.value = true;
     }
     let res = await getTalkList(param);
-    if (res.code == 0) {
-      talkList.value =
-        param.current == 1 ? res.result.list : talkList.value.concat(res.result.list);
-      total.value = res.result.total;
+    if (res.status == 0) {
+      talkList.value = param.current == 1 ? res.data.list : talkList.value.concat(res.data.list);
+      total.value = res.data.total;
     }
   } finally {
     loading.value = false;

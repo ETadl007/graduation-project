@@ -1,8 +1,7 @@
 <script setup>
 import { ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { getAllPhotosByAlbumId } from "@/api/photo";
-import { getAllAlbum } from "@/api/photo";
+import { getAllPhotosByAlbumId, getAllAlbum } from "@/api/photo";
 
 import PageHeader from "@/components/PageHeader/index.vue";
 import SkeletonItem from "@/components/SkeletonItem/skeleton-item.vue";
@@ -18,8 +17,8 @@ const drawerShow = ref(false);
 const pageGetPhotos = async (id) => {
   loading.value = true;
   let res = await getAllPhotosByAlbumId(id);
-  if (res.code == 0) {
-    photoList.value = res.result;
+  if (res.status == 0) {
+    photoList.value = res.data;
     loading.value = false;
   }
 };
@@ -37,8 +36,8 @@ const toggleAlbum = (item) => {
 
 const getAll = async (id) => {
   let res = await getAllAlbum();
-  if (res.code == 0) {
-    photoAlbumList.value = res.result;
+  if (res.status == 0) {
+    photoAlbumList.value = res.data;
     pageGetPhotos(Number(id));
   }
 };
