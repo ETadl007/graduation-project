@@ -22,3 +22,10 @@ export const PAGE_SIZE = process.env.PAGE_SIZE
  * 父级评论分页
  */
 export const PARENT_COMMENT_PAGE_SIZE = process.env.PARENT_COMMENT_PAGE_SIZE
+
+/**
+ *  密钥配置
+ */
+export let { PRIVATE_KEY, PUBLIC_KEY } = process.env;
+PRIVATE_KEY = Buffer.from(PRIVATE_KEY, 'base64').toString();
+PUBLIC_KEY = Buffer.from(PUBLIC_KEY, 'base64').toString();

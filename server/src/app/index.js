@@ -10,6 +10,9 @@ import categoryRouter from '../category/category.router.js';
 import photosRouter from '../photos/photos.router.js';
 import talkRouter from '../talk/talk.router.js';
 import linksRouter from '../links/links.router.js';
+import messageRouter from '../message/message.router.js';
+import userRouter from '../user/user.router.js';
+import authRouter from '../auth/auth.router.js';
 
 
 /**
@@ -39,7 +42,12 @@ app.use(express.json());
  *  处理路由
  */
 
-app.use(articleRouter, configRouter, tagRouter, homeStatistic, commentRouter, categoryRouter, photosRouter, talkRouter, linksRouter);
+app.use(articleRouter, 
+  configRouter, tagRouter,
+  homeStatistic, commentRouter, 
+  categoryRouter, photosRouter, 
+  talkRouter, linksRouter, 
+  messageRouter, userRouter, authRouter);
 
 /**
  *  默认异常处理

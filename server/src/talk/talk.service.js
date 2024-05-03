@@ -21,8 +21,8 @@ export const getTalkList = async (params) => {
         ta.id, bu.username, bu.avatar 
     ORDER BY 
         ta.createdAt DESC 
-    LIMIT 5 
-    OFFSET 0;
+    LIMIT ? 
+    OFFSET ?;
     `;
     const [data] = await connecttion.promise().query(talkSql, params);
     return data;

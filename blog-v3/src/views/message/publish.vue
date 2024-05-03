@@ -141,9 +141,9 @@ const leaveMessage = async () => {
 
 const getHotMessageTag = async () => {
   const res = await getMessageTag();
-  if (res.code == 0) {
-    tabList.value = Array.isArray(res.result)
-      ? res.result.map((v, i) => {
+  if (res.status == 0) {
+    tabList.value = Array.isArray(res.data)
+      ? res.data.map((v, i) => {
           return {
             key: i + 1,
             label: v.tag,

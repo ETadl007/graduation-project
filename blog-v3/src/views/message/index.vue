@@ -89,14 +89,14 @@ const pageGetMessageList = async () => {
   }
   try {
     let res = await getMessageList(param);
-    if (res.code == 0) {
-      const { list } = res.result;
+    if (res.status == 0) {
+      const { list } = res.data;
       messageList.value =
-        param.current == 1 ? res.result.list : messageList.value.concat(res.result.list);
-      let classList = res.result.list.map((item, index) => {
+        param.current == 1 ? res.data.list : messageList.value.concat(res.data.list);
+      let classList = res.data.list.map((item, index) => {
         return ".message" + (messageList.value.length - list.length + index);
       });
-      total.value = res.result.total;
+      total.value = res.data.total;
       nextTick(() => {
         gsapTransXScale(classList, 0, 1.2);
       });
@@ -191,9 +191,9 @@ const handleDeleteMessage = (item) => {
 const getHotMessageTag = async () => {
   tabList.value = [];
   const res = await getMessageTag();
-  if (res.code == 0) {
-    tabList.value = Array.isArray(res.result)
-      ? res.result.map((v, i) => {
+  if (res.status == 0) {
+    tabList.value = Array.isArray(res.data)
+      ? res.data.map((v, i) => {
           return {
             key: i + 1,
             label: v.tag,

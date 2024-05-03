@@ -138,9 +138,9 @@ const userLogin = async (type) => {
 // 单独抽离登录的逻辑
 const onLogin = async (form, type = "login") => {
   const res = await reqLogin(form);
-  if (res && res.code == 0) {
+  if (res && res.status == 0) {
     // 保存 token
-    await userStore.setToken(res.result.token);
+    await userStore.setToken(res.data.token);
     if (type === "register") {
       // 记住密码
       _setLocalItem("loginForm", _encrypt(form));
@@ -163,13 +163,13 @@ const onLogin = async (form, type = "login") => {
       ),
     });
     // 获取并保存当前用户信息
-    const userRes = await getUserInfoById(res.result.id);
-    if (userRes.code == 0) {
-      await userStore.setUserInfo(userRes.result);
+    const userRes = await getUserInfoById(res.data.id);
+    if (userRes.status == 0) {
+      await userStore.setUserInfo(userRes.data);
       Object.assign(loginForm, primaryLoginForm);
       Object.assign(registerForm, primaryRegisterForm);
       handleClose();
-      const { id, nick_name } = userRes.result;
+      const { id, nick_name } = userRes.data;
       await welcome(id, nick_name);
     } else {
       ElNotification({
