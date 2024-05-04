@@ -36,6 +36,20 @@ router.post('/api/article/getArticleListByTagId', articleController.getArticleBy
 
 router.post('/api/article/getArticleListByCategoryId', articleController.getArticleByCategoryId);
 
+
+/**
+ * 获取热门文章
+ */
+
+router.get('/api/article/getHotArticle', articleController.getArticleHot);
+
+/**
+ * 文章搜索
+ */
+
+router.get('/api/article/getArticleListByContent/:content', articleController.getArticleBySearch);
+
+
 /**
  * 导出路由
  */

@@ -108,8 +108,8 @@ export const getArticleDetail = async (req, res, next) => {
 
 export const getArticleRecommend = async (req, res, next) => {
     const { id } = req.params;
+    const articleRecommend = await articleService.blogArticleRecommendService(id);
     try {
-        const articleRecommend = await articleService.blogArticleRecommendService(id);
         // 如果文章推荐不存在，直接返回失败响应
         if (!articleRecommend) {
             return res.status(500).send({
@@ -211,6 +211,45 @@ export const getArticleByCategoryId = async (req, res, next) => {
         })
     }
     catch (err) {
+        next(err);
+    }
+}
+
+/**
+ * 获取热门文章
+ */
+
+export const getArticleHot = async (req, res, next) => {
+    try {
+
+        const articleHot = await articleService.blogArticleHotService();
+        
+        res.send({
+            status: 0,
+            message: "获取热门文章成功",
+            data: articleHot
+        })
+
+    } catch (err) {
+        next(err);
+    }
+}
+
+/**
+ * 根据文章内容搜索文章
+ */
+
+export const getArticleBySearch = async (req, res, next) => {
+    const { content } = req.params;
+
+    try {
+        const articleBySearch = await articleService.blogArticleSearchService(content);
+        res.send({
+            status: 0,
+            message: "按照内容搜索文章成功",
+            data: articleBySearch
+        })
+    }catch (err) {
         next(err);
     }
 }

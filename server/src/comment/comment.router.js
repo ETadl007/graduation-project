@@ -19,6 +19,12 @@ router.post('/api/comment/frontGetParentComment', commentController.getParentCom
 router.post('/api/comment/frontGetChildrenComment', commentController.getChildCommentList);
 
 /**
+ * 添加评论
+ */
+
+router.post('/api/comment/add', commentController.addComment);
+
+/**
  * 导出路由
  */
 export default router;

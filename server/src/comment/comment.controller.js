@@ -94,3 +94,24 @@ export const getChildCommentList = async (req, res, next) => {
         next(error);
     }
 }
+
+/**
+ * 添加评论
+ */
+
+export const addComment = async (req, res, next) => {
+    const { type, for_id, from_id, from_name, from_avatar, content } = req.body;
+
+    const params = [type, for_id, from_id, from_name, from_avatar, content]
+    try {
+        const result = await commentService.blogCommentAddService(params);
+        
+        res.send({
+            status: 0,
+            msg: '添加评论成功',
+            data: result
+        });
+    } catch (err) {
+        next(err);
+    }
+}

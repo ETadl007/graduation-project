@@ -73,7 +73,7 @@ const jump = async (item) => {
       break;
     // 友情链接
     case "4":
-      window.open("http://mrzym.top/admin");
+      window.open("www.xinux.icu");
       break;
   }
 
@@ -82,7 +82,7 @@ const jump = async (item) => {
 
 const deleteMessage = async (confirm) => {
   const res = await deleteNotify(confirm.id);
-  if (res && res.code == 0) {
+  if (res && res.status == 0) {
     ElNotification({
       offset: 60,
       title: "提示",
@@ -112,8 +112,8 @@ const getMessageList = async () => {
       loadMore.value = true;
     }
     const res = await getNotifylist(params);
-    if (res.code == 0) {
-      const { list, total } = res.result;
+    if (res.status == 0) {
+      const { list, total } = res.data;
       messageList.value = params.current == 1 ? list : messageList.value.concat(list);
       messageTotal.value = total;
       Array.isArray(messageList.value) &&

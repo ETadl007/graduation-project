@@ -102,7 +102,7 @@ const publish = async () => {
   }
 
   const res = await addComment(data);
-  if (res.code == 0) {
+  if (res.status == 0) {
     commentText.value = "";
     ElNotification({
       offset: 60,

@@ -135,32 +135,58 @@ export const blogArticleByIdService = async (params) => {
  * 根据文章id获取推荐文章
  */
 
-export const blogArticleRecommendService = async (params) => {
-    let articleRecommendSql = `
+export const blogArticleRecommendService = async (id) => {
+    const articleRecommendSql = `
     SELECT
-    CASE
-        WHEN id = 1 THEN JSON_OBJECT('id', id, 'article_title', article_title, 'article_cover', article_cover)
-        ELSE JSON_OBJECT('id', id - 1, 'article_title', (SELECT article_title FROM blog_article WHERE id = a.id - 1), 'article_cover', (SELECT article_cover FROM blog_article WHERE id = a.id - 1))
-    END AS previous,
-    CASE
-        WHEN id = (SELECT MAX(id) FROM blog_article) THEN NULL
-        ELSE JSON_OBJECT('id', id + 1, 'article_title', (SELECT article_title FROM blog_article WHERE id = a.id + 1), 'article_cover', (SELECT article_cover FROM blog_article WHERE id = a.id + 1))
-    END AS next,
-    JSON_ARRAYAGG(JSON_OBJECT('createdAt', createdAt, 'id', id, 'article_title', article_title, 'article_cover', article_cover)) AS recommend
-    FROM
-        blog_article AS a
-    WHERE
-        id = ?
-        `
-    //查询文章id是否存在
-    const [articleExistResult] = await connecttion.promise().query("SELECT * FROM blog_article WHERE id = ?", params);
+        (
+            SELECT JSON_OBJECT('id', id, 'article_title', article_title, 'article_cover', article_cover)
+            FROM blog_article
+            WHERE id < ?
+            ORDER BY id DESC
+            LIMIT 1
+        ) AS previous,
+        (
+            SELECT JSON_OBJECT('id', id, 'article_title', article_title, 'article_cover', article_cover)
+            FROM blog_article
+            WHERE id > ?
+            ORDER BY id ASC
+            LIMIT 1
+        ) AS next,
+        (
+            SELECT JSON_ARRAYAGG(JSON_OBJECT('id', id, 'article_title', article_title, 'article_cover', article_cover, 'createdAt', createdAt))
+            FROM blog_article
+            WHERE id != ?
+            ORDER BY createdAt DESC
+            LIMIT 6
+        ) AS recommend
+    `;
+
+    // 查询文章ID是否存在
+    const [articleExistResult] = await connecttion.promise().query("SELECT * FROM blog_article WHERE id = ?", [id]);
 
     if (articleExistResult.length === 0) {
-        return false
+        return false;
     }
 
-    const [articleRecommendResult] = await connecttion.promise().query(articleRecommendSql, params);
-    return articleRecommendResult[0]
+    const [articleRecommendResult] = await connecttion.promise().query(articleRecommendSql, [id, id, id]);
+
+    // 处理“上一篇”或“下一篇”不存在的情况
+    const { previous, next, recommend } = articleRecommendResult[0];
+
+    // 如果previous为null，用当前文章填充
+    if (!previous) {
+        const currentArticle = await connecttion.promise().query("SELECT JSON_OBJECT('id', id, 'article_title', article_title, 'article_cover', article_cover) AS previous FROM blog_article WHERE id = ?", [id]);
+        articleRecommendResult[0].previous = currentArticle[0][0]['previous'];
+    }
+
+    // 如果next为null，用当前文章填充（理论上这种情况不太可能发生，除非只有一篇文章）
+    if (!next) {
+        const currentArticle = await connecttion.promise().query("SELECT JSON_OBJECT('id', id, 'article_title', article_title, 'article_cover', article_cover) AS next FROM blog_article WHERE id = ?", [id]);
+        articleRecommendResult[0].next = currentArticle[0][0]['next'];
+    }
+
+
+    return articleRecommendResult[0];
 }
 
 /**
@@ -252,7 +278,51 @@ export const blogArticleByCategoryIdTotalService = async (id) => {
         WHERE
             c.id = ?    
     `;
-                    
+
     const [ArticleByCategoryIdTotalResult] = await connecttion.promise().query(ArticleByCategoryIdTotalSql, id);
     return ArticleByCategoryIdTotalResult[0].total_count
+}
+
+/**
+ * 获取热门文章
+ */
+
+export const blogArticleHotService = async () => {
+    const ArticleHotSql = `
+    SELECT 
+        id,
+        article_title,
+        view_times
+    FROM 
+        blog_article
+    ORDER BY
+        view_times DESC
+    LIMIT 5
+    `;
+    const [ArticleHotResult] = await connecttion.promise().query(ArticleHotSql);
+    return ArticleHotResult
+}
+
+/**
+ * 根据文章内容搜索文章
+ */
+
+export const blogArticleSearchService = async (content) => {
+    const ArticleSearchSql = `
+    SELECT 
+        id,
+        article_title,
+        article_content,
+        view_times
+    FROM 
+        blog_article
+    WHERE
+    article_content LIKE CONCAT('%', ?, '%') AND status = 1
+    ORDER BY
+        view_times DESC
+        
+    `;
+
+    const [ArticleSearchResult] = await connecttion.promise().query(ArticleSearchSql, content);
+    return ArticleSearchResult
 }

@@ -13,7 +13,8 @@ import linksRouter from '../links/links.router.js';
 import messageRouter from '../message/message.router.js';
 import userRouter from '../user/user.router.js';
 import authRouter from '../auth/auth.router.js';
-
+import notifyRouter from '../notify/notify.router.js';
+import likeRouter from '../like/like.router.js';
 
 /**
  *  创建应用
@@ -47,7 +48,8 @@ app.use(articleRouter,
   homeStatistic, commentRouter, 
   categoryRouter, photosRouter, 
   talkRouter, linksRouter, 
-  messageRouter, userRouter, authRouter);
+  messageRouter, userRouter, 
+  authRouter, notifyRouter, likeRouter);
 
 /**
  *  默认异常处理

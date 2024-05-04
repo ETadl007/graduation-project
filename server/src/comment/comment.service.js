@@ -7,13 +7,11 @@ import { connecttion } from "../app/database/mysql.js";
 export const blogCommentTotalService = async (params, type) => {
     const commentTotalSql = `
     SELECT 
-        COUNT(*) AS total
+        count(*) AS count 
     FROM 
-        blog_comment
-    WHERE
-        (for_id = ? AND type = ?) 
-        OR 
-        (parent_id IN (SELECT id FROM blog_comment WHERE for_id = ? AND type = ?))
+        blog_comment  
+    WHERE 
+        for_id = ? AND type = ?;
     `;
     const [data] = await connecttion.promise().query(commentTotalSql, [params, type, params, type]);
     return data[0]['total'];
@@ -44,7 +42,7 @@ export const blogCommentParentListService = async (params) => {
     FROM
         blog_comment
     WHERE
-        for_id = ? AND type = ?
+        for_id = ? AND type = ? AND parent_id IS NULL
     ORDER BY
         ${params[4]}
     LIMIT ?
@@ -95,3 +93,24 @@ export const blogCommentChildrenListService = async (params) => {
 
 }
 
+/**
+ * 添加评论
+ */
+
+export const blogCommentAddService = async (params) => {
+    const commentAddSql = `
+    INSERT INTO
+        blog_comment
+
+    SET
+        type = ?,
+        for_id = ?,
+        from_id = ?,
+        from_name = ?,
+        from_avatar = ?,
+        content = ?
+    `;
+            
+    const [data] = await connecttion.promise().query(commentAddSql, params);
+    return data;
+}

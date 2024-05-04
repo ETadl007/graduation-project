@@ -21,7 +21,7 @@ export const updateNotify = (id) => {
 /** 删除消息列表 */
 export const deleteNotify = (id) => {
   return new Promise((resolve, reject) => {
-    http.put("/api/notify/delete/" + id, {}).then((res) => {
+    http.delete("/api/notify/delete/" + id, {}).then((res) => {
       resolve(res);
     });
   });
