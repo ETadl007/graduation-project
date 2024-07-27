@@ -9,6 +9,17 @@ const router = express.Router();
 router.post('/api/like/getIsLikeByIdAndType', likeController.getLikeStatus);
 
 /**
+ * 点赞
+ */
+router.post('/api/like/addLike', likeController.addLike);
+
+/**
+ * 取消点赞
+ */
+router.post('/api/like/cancelLike', likeController.deleteLike);
+
+
+/**
  * 导出路由
  */
 export default router;

@@ -43,6 +43,18 @@ export const defaultErrorHandler = (err, req, res, next) => {
             statusCode = 401;
             message = '未授权';
             break;
+        case 'ADDCOMMENTERROR':
+            statusCode = 400;
+            message = '添加评论失败';
+            break;
+        case 'LIKEERROR':
+            statusCode = 400;
+            message = '点赞失败';
+            break;
+        case 'CANCELLIKEERROR':
+            statusCode = 400;
+            message = '取消点赞失败';
+            break;
         default:
             statusCode = 500;
             message = '服务暂时出了点问题  ~~';

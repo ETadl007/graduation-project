@@ -18,3 +18,27 @@ export const isLike = async (params) => {
     const [data] = await connecttion.promise().query(statement, params);
     return data[0] ? true : false;
 }
+
+/**
+ * 点赞
+ */
+export const addLike = async (params) => {
+    const statement = `
+        INSERT INTO blog_like (type, for_id, user_id)
+        VALUES (?,?,?)
+    `;
+    const [data] = await connecttion.promise().query(statement, params);
+    return data.affectedRows === 1;
+}
+
+/**
+ * 取消点赞
+ */
+export const cancelLike = async (params) => {
+    const statement = `
+        DELETE FROM blog_like
+        WHERE type = ? AND for_id = ? AND user_id = ?
+    `;
+    const [data] = await connecttion.promise().query(statement, params);
+    return data.affectedRows === 1;
+}

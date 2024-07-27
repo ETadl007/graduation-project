@@ -66,7 +66,7 @@ const like = async (item, index) => {
   // 取消点赞
   if (item.is_like) {
     let tRes = await cancelTalkLike(item.id);
-    if (tRes.code == 0) {
+    if (tRes.status == 0) {
       await cancelLike({ for_id: item.id, type: 2, user_id: userStore.getUserInfo.id });
       talkList.value[index].is_like = false;
       talkList.value[index].like_times--;
@@ -81,7 +81,7 @@ const like = async (item, index) => {
   // 点赞
   else {
     let tRes = await talkLike(item.id);
-    if (tRes.code == 0) {
+    if (tRes.status == 0) {
       await addLike({ for_id: item.id, type: 2, user_id: userStore.getUserInfo.id });
       talkList.value[index].is_like = true;
       talkList.value[index].like_times++;

@@ -42,3 +42,35 @@ export const getTalkCount = async () => {
     const [data] = await connecttion.promise().query(talkSql);
     return data[0].count;
 }
+
+/**
+ * 说说点赞
+ */
+export const addTalkLike = async (talk_id) => {
+    const talkSql = `
+    UPDATE 
+        blog_talk 
+    SET 
+        like_times = like_times + 1 
+    WHERE 
+        id = ?
+    `;
+    const [data] = await connecttion.promise().query(talkSql, [talk_id]);
+    return data.affectedRows > 0;
+}
+
+/**
+ * 取消说说点赞
+ */
+export const cancelTalkLike = async (talk_id) => {
+    const talkSql = `
+    UPDATE 
+        blog_talk 
+    SET 
+        like_times = like_times - 1     
+    WHERE 
+        id = ?
+    `;
+    const [data] = await connecttion.promise().query(talkSql, [talk_id]);
+    return data.affectedRows > 0;
+}

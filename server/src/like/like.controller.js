@@ -25,3 +25,51 @@ export const getLikeStatus = async (req, res, next) => {
         next(err);
     }
 }
+
+/**
+ * 点赞
+ */
+
+export const addLike = async (req, res, next) => {
+
+    const { for_id, type, user_id } = req.body;
+
+    const params = [for_id, type, user_id]
+
+    try {
+        const result = await likeService.addLike(params);
+
+        res.send({
+            status: 0,  
+            message: '点赞成功',
+            data: result
+        })  
+    } catch (error) {
+        console.log(error);
+        next(new Error('LIKEERROR'));
+    }
+}
+
+/**
+ * 取消点赞
+ */
+
+export const deleteLike = async (req, res, next) => {
+
+    const { for_id, type, user_id } = req.body;
+
+    const params = [for_id, type, user_id]
+
+    try {
+        const result = await likeService.cancelLike(params);
+
+        res.send({
+            status: 0,  
+            message: '取消点赞成功',
+            data: result
+        })  
+    } catch (error) {
+        console.log(error);
+        next(new Error('CANCELLIKEERROR'));
+    }
+}

@@ -29,9 +29,9 @@ export const getCommentTotal = async (req, res, next) => {
 
 export const getParentCommentList = async (req, res, next) => {
     // 当前页码
-    let { current = 1, size, for_id, order, type } = req.body;
+    let { current, size, for_id, order, type } = req.body;
 
-    // 每页内容数量
+    // 每页评论数量
     const limit = parseInt(PARENT_COMMENT_PAGE_SIZE, 10) || 3;
 
     // 偏移量
@@ -111,7 +111,50 @@ export const addComment = async (req, res, next) => {
             msg: '添加评论成功',
             data: result
         });
-    } catch (err) {
-        next(err);
+    } catch (error) {
+        console.log(error);
+        next(new Error('ADDCOMMENTERROR'));
+    }
+}
+
+/**
+ * 点赞评论
+ */
+
+export const likeComment = async (req, res, next) => {
+    const { id } = req.params;
+    try {
+        const result = await commentService.blogCommentThumbsUpService(id);
+        res.send({
+            status: 0,
+            message: "点赞成功",
+            data:{
+                res: result
+            }
+        });
+    } catch (error) {
+        console.log(error);
+        next(new Error('LIKECOMMENTERROR'));
+    }
+}
+
+/**
+ * 取消点赞评论
+ */
+
+export const cancelLikeComment = async (req, res, next) => {
+    const { id } = req.params;
+    try {
+        const result = await commentService.blogCommentCancelThumbsUpService(id);
+        res.send({
+            status: 0,
+            message: "取消点赞成功",
+            data:{
+                res: result
+            }
+        });
+    } catch (error) {
+        console.log(error);
+        next(new Error('CANCELLIKECOMMENTERROR'));
     }
 }

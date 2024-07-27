@@ -25,6 +25,16 @@ router.post('/api/comment/frontGetChildrenComment', commentController.getChildCo
 router.post('/api/comment/add', commentController.addComment);
 
 /**
+ * 点赞评论
+ */
+router.put('/api/comment/thumbUp/:id', commentController.likeComment)
+
+/**
+ * 取消点赞评论
+ */
+router.put('/api/comment/cancelThumbUp/:id', commentController.cancelLikeComment)
+
+/**
  * 导出路由
  */
 export default router;

@@ -70,7 +70,7 @@ const getComment = async (type) => {
       l.showApplyInput = false;
     });
     commentList.value = params.current == 1 ? list : commentList.value.concat(list);
-    commentTotal.value = total - 1;
+    commentTotal.value = total - 2;
   } else {
     ElNotification({
       offset: 60,
@@ -96,7 +96,7 @@ const like = async (item, index) => {
   if (item.is_like) {
     res = await cancelThumbUp(item.id);
     await cancelLike({ for_id: item.id, type: 4, user_id: userStore.getUserInfo.id });
-    if (res && res.code == 0) {
+    if (res && res.status == 0) {
       commentList.value[index].is_like = false;
       commentList.value[index].thumbs_up--;
       ElNotification({
@@ -108,7 +108,7 @@ const like = async (item, index) => {
   } else {
     res = await thumbUpComment(item.id);
     await addLike({ for_id: item.id, type: 4, user_id: userStore.getUserInfo.id });
-    if (res && res.code == 0) {
+    if (res && res.status == 0) {
       commentList.value[index].is_like = true;
       commentList.value[index].thumbs_up++;
       ElNotification({

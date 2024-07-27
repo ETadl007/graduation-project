@@ -14,7 +14,7 @@ export const blogCommentTotalService = async (params, type) => {
         for_id = ? AND type = ?;
     `;
     const [data] = await connecttion.promise().query(commentTotalSql, [params, type, params, type]);
-    return data[0]['total'];
+    return data[0]["count"];
 }
 
 /**
@@ -113,4 +113,40 @@ export const blogCommentAddService = async (params) => {
             
     const [data] = await connecttion.promise().query(commentAddSql, params);
     return data;
+}
+
+/**
+ * 点赞评论
+ */
+
+export const blogCommentThumbsUpService = async (params) => {
+    const commentThumbsUpSql = `
+    UPDATE
+        blog_comment
+    SET
+        thumbs_up = thumbs_up + 1
+    WHERE
+        id = ?
+    `;
+
+    const [data] = await connecttion.promise().query(commentThumbsUpSql, params);
+    return data.affectedRows > 0;
+}
+
+/**
+ * 取消点赞评论
+ */
+
+export const blogCommentCancelThumbsUpService = async (params) => {
+    const commentCancelThumbsUpSql = `
+    UPDATE
+        blog_comment
+    SET
+        thumbs_up = thumbs_up - 1
+    WHERE
+        id = ?
+    `;
+
+    const [data] = await connecttion.promise().query(commentCancelThumbsUpSql, params);
+    return data.affectedRows > 0;
 }
