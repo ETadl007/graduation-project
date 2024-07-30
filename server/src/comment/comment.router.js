@@ -1,5 +1,6 @@
 import express from 'express';
 import * as commentController from './comment.controller.js';
+import { filterSensitiveMiddleware } from './comment.middleware.js';
 
 const router = express.Router();
 
@@ -23,6 +24,13 @@ router.post('/api/comment/frontGetChildrenComment', commentController.getChildCo
  */
 
 router.post('/api/comment/add', commentController.addComment);
+
+/**
+ * 添加回复评论
+ */
+
+router.post('/api/comment/apply', filterSensitiveMiddleware, commentController.addReplyComment);
+
 
 /**
  * 点赞评论

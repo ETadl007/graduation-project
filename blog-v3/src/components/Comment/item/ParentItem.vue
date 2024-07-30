@@ -200,7 +200,7 @@ const publish = async (item) => {
   }
 
   const res = await applyComment(data);
-  if (res.code == 0) {
+  if (res.status == 0) {
     ElNotification({
       offset: 60,
       title: "提示",

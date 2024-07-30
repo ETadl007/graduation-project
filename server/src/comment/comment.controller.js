@@ -118,6 +118,26 @@ export const addComment = async (req, res, next) => {
 }
 
 /**
+ * 添加回复评论
+ */
+export const addReplyComment = async (req, res, next) => {
+    try {
+        const result = await commentService.applyCommentHandler(req, res)
+
+        res.send({
+            status: 0,
+            msg: '添加回复评论成功',
+            data: {
+                res: result
+            }
+        });
+    } catch (error) {
+        console.log(error);
+        next(new Error('ADDREPLYCOMMENTERROR'));
+    }
+}
+
+/**
  * 点赞评论
  */
 

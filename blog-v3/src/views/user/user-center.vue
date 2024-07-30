@@ -79,9 +79,9 @@ const pwdRules = reactive({
 // 获取登录用户信息
 const getCurrentUserInfo = async () => {
   const res = await getUserInfoById(userStore.getUserInfo.id);
-  if (res && res.code == 0) {
-    userStore.setUserInfo(res.result);
-    const { avatar } = res.result;
+  if (res && res.status == 0) {
+    userStore.setUserInfo(res.data);
+    const { avatar } = res.data;
     if (avatar) {
       infoForm.avatarList = [
         {
@@ -91,7 +91,7 @@ const getCurrentUserInfo = async () => {
         },
       ];
     }
-    Object.assign(infoForm, res.result);
+    Object.assign(infoForm, res.data);
   }
 };
 

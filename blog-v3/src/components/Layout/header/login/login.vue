@@ -103,7 +103,7 @@ const userRegister = async () => {
         nick_name: registerForm.nick_name,
       };
       const res = await reqRegister(register);
-      if (res && res.code == 0) {
+      if (res && res.status == 0) {
         // 自动登录
         await userLogin("register");
       } else {

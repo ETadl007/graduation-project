@@ -55,6 +55,10 @@ export const defaultErrorHandler = (err, req, res, next) => {
             statusCode = 400;
             message = '取消点赞失败';
             break;
+        case 'ADDREPLYCOMMENTERROR':
+            statusCode = 400;
+            message = '添加回复评论失败';
+            break;
         default:
             statusCode = 500;
             message = '服务暂时出了点问题  ~~';

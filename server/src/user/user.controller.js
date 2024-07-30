@@ -5,9 +5,10 @@ import * as userService from './user.service.js';
  */
 
 export const store = async (req, res, next) => {
-    const { username, password, role } = req.body;
+    const { username, password, role=2, nick_name } = req.body;
 
-    const params = [username, password, role]
+    const params = [username, password, role, nick_name]
+
     try {
         const user = await userService.createUser(params);
         res.send({

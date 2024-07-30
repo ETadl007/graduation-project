@@ -17,9 +17,9 @@ export const getNotifyList = async (req, res, next) => {
 
     const params = [userId, limit, offset]
 
-    
+
     try {
-        
+
         const notifyList = await notifyService.getNotifyList(params);
 
         // 总条数
@@ -35,7 +35,7 @@ export const getNotifyList = async (req, res, next) => {
                 total
             }
         })
-        
+
     } catch (err) {
         next(err);
     }
@@ -46,21 +46,21 @@ export const getNotifyList = async (req, res, next) => {
  */
 
 export const readNotifyList = async (req, res, next) => {
-    
-    const { userId } = req.params;
 
-    const params = [userId]
+    const { id } = req.params;
+
+    const params = [id]
 
     try {
-        
+
         const data = await notifyService.readNotifyList(params);
 
         res.send({
             status: 0,
             message: '阅读消息列表成功',
-            data:data[0]
+            data: data[0]
         })
-        
+
     } catch (err) {
         next(err);
     }
@@ -71,21 +71,33 @@ export const readNotifyList = async (req, res, next) => {
  */
 
 export const deleteNotifyList = async (req, res, next) => {
-    
+
     const { id } = req.params;
 
 
     const params = [id]
 
     try {
-        
+
         const data = await notifyService.deleteNotify(params);
         res.send({
             status: 0,
             message: '删除消息列表成功',
-            data:data[0]
+            data: data[0]
         })
-    }catch (err) {
+    } catch (err) {
         next(err);
+    }
+}
+
+/**
+ * 新增消息通知
+ */
+export const addNotify = async ({ user_id, type, to_id, message }) => {
+    try {
+        await notifyService.createNotify({ user_id, type, to_id, message });
+    } catch (error) {
+        console.error(error);
+        next(error);
     }
 }

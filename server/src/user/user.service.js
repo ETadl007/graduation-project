@@ -7,9 +7,9 @@ import { connecttion } from "../app/database/mysql.js";
 export const createUser = async (params) => {
     const statment = `
         INSERT INTO blog_user 
-        (username, password, role)
+        (username, password, role, nick_name)
         VALUES
-        (?, ?, ?)
+        (?, ?, ?, ?)
     `
     const [data] = await connecttion.promise().query(statment, params);
     return data;
