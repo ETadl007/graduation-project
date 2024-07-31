@@ -108,7 +108,7 @@ http.interceptors.response.use(
           ),
         });
         break;
-      case "500":
+      case "400":
         ElNotification({
           offset: 60,
           title: "错误提示",
@@ -119,6 +119,17 @@ http.interceptors.response.use(
           ),
         });
         break;
+        case "409":
+          ElNotification({
+            offset: 60,
+            title: "错误提示",
+            message: h(
+              "div",
+              { style: "color: #f56c6c; font-weight: 600;" },
+              data.message || "服务端错误"
+            ),
+          });
+          break;
       default:
         return;
     }

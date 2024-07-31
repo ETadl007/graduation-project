@@ -178,3 +178,26 @@ export const cancelLikeComment = async (req, res, next) => {
         next(new Error('CANCELLIKECOMMENTERROR'));
     }
 }
+
+/**
+ * 删除评论
+ */
+
+ export const deleteComment = async (req, res, next) => {
+     const { id, parent_id } = req.params;
+
+    try {
+        const result = await commentService.deleteComment(id, parent_id);
+        res.send({
+            status: 0,
+            message: "删除评论成功",
+            data:{
+                res: result
+            }
+        });
+    } catch (error) {
+        console.log(error);
+        next(new Error('DELETECOMMENTERROR'));
+    }
+
+ }

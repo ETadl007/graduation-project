@@ -43,6 +43,12 @@ router.put('/api/comment/thumbUp/:id', commentController.likeComment)
 router.put('/api/comment/cancelThumbUp/:id', commentController.cancelLikeComment)
 
 /**
+ * 删除评论
+ */
+router.delete('/api/comment/delete/:id/:parent_id', commentController.deleteComment)
+
+
+/**
  * 导出路由
  */
 export default router;

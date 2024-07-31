@@ -243,3 +243,32 @@ export const applyCommentHandler = async (req, res) => {
     }
     return result;
 }
+
+/**
+ * 删除评论
+ */
+
+export const deleteComment = async (id, parent_id) => {
+
+    let res;
+    try {
+        //如果只有父级评论，则直接删除
+        if (parent_id > 0) {
+            const sql = `DELETE FROM blog_comment WHERE id = ?`
+            const [data] = await connecttion.promise().query(sql, [id]);
+            res = data;
+        } else {
+            // 如果没有父级评论，删除这条评论以及所有子级评论
+            const mainsql = `DELETE FROM blog_comment WHERE id = ?`
+            const subsql = `DELETE FROM blog_comment WHERE parent_id = ?`
+            const [maindata] = await connecttion.promise().query(mainsql, [id]);
+            const [subdata] = await connecttion.promise().query(subsql, [id]);
+
+            res = maindata;
+        }
+        return res ? res.affectedRows : null;
+    } catch (error) {
+        console.error('Error deleting comment:', error);
+        throw error;
+    }
+}

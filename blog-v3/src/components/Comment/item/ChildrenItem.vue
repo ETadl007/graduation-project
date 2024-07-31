@@ -160,7 +160,7 @@ const deleteOwnComment = (id) => {
     cancelButtonText: "取消",
   }).then(async () => {
     const res = await deleteComment(id, props.parent_id);
-    if (res && res.code == 0) {
+    if (res && res.status == 0) {
       ElNotification({
         offset: 60,
         title: "提示",
