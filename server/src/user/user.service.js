@@ -48,10 +48,11 @@ export const getUserById = async (id) => {
     const statment = `
         SELECT 
             id, 
-            username,
             role,
             avatar,
-            nick_name
+            qq,
+            nick_name,
+            ip AS ipAddress
         FROM 
             blog_user 
         WHERE 

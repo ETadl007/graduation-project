@@ -107,7 +107,7 @@ const like = async (item, index) => {
   if (item.is_like) {
     res = await cancelThumbUp(item.id);
     await cancelLike({ for_id: item.id, type: 4, user_id: userStore.getUserInfo.id });
-    if (res && res.code == 0) {
+    if (res && res.status == 0) {
       commentList.value[index].is_like = false;
       commentList.value[index].thumbs_up--;
       ElNotification({
@@ -119,7 +119,7 @@ const like = async (item, index) => {
   } else {
     res = await thumbUpComment(item.id);
     await addLike({ for_id: item.id, type: 4, user_id: userStore.getUserInfo.id });
-    if (res && res.code == 0) {
+    if (res && res.status == 0) {
       commentList.value[index].is_like = true;
       commentList.value[index].thumbs_up++;
       ElNotification({
@@ -214,7 +214,7 @@ const publish = async () => {
   data.type = getCurrentType(props.type);
 
   const res = await applyComment(data);
-  if (res.code == 0) {
+  if (res.status == 0) {
     commentText.value = "";
     ElNotification({
       offset: 60,
@@ -279,6 +279,7 @@ defineExpose({
             <span class="content" v-html="comment.content"></span>
           </div>
           <div class="!mt-[0.5rem]">
+            <span class="!mr-[1rem] ip">{{ `IP: ${comment.ipAddress}` }}</span>
             <span
               :class="[
                 'thumbs',

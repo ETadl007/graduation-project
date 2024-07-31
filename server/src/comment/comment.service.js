@@ -40,7 +40,8 @@ export const blogCommentParentListService = async (params) => {
         content,
         thumbs_up,
         createdAt,
-        updatedAt 
+        updatedAt,
+        ip 
     FROM
         blog_comment
     WHERE
@@ -75,8 +76,8 @@ export const blogCommentChildrenListService = async (params) => {
         content,
         thumbs_up,
         createdAt,
-        updatedAt 
-        
+        updatedAt,
+        ip 
     FROM
         blog_comment
         
