@@ -1,6 +1,7 @@
 import express from 'express';
 import * as userController from './user.controller.js';
 import { validateUserData, hashPassword } from './user.midddleware.js';
+import { authGuard } from '../auth/auth.middleware.js'
 
 const router = express.Router();
 
@@ -15,6 +16,11 @@ router.post('/api/user/register', validateUserData, hashPassword,  userControlle
  */
     
 router.get("/api/user/getUserInfoById/:id", userController.getUserInfoById);
+
+/**
+ * 更新当前登录用户信息
+ */
+router.put("/api/user/updateOwnUserInfo/", authGuard, userController.updateOwnUserInfo);
 
 
 /**

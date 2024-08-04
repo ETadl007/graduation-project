@@ -1,24 +1,20 @@
-const app = require('./src/main')
-const config = require('./src/config/config')
-const { seq } = require('./src/db/index')
-const POST = config.APP_PORT || 8080
+import app from './src/main.js'
+import { APP_PORT } from './src/app/app.config.js';
+import { connecttion } from "./src/app/database/mysql.js";
 
-app.listen(POST, (err, res) => {
+
+
+app.listen(APP_PORT, () => {
+    console.log(`服务已启动！ http://localhost:${APP_PORT}`);
+});
+
+/**
+ * 测试连接数据库
+ */
+connecttion.connect((err) => {
     if (err) {
-        console.log(err)
-    } else {
-        console.log(`Server is running on http://localhost:${POST}`);
+        console.log("数据库连接失败", err.message);
+        return;
     }
-})
-
-// 检查数据库是否连接
-const connectAndTestDatabase = async () => {
-    try {
-        await seq("SELECT 1+1 AS result")
-        console.log('Connection has been established successfully.');
-    } catch (error) {
-        console.error('Unable to connect to the database:', error);
-    }
-}
-
-connectAndTestDatabase()
+    console.log("数据库连接成功！");
+});

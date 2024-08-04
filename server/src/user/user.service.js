@@ -27,7 +27,10 @@ export const getUserByName = async (name, options = {}) => {
     SELECT 
         id, 
         username,
-        role
+        role,
+        nick_name,
+        avatar,
+        qq
         ${password ? ', password' : ''} 
     FROM 
         blog_user 
@@ -62,3 +65,29 @@ export const getUserById = async (id) => {
     const [data] = await connecttion.promise().query(statment, id);
     return data[0]
 }
+
+/**
+ * 更新当前登录用户信息
+ */
+
+export const updateOwnUserInfo = async (info) => {
+    
+    const statment = `
+        UPDATE 
+            blog_user 
+        SET 
+            nick_name = ?,
+            avatar = ?
+        WHERE 
+            id = ?
+    `;
+    try {
+        
+        const [data] = await connecttion.promise().query(statment, info);
+        return data.affectedRows === 1 ? true : false;
+        
+    } catch (error) {
+        console.error(error);
+        throw error
+    }
+};

@@ -55,7 +55,7 @@ export const imgUpload = async (data) => {
   // 文件压缩 太大了上传不了，我的服务器比较垃圾
   let res;
   // 没有raw.size 就表示已经压缩过了（多图片上传那里我压缩了一次） 有的话小于800不用压缩
-  if (data.raw.size / 1024 > 800) {
+  if (data.raw.size / 1024 > 5000) {
     const file = await imageConversion(data.raw);
     if (!file) {
       ElNotification({

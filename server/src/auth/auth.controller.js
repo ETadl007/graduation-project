@@ -6,9 +6,9 @@ import { signToken } from "./auth.service.js";
 
 export const login = async (req, res, next) => {
 
-    const { username:{id, username, role} } = req.body;
+    const { username:{id, username, role, nick_name, avatar} } = req.body;
 
-    const payload = { id, username };
+    const payload = { id, username, role, nick_name, avatar };
     
     try {
 

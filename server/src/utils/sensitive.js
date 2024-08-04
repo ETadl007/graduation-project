@@ -1,4 +1,4 @@
-import { Mint } from 'mint-filter'; 
+import { Mint } from 'mint-filter';
 import axios from 'axios';
 
 const sArr = ["我是你爸爸", "我是你爸", "我是你爹", "爸爸", "我是你爷爷", "操你奶奶", "我是你妈", "我日你爸", "草泥马", "草你妈", "操你妈", "傻逼"];
@@ -8,8 +8,8 @@ export async function filterSensitive(text) {
   try {
 
     const mint = new Mint(sArr);
+    let res = mint.filter(text, { replace: true }).text; // Set replace to true
 
-    let res = mint.filter(text, { replace: false }).text;
     if (res.indexOf("*") !== -1 || badJs.test(text)) {
       res = await getSaying();
       return res;

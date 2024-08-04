@@ -105,15 +105,16 @@ const updateInfo = async () => {
       }).then(async () => {
         loading.value = true;
         // 先上传图片
+        
         if (!infoForm.avatarList[0].id) {
           const img = await imgUpload(infoForm.avatarList[0]);
-          if (img.code == 0) {
-            const { url } = img.result;
+          if (img.status == 0) {
+            const { url } = img.data;
             infoForm.avatar = url;
           }
         }
         const res = await updateUserInfo(infoForm);
-        if (res && res.code == 0) {
+        if (res && res.status == 0) {
           ElNotification({
             offset: 60,
             title: "提示",

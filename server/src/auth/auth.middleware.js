@@ -16,7 +16,7 @@ export const validateLoginData = async (req, res, next) => {
     if (!password) return next(new Error('PASSWORD_IS_REQUIRED'))
 
     // 验证用户名是否存在
-    const user = await userService.getUserByName(username, {password: true});
+    const user = await userService.getUserByName(username, { password: true });
     if (!user) return next(new Error('USER_DOES_NOT_EXISTS'))
 
     // 验证用户密码
@@ -34,10 +34,10 @@ export const validateLoginData = async (req, res, next) => {
  * 验证用户身份
  */
 export const authGuard = async (req, res, next) => {
-    
-    try { 
+
+    try {
         const authorization = req.header('Authorization');
-        
+
         // 验证token
         if (!authorization) throw new Error();
 
@@ -45,17 +45,34 @@ export const authGuard = async (req, res, next) => {
         const token = authorization.replace('Bearer ', '');
 
         if (!token) throw new Error();
-        
+
         // 验证令牌
-        const decoded = jwt.verify(token, PUBLIC_KEY, {algorithms: ['RS256']});
+        jwt.verify(token, PUBLIC_KEY, { algorithms: ['RS256'] }, (err, decoded) => {
+            if (err) {
+                return next(new Error('UNAUTHORIZED'))
+            }
 
-        // 在请求主体里添加用户
-        req.username = decoded
+            // 验证通过
+            // 在请求主体里添加用户
+            req.username = decoded
 
-        // 下一步
-        next();
+            // 下一步
+            next();
+        });
+
 
     } catch (error) {
-        next(new Error('UNAUTHORIZED'))
+        switch (error) {
+            case "TokenExpiredError":
+                console.error("token已过期", err)
+                return next(new Error('TokenExpiredError'))
+            case "JsonWebTokenError":
+                console.error("无效的token", err)
+                return next(new Error('JsonWebTokenError'))
+
+            default:
+                console.error("未知错误", err)
+                return next(new Error('UNAUTHORIZED'))
+        }
     }
 }

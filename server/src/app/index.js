@@ -15,6 +15,7 @@ import userRouter from '../user/user.router.js';
 import authRouter from '../auth/auth.router.js';
 import notifyRouter from '../notify/notify.router.js';
 import likeRouter from '../like/like.router.js';
+import uploadRouter from '../utils/uploads/uploads.router.js';
 
 /**
  *  创建应用
@@ -49,7 +50,7 @@ app.use(articleRouter,
   categoryRouter, photosRouter, 
   talkRouter, linksRouter, 
   messageRouter, userRouter, 
-  authRouter, notifyRouter, likeRouter);
+  authRouter, notifyRouter, likeRouter, uploadRouter);
 
 /**
  *  默认异常处理

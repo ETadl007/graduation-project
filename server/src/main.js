@@ -1,18 +1,34 @@
 import app from "./app/index.js";
-import { APP_PORT } from "./app/app.config.js";
-import { connecttion } from "./app/database/mysql.js";
+import express from "express";
+import path from "path";
+import rateLimit from "express-rate-limit";
+import history from "express-history-api-fallback";
+import { fileURLToPath } from 'url';
 
-app.listen(APP_PORT, () => {
-    console.log(`服务已启动！ http://localhost:${APP_PORT}`);
+
+const limiter = rateLimit({
+    interval: {
+        min: 1
+    },
+    max: 200
 });
 
-/**
- * 测试连接数据库
- */
-connecttion.connect((err) => {
-    if (err) {
-        console.log("数据库连接失败", err.message);
-        return;
-    }
-    console.log("数据库连接成功！");
-});
+
+app.use(limiter);
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+
+const root = path.join(__dirname, 'uploads');
+const fallbackFile = 'index.html';
+
+
+app.use(history(fallbackFile, { root }));
+
+
+app.use("/images", express.static(path.join(__dirname, "../uploads/images")));
+
+
+
+export default app;

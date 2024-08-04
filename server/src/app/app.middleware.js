@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import { rateLimit } from 'express-rate-limit'
 
 dotenv.config();
 
@@ -26,7 +27,6 @@ export const defaultErrorHandler = (err, req, res, next) => {
             statusCode = 409;
             message = '请提供密码';
             break;
-
         case 'USER_ALREADY_EXISTS':
             statusCode = 409;
             message = '用户名已存在';
@@ -34,6 +34,10 @@ export const defaultErrorHandler = (err, req, res, next) => {
         case 'USER_DOES_NOT_EXISTS':
             statusCode = 400;
             message = '用户不存在';
+            break;
+        case 'ILLEGAL_USER_NAME':
+            statusCode = 400;
+            message = '用户名不合法';
             break;
         case 'PASSWORD_DOES_NOT_MATCH':
             statusCode = 400;
@@ -43,6 +47,29 @@ export const defaultErrorHandler = (err, req, res, next) => {
             statusCode = 401;
             message = '未授权';
             break;
+        case 'TokenExpiredError':
+            statusCode = 401;
+            message = 'Token过期';
+            break;
+        case 'JsonWebTokenError':
+            statusCode = 401;
+            message = 'Token无效';
+            break;
+        case 'NOT_FOUND':
+            statusCode = 404;
+            message = '资源未找到';
+            break;
+        case 'ADDARTICLEERROR':
+            statusCode = 400;
+            message = '添加文章失败';
+            break;
+        case 'UPDATEARTICLEERROR':
+            statusCode = 400;
+            message = '更新文章失败';
+            break;
+        case 'DELETEARTICLEERROR':
+            statusCode = 400;
+            message = '删除文章失败';
         case 'ADDCOMMENTERROR':
             statusCode = 400;
             message = '添加评论失败';
@@ -63,6 +90,14 @@ export const defaultErrorHandler = (err, req, res, next) => {
             statusCode = 400;
             message = '删除评论失败';
             break;
+        case 'FILEUPLOADERROR':
+            statusCode = 400;
+            message = '文件上传失败';
+            break;
+        case 'UPDATE_USER_INFO_FAILED':
+            statusCode = 400;
+            message = '修改用户失败';
+            break;
         default:
             statusCode = 500;
             message = '服务暂时出了点问题  ~~';
@@ -75,3 +110,21 @@ export const defaultErrorHandler = (err, req, res, next) => {
         message
     });
 };
+
+/**
+ * 限制自动化脚本测试网站
+ */
+export const TimesLimiter = (options) => {
+    if (!Object.getOwnPropertyNames(options).includes("prefixKey")){
+        console.log("TimesLimiter: prefixKey is required");
+    }
+    const defaultOptions = {
+        interval: 1 * 60 * 1000, // 1分钟
+        max: 10, // 10次
+        prefixKey: "",
+        message: "小黑子，你在刷接口，请稍后再试！",
+        messagekey: "message"
+    }
+    Object.assign(defaultOptions, options);
+    return rateLimit(defaultOptions);
+}

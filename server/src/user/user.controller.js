@@ -1,12 +1,22 @@
 import * as userService from './user.service.js';
+import { filterSensitive } from '../utils/sensitive.js'
+import { randomNickname } from '../utils/tool.js'
 
 /**
  * 用户注册
  */
 
 export const store = async (req, res, next) => {
-    const { username, password, role=2, nick_name } = req.body;
 
+    let { username, password, role=2, nick_name } = req.body;
+
+    // 过滤敏感词
+    nick_name = await filterSensitive(nick_name);
+
+    // 随机生成昵称
+    nick_name = nick_name ? nick_name : randomNickname("小炮的小迷弟");
+
+    
     const params = [username, password, role, nick_name]
 
     try {
@@ -17,7 +27,8 @@ export const store = async (req, res, next) => {
             data: user
         });
     }catch (error) {
-        next(error);
+        console.log(error);
+        next(new Error('ILLEGAL_USER_NAME'))
     }
 }
 
@@ -38,4 +49,31 @@ export const getUserInfoById = async (req, res, next) => {
     }catch (error) {
         next(error);
     }
+}
+
+/**
+ * 更新当前登录用户信息
+ */
+
+export const updateOwnUserInfo = async (req, res, next) => {
+    
+    let { id, nick_name, avatar } = req.body
+    
+    // 过滤敏感词
+    nick_name = await filterSensitive(nick_name);
+    const info = [nick_name, avatar, id]
+    
+    try {
+        const user = await userService.updateOwnUserInfo(info);
+
+        res.send({
+            status: 0,
+            message: '修改用户成功',
+            data: user
+        });
+    }catch (error) {
+        console.log(error);
+        next(new Error('UPDATE_USER_INFO_FAILED'))
+    }
+
 }
