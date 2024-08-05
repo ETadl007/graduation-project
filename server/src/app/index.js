@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import path from 'path';
 import articleRouter from '../article/article.router.js';
 import configRouter from '../config/config.router.js';
 import tagRouter from '../tag/tag.router.js';
@@ -16,12 +17,27 @@ import authRouter from '../auth/auth.router.js';
 import notifyRouter from '../notify/notify.router.js';
 import likeRouter from '../like/like.router.js';
 import uploadRouter from '../utils/uploads/uploads.router.js';
-
+import rateLimit from 'express-rate-limit'
+import { fileURLToPath } from 'url';
 /**
  *  创建应用
  */
 
 const app = express();
+
+/**
+ * 限制请求频率
+ */
+
+const limiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1分钟
+  max: 100, // 10次
+  prefixKey: "",
+  message: "小黑子，你在刷接口，请稍后再试！",
+  messagekey: "message"
+});
+
+app.use(limiter);
 
 /**
  *  跨域设置
@@ -44,13 +60,14 @@ app.use(express.json());
  *  处理路由
  */
 
-app.use(articleRouter, 
+app.use(articleRouter,
   configRouter, tagRouter,
-  homeStatistic, commentRouter, 
-  categoryRouter, photosRouter, 
-  talkRouter, linksRouter, 
-  messageRouter, userRouter, 
+  homeStatistic, commentRouter,
+  categoryRouter, photosRouter,
+  talkRouter, linksRouter,
+  messageRouter, userRouter,
   authRouter, notifyRouter, likeRouter, uploadRouter);
+
 
 /**
  *  默认异常处理

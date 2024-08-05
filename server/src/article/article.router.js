@@ -1,12 +1,11 @@
 import express from 'express';
 import * as articleController from './article.controller.js';
-
 const router = express.Router();
 
 /**
  * 获取文章列表
  */
-router.get('/api/article/blogHomeGetArticleList/:current/:size', articleController.getArticleList);
+router.get('/api/article/blogHomeGetArticleList/:current/:size',  articleController.getArticleList);
 
 /**
  * 获取前台时间轴列表

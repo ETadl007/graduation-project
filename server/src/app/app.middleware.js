@@ -143,7 +143,7 @@ export const TimesLimiter = (options) => {
         console.log("TimesLimiter: prefixKey is required");
     }
     const defaultOptions = {
-        interval: 1 * 60 * 1000, // 1分钟
+        windowMs: 1 * 60 * 1000, // 1分钟
         max: 10, // 10次
         prefixKey: "",
         message: "小黑子，你在刷接口，请稍后再试！",
