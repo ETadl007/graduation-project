@@ -43,6 +43,18 @@ export const defaultErrorHandler = (err, req, res, next) => {
             statusCode = 400;
             message = '密码错误';
             break;
+        case 'LOGIN_FAILED':
+            statusCode = 400;
+            message = '登录失败';
+            break;
+        case 'UPDATE_PASSWORD_FAILED':
+            statusCode = 400;
+            message = '修改密码失败';
+            break;
+        case 'PASSWORD_IS_THE_SAME':
+            statusCode = 400;
+            message = '新密码不能与旧密码相同';
+            break;
         case 'UNAUTHORIZED':
             statusCode = 401;
             message = '未授权';
@@ -55,9 +67,21 @@ export const defaultErrorHandler = (err, req, res, next) => {
             statusCode = 401;
             message = 'Token无效';
             break;
+        case 'FILE_TYPE_NOT_SUPPORTED':
+            statusCode = 400;
+            message = '文件类型不支持！';
+            break;
+        case 'INVALID_PICTURE_DELETE':
+            statusCode = 400;
+            message = '无效的图片，已删除！';
+            break;
         case 'NOT_FOUND':
             statusCode = 404;
             message = '资源未找到';
+            break;
+        case 'GET_USER_INFO_FAILED':
+            statusCode = 400;
+            message = '获取用户信息失败';
             break;
         case 'ADDARTICLEERROR':
             statusCode = 400;

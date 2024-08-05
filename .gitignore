@@ -30,3 +30,6 @@ test.js
 
 # 后台
 /admin
+
+# 静态资源
+/server/uploads

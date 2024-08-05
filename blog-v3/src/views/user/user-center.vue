@@ -146,7 +146,7 @@ const updatePassword = async () => {
         cancelButtonText: "取消",
       }).then(async () => {
         const res = await updateUserPassword(pwdForm);
-        if (res && res.code == 0) {
+        if (res && res.status == 0) {
           ElNotification({
             offset: 60,
             title: "提示",

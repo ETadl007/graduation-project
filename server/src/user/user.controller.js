@@ -39,7 +39,7 @@ export const store = async (req, res, next) => {
 export const getUserInfoById = async (req, res, next) => {
     const { id } = req.params;
     try {
-        const user = await userService.getUserById(id);
+        const user = await userService.getUserinfo(id);
         res.send({
             status: 0,
             message: '获取用户信息成功',
@@ -47,7 +47,8 @@ export const getUserInfoById = async (req, res, next) => {
         });
         
     }catch (error) {
-        next(error);
+        console.log(error);
+        next(new Error('GET_USER_INFO_FAILED'))
     }
 }
 
@@ -76,4 +77,25 @@ export const updateOwnUserInfo = async (req, res, next) => {
         next(new Error('UPDATE_USER_INFO_FAILED'))
     }
 
+}
+
+/**
+ * 修改密码
+ */
+
+export const updatePassword = async (req, res, next) => {
+
+    const { id, password } = req.username
+    
+    try {
+        const user = await userService.updatePassword(id, password);
+        res.send({
+            status: 0,
+            message: '修改密码成功',
+            data: user
+        });
+    }catch (error) {
+        console.log(error);
+        next(new Error('UPDATE_PASSWORD_FAILED'))
+    }
 }

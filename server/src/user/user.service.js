@@ -44,10 +44,38 @@ export const getUserByName = async (name, options = {}) => {
 }
 
 /**
+ * 按ID查询用户
+ */
+export const getUserById = async (id, options = {}) => {
+
+    const { password } = options;
+
+    const statment = `
+    SELECT 
+        id, 
+        username,
+        role,
+        nick_name,
+        avatar,
+        qq
+        ${password ? ', password' : ''} 
+    FROM 
+        blog_user 
+    WHERE 
+        id = ?
+    `;
+    const [data] = await connecttion.promise().query(statment, id);
+
+    // 只提供第一个用户信息
+    return data[0];
+}
+
+
+/**
  * 获取当前登录用户信息
  */
 
-export const getUserById = async (id) => {
+export const getUserinfo = async (id) => {
     const statment = `
         SELECT 
             id, 
@@ -91,3 +119,25 @@ export const updateOwnUserInfo = async (info) => {
         throw error
     }
 };
+
+/**
+ * 修改密码
+ */
+
+ export const updatePassword = async (id, password) => {
+    const statment = `
+        UPDATE 
+            blog_user 
+        SET 
+            password = ?
+        WHERE 
+            id = ?
+    `;
+    try {
+        const [data] = await connecttion.promise().query(statment, [password, id]);
+        return data.affectedRows === 1 ? true : false;
+    } catch (error) {
+        console.error(error);
+        throw error
+    }
+}

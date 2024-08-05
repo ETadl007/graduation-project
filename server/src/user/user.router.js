@@ -1,6 +1,6 @@
 import express from 'express';
 import * as userController from './user.controller.js';
-import { validateUserData, hashPassword } from './user.midddleware.js';
+import { validateUserData, hashPassword, validatePassword } from './user.midddleware.js';
 import { authGuard } from '../auth/auth.middleware.js'
 
 const router = express.Router();
@@ -22,6 +22,11 @@ router.get("/api/user/getUserInfoById/:id", userController.getUserInfoById);
  */
 router.put("/api/user/updateOwnUserInfo/", authGuard, userController.updateOwnUserInfo);
 
+
+/**
+ * 修改密码
+ */
+router.put("/api/user/updatePassword", authGuard, validatePassword, userController.updatePassword);
 
 /**
  * 导出路由

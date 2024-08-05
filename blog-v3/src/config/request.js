@@ -131,6 +131,15 @@ http.interceptors.response.use(
           });
           break;
       default:
+        ElNotification({
+          offset: 60,
+          title: "错误提示",
+          message: h(
+            "div",
+            { style: "color: #f56c6c; font-weight: 600;" },
+             "服务端错误"
+          ),
+        });
         return;
     }
     return Promise.reject(error);

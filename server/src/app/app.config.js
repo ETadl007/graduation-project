@@ -24,6 +24,11 @@ export const PAGE_SIZE = process.env.PAGE_SIZE
 export const PARENT_COMMENT_PAGE_SIZE = process.env.PARENT_COMMENT_PAGE_SIZE
 
 /**
+ * 超级管理员密码
+ */
+export const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD
+
+/**
  *  密钥配置
  */
 export let { PRIVATE_KEY, PUBLIC_KEY } = process.env;
