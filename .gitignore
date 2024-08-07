@@ -25,6 +25,9 @@ dist-ssr
 
 test.js
 
+# 忽略环境变量
+.env
+
 # APP 
 /server/config/*.key
 
