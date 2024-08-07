@@ -1,6 +1,5 @@
 import express from 'express';
 import cors from 'cors';
-import path from 'path';
 import articleRouter from '../article/article.router.js';
 import configRouter from '../config/config.router.js';
 import tagRouter from '../tag/tag.router.js';
@@ -18,7 +17,6 @@ import notifyRouter from '../notify/notify.router.js';
 import likeRouter from '../like/like.router.js';
 import uploadRouter from '../utils/uploads/uploads.router.js';
 import rateLimit from 'express-rate-limit'
-import { fileURLToPath } from 'url';
 /**
  *  创建应用
  */
@@ -30,13 +28,17 @@ const app = express();
  */
 
 const limiter = rateLimit({
-  windowMs: 1 * 60 * 1000, // 1分钟
-  max: 100, // 10次
+  windowMs: 1 * 60 * 1000, 
+  max: 200, 
   prefixKey: "",
-  message: "小黑子，你在刷接口，请稍后再试！",
+  message: "小黑子，你在刷接口！！",
   messagekey: "message"
 });
 
+// 信任代理
+app.set('trust proxy', 1)
+
+// 适用于所有路由
 app.use(limiter);
 
 /**
