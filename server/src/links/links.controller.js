@@ -1,5 +1,6 @@
 import * as linksService from './links.service.js';
 import { PAGE_SIZE } from '../app/app.config.js';
+import { addNotify } from '../notify/notify.controller.js';
 
 /**
  * 获取友链列表
@@ -33,4 +34,46 @@ export const getTalkList = async (req, res, next) => {
     } catch (err) {
         next(err)
     }
+}
+
+/**
+ * 新增友链 || 修改友链
+ */
+
+export const addOrUpdateLinks = async (req, res, next) => {
+    
+    try {
+
+        const { id, site_name, site_desc, site_avatar, url, status, user_id } = req.body;
+
+        const data = { id, site_name, site_desc, site_avatar, url, status, user_id };
+
+        const result = await linksService.addOrUpdateLinks(data);
+
+        if (!id) {
+            await addNotify({
+                user_id: 1,
+                type: 4,
+                message: `您的收到了来自于：${site_name} 的友链申请，点我去后台审核！`
+            })
+        }
+
+        const msg = id ? "修改" : "发布";
+
+        res.send({
+            status: 0,
+            message: `${msg}友链成功`,
+            data: result
+        });
+        
+    } catch (error) {
+        console.log(error);
+        const msg = req.body.id ? "修改" : "发布";
+        res.status(500).send({
+            error: `${msg}友链失败`, 
+            details: error.message
+        });
+        
+    }
+
 }
