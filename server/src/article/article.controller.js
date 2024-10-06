@@ -253,3 +253,60 @@ export const getArticleBySearch = async (req, res, next) => {
         next(err);
     }
 }
+
+/**
+ * 文章点赞
+ */
+
+ export const articleLike = async (req, res, next) => {
+
+     const { fog_id } = req.body;
+     
+     try {
+
+        let article = await articleService.blogArticleExistService(fog_id);
+
+        if (article.length === 0) {
+            return res.status(404).send({
+                code: 404,
+                message: "点赞失败"
+            })
+        }else {
+            const articleLike = await articleService.blogArticleThumbsUpService(fog_id);
+             res.send({
+                 status: 0,
+                 message: "文章点赞成功",
+                 data: articleLike
+             })
+        }
+     }catch (err) {
+         next(err);
+     }
+ }
+
+ /**
+  * 取消点赞
+  */
+
+ export const articleCancelLike = async (req, res, next) => {
+     const { id } = req.body;
+     try {
+         let article = await articleService.blogArticleExistService(id);
+
+         if (article.length === 0) {
+             return res.status(404).send({
+                 code: 404,
+                 message: "取消点赞失败"
+             })
+         }else {
+             const articleDislike = await articleService.blogArticleCancelThumbsUpService(id);
+             res.send({
+                 status: 0,
+                 message: "文章取消点赞成功",
+                 data: articleDislike
+             })
+         }
+     }catch (err) {
+         next(err);
+     }
+ }

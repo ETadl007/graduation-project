@@ -1,5 +1,6 @@
 import express from 'express';
 import * as articleController from './article.controller.js';
+import * as likeControllerfrom from '../like/like.controller.js';
 const router = express.Router();
 
 /**
@@ -48,6 +49,16 @@ router.get('/api/article/getHotArticle', articleController.getArticleHot);
 
 router.get('/api/article/getArticleListByContent/:content', articleController.getArticleBySearch);
 
+/**
+ * 文章点赞
+ */
+router.post('api/like/addLike', likeControllerfrom.addLike)
+
+
+/**
+ * 取消点赞
+ */
+router.post('/api/like/cancelLike', likeControllerfrom.cancelLike)
 
 /**
  * 导出路由

@@ -46,6 +46,27 @@ export const blogArticleListService = async (params) => {
 }
 
 /**
+ *  根据文章id查询文章
+ */
+
+export const blogArticleExistService = async (id) => {
+    const articleExistSql = `
+    SELECT 
+        id
+    FROM 
+        blog_article
+    WHERE 
+        id = ?
+    `;
+
+    // 执行查询
+    const [articleExistResult] = await connecttion.promise().query(articleExistSql, id);
+
+    // 返回结果
+    return articleExistResult
+}
+
+/**
  *  获取前台时间轴列表
  */
 export const blogTimelineGetArticleList = async (params) => {
@@ -325,4 +346,37 @@ export const blogArticleSearchService = async (content) => {
 
     const [ArticleSearchResult] = await connecttion.promise().query(ArticleSearchSql, content);
     return ArticleSearchResult
+}
+
+/**
+ * 文章点赞
+ */
+export const blogArticleThumbsUpService = async (id) => {
+    const ArticleThumbsUpSql = `
+    UPDATE 
+        blog_article
+    SET 
+        thumbs_up_times = thumbs_up_times + 1
+    WHERE
+        id = ?
+    `;
+    const [ArticleThumbsUpResult] = await connecttion.promise().query(ArticleThumbsUpSql, id);
+
+    return ArticleThumbsUpResult.affectedRows > 0 ? true : false;
+}
+
+/**
+ * 取消点赞
+ */
+export const blogArticleCancelThumbsUpService = async (id) => {
+    const ArticleCancelThumbsUpSql = `
+    UPDATE 
+        blog_article
+    SET 
+        thumbs_up_times = thumbs_up_times - 1
+    WHERE
+        id = ?
+    `;
+    const [ArticleCancelThumbsUpResult] = await connecttion.promise().query(ArticleCancelThumbsUpSql, id);
+    return ArticleCancelThumbsUpResult.affectedRows > 0 ? true : false;
 }

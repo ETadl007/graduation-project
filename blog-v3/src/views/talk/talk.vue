@@ -4,7 +4,7 @@ import { user } from "@/store";
 
 import { returnTime } from "@/utils/tool";
 import { addLike, cancelLike } from "@/api/like";
-import { getTalkList, talkLike, cancelTalkLike } from "@/api/talk";
+import { getTalkList } from "@/api/talk";
 
 import { ElNotification } from "element-plus";
 import TextOverflow from "@/components/TextOverflow/index.vue";
@@ -17,6 +17,8 @@ const total = ref(0);
 const loading = ref(false);
 const scrollLoading = ref(false);
 const talkCommentRef = ref(null);
+const likePending = ref(false);
+
 let observe;
 let box;
 const param = reactive({
@@ -63,13 +65,15 @@ const pageGetTalkList = async () => {
 };
 
 const like = async (item, index) => {
+  if (likePending.value) return;
+  likePending.value = true;
   // 取消点赞
   if (item.is_like) {
-    let tRes = await cancelTalkLike(item.id);
-    if (tRes.status == 0) {
-      await cancelLike({ for_id: item.id, type: 2, user_id: userStore.getUserInfo.id });
+    const res = await cancelLike({ for_id: item.id, type: 2, user_id: userStore.getUserInfo.id });
+    if (res.status == 0) {
       talkList.value[index].is_like = false;
       talkList.value[index].like_times--;
+      likePending.value = false;
 
       ElNotification({
         offset: 60,
@@ -80,11 +84,12 @@ const like = async (item, index) => {
   }
   // 点赞
   else {
-    let tRes = await talkLike(item.id);
-    if (tRes.status == 0) {
-      await addLike({ for_id: item.id, type: 2, user_id: userStore.getUserInfo.id });
+    const res = await addLike({ for_id: item.id, type: 2, user_id: userStore.getUserInfo.id });
+    if (res.status == 0) {
       talkList.value[index].is_like = true;
       talkList.value[index].like_times++;
+      likePending.value = false;
+
       ElNotification({
         offset: 60,
         title: "提示",

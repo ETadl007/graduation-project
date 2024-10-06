@@ -12,8 +12,6 @@ import {
   getArticleById,
   getRecommendArticleById,
   readingDuration,
-  articleLike,
-  cancelArticleLike,
 } from "@/api/article";
 import { addLike, cancelLike, getIsLikeByIdAndType } from "@/api/like";
 
@@ -39,6 +37,7 @@ const { getUserInfo } = storeToRefs(userStore);
 
 const currentUrl = window.location.href;
 const isLike = ref(false);
+const likePending = ref(false);
 
 // 模仿获取md文档信息
 const mdState = reactive({
@@ -66,13 +65,20 @@ const goToArticle = (article) => {
 
 // 文章点赞
 const like = async () => {
+  if (likePending.value) return;
+  likePending.value = true;
   // 取消点赞
   if (isLike.value) {
-    let tRes = await cancelArticleLike(route.query.id);
-    if (tRes.code == 0) {
-      await cancelLike({ for_id: articleInfo.value.id, type: 1, user_id: getUserInfo.value.id });
+    let res = await cancelLike({
+      for_id: articleInfo.value.id,
+      type: 1,
+      user_id: getUserInfo.value.id,
+    });
+    if (res.status == 0) {
       articleInfo.value.thumbs_up_times--;
       isLike.value = false;
+      likePending.value = false;
+
       ElNotification({
         offset: 60,
         title: "提示",
@@ -86,11 +92,15 @@ const like = async () => {
   }
   // 点赞
   else {
-    let tRes = await articleLike(route.query.id);
-    if (tRes.code == 0) {
-      await addLike({ for_id: articleInfo.value.id, type: 1, user_id: getUserInfo.value.id });
+    let res = await addLike({
+      for_id: articleInfo.value.id,
+      type: 1,
+      user_id: getUserInfo.value.id,
+    });
+    if (res.status == 0) {
       articleInfo.value.thumbs_up_times++;
       isLike.value = true;
+      likePending.value = false;
       ElNotification({
         offset: 60,
         title: "提示",

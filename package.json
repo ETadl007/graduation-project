@@ -1,8 +1,0 @@
-{
-  "devDependencies": {
-    "vite-plugin-svg-icons": "^2.0.1"
-  },
-  "dependencies": {
-    "md-editor-v3": "^4.13.2"
-  }
-}

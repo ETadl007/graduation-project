@@ -54,7 +54,7 @@ export const addLike = async (req, res, next) => {
  * 取消点赞
  */
 
-export const deleteLike = async (req, res, next) => {
+export const cancelLike = async (req, res, next) => {
 
     const { for_id, type, user_id } = req.body;
 

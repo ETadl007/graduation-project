@@ -16,7 +16,7 @@ router.post('/api/like/addLike', likeController.addLike);
 /**
  * 取消点赞
  */
-router.post('/api/like/cancelLike', likeController.deleteLike);
+router.post('/api/like/cancelLike', likeController.cancelLike);
 
 
 /**

@@ -1,5 +1,6 @@
 import express from 'express';
 import * as talkController from './talk.controller.js';
+import * as likeControllerfrom from '../like/like.controller.js';
 
 const router = express.Router();
 
@@ -11,12 +12,12 @@ router.post('/api/talk/blogGetTalkList', talkController.getTalkList);
 /**
  * 说说点赞
  */
-router.put('/api/talk/like/:talkId', talkController.likeTalk);
+router.post('/api/like/addLike', likeControllerfrom.addLike);
 
 /**
  * 取消说说点赞
  */
-router.put('/api/talk/cancelLike/:talkId', talkController.unlikeTalk);
+router.post('/api/like/cancelLike', likeControllerfrom.cancelLike);
 
 
 /**
