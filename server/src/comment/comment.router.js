@@ -2,7 +2,9 @@ import express from 'express';
 import * as commentController from './comment.controller.js';
 import { filterSensitiveMiddleware } from './comment.middleware.js';
 
-const router = express.Router();
+const router = express.Router({
+    prefixKey: '/comment'
+});
 
 /**
  * 根据文章id获取评论总数

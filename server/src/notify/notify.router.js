@@ -1,7 +1,9 @@
 import express from 'express';
 import * as notifyController from './notify.controller.js';
 
-const router = express.Router();
+const router = express.Router({
+    prefixKey: '/notify'
+});
 
 /**
  * 分页获取消息列表

@@ -1,7 +1,9 @@
 import express from 'express';
 import * as configController from './config.controller.js';
 
-const router = express.Router();
+const router = express.Router({
+    prefixKey: '/config'
+});
 
 /**
  * 获取网站配置

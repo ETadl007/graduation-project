@@ -1,7 +1,9 @@
 import express from 'express';
 import * as tagController from './tag.controller.js';
 
-const router = express.Router();
+const router = express.Router({
+    prefixKey: '/tag'
+});
 
 /**
  * 获取网站配置

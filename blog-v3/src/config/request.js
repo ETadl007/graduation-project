@@ -130,6 +130,17 @@ http.interceptors.response.use(
             ),
           });
           break;
+        case "429":
+          ElNotification({
+            offset: 60,
+            title: "错误提示",
+            message: h(
+              "div",
+              { style: "color: #f56c6c; font-weight: 600;" },
+              data.message || "请求超时"
+            ),
+          });
+          break;
       default:
         ElNotification({
           offset: 60,

@@ -1,7 +1,9 @@
 import express from 'express';
 import * as articleController from './article.controller.js';
 import * as likeControllerfrom from '../like/like.controller.js';
-const router = express.Router();
+const router = express.Router({
+    prefixKey: '/article'
+});
 
 /**
  * 获取文章列表

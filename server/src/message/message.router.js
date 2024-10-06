@@ -1,7 +1,9 @@
 import express from 'express';
 import * as messageController from './message.controller.js';
 
-const router = express.Router();
+const router = express.Router({
+    prefixKey: '/message'
+});
 
 /**
  * 获取留言列表

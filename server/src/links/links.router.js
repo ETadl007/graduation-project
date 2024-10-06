@@ -1,7 +1,9 @@
 import express from 'express';
 import * as linksController from './links.controller.js';
 
-const router = express.Router();
+const router = express.Router({
+    prefixKey: '/links'
+});
 
 /**
  * 获取友链列表

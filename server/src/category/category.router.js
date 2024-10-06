@@ -1,7 +1,9 @@
 import express from 'express';
 import * as CategoryController from './category.controller.js';
 
-const router = express.Router();
+const router = express.Router({
+    prefixKey: '/category'
+});
 
 /**
  * 获取文章列表

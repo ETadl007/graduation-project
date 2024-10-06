@@ -1,7 +1,9 @@
 import express from 'express';
 import * as statisticController from './home.controller.js';
 
-const router = express.Router();
+const router = express.Router({
+    prefixKey: '/api'
+});
 
 /**
  * 获取数据统计

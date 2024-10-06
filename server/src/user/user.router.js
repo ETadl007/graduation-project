@@ -3,7 +3,9 @@ import * as userController from './user.controller.js';
 import { validateUserData, hashPassword, validatePassword } from './user.midddleware.js';
 import { authGuard } from '../auth/auth.middleware.js'
 
-const router = express.Router();
+const router = express.Router({
+    prefixKey: '/user'
+});
 
 
 /**

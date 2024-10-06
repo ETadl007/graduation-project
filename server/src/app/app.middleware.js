@@ -130,7 +130,7 @@ export const defaultErrorHandler = (err, req, res, next) => {
 
     // 发送错误响应
     res.status(statusCode).json({
-        code:statusCode,
+        code: statusCode,
         message
     });
 };
@@ -139,16 +139,27 @@ export const defaultErrorHandler = (err, req, res, next) => {
  * 限制自动化脚本测试网站
  */
 export const TimesLimiter = (options) => {
-    if (!Object.getOwnPropertyNames(options).includes("prefixKey")){
-        console.log("TimesLimiter: prefixKey is required");
+    if (!Object.getOwnPropertyNames(options).includes("prefixKey")) {
+        console.error("TimesLimiter: prefixKey is required");
     }
+
     const defaultOptions = {
         windowMs: 1 * 60 * 1000, // 1分钟
-        max: 10, // 10次
         prefixKey: "",
+        limit: 10, // 10次
         message: "小黑子，你在刷接口，请稍后再试！",
-        messagekey: "message"
-    }
-    Object.assign(defaultOptions, options);
-    return rateLimit(defaultOptions);
+        handler: (req, res, /*next*/) => {
+            return res.status(429).send({ error: options.message || defaultOptions.message });
+        },
+        keyGenerator: (req) => `${options.prefixKey}:${req.ip}`
+    };
+
+    // 合并传入的选项和默认选项
+    const finalOptions = { ...defaultOptions, ...options };
+
+    // 返回一个新的 rateLimit 实例
+    return rateLimit(finalOptions);
 }
+
+
+

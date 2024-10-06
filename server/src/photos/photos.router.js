@@ -1,7 +1,9 @@
 import express from 'express';
 import * as photosController from './photos.controller.js';
 
-const router = express.Router();
+const router = express.Router({
+    prefixKey: '/photo'
+});
 
 /**
  * 获取所有的相册

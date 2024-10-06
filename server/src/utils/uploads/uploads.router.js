@@ -5,7 +5,9 @@ import { TimesLimiter } from '../../app/app.middleware.js'
 import { authGuard } from '../../auth/auth.middleware.js'
 
 
-const router = express.Router();
+const router = express.Router({
+    prefixKey: "/uploads"
+});
 
 /**
  * 图片上传

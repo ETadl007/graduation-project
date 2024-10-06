@@ -2,7 +2,9 @@ import express from "express";
 import * as authController from "./auth.controller.js";
 import { validateLoginData, authGuard } from "./auth.middleware.js";
 
-const router = express.Router();
+const router = express.Router({
+    prefixKey: '/auth'
+});
 
 /**
  * 用户登录
