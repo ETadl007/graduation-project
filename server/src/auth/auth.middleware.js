@@ -62,17 +62,13 @@ export const authGuard = async (req, res, next) => {
 
 
     } catch (error) {
-        switch (error) {
-            case "TokenExpiredError":
-                console.error("token已过期", err)
-                return next(new Error('TokenExpiredError'))
-            case "JsonWebTokenError":
-                console.error("无效的token", err)
-                return next(new Error('JsonWebTokenError'))
-
-            default:
-                console.error("未知错误", err)
-                return next(new Error('UNAUTHORIZED'))
+        console.error("未授权，请先登录:", error);
+        if (error.name === "TokenExpiredError") {
+            return next(new Error('TokenExpiredError'));
         }
+        if (error.name === "JsonWebTokenError") {
+            return next(new Error('JsonWebTokenError'));
+        }
+        return next(new Error('UNAUTHORIZED'));
     }
 }

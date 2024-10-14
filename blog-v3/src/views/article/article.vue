@@ -236,7 +236,7 @@ watch(
                 <span>本文链接：</span>
                 <a class="to_pointer" v-copy="currentUrl">{{ currentUrl }}</a>
               </div>
-              <p>声明: 此文章版权归 Mr M 所有，如有转载，请注明来自原作者</p>
+              <p>声明: 此文章版权归 ETadl007 所有，如有转载，请注明来自原作者</p>
             </div>
           </div>
           <div :class="['like', isLike ? 'is-like' : '']" @click="like">

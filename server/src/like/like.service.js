@@ -23,6 +23,7 @@ export const isLike = async (params) => {
  * 点赞
  */
 export const addLike = async (params) => {
+    
     const statement = `
         INSERT INTO blog_like (type, for_id, user_id)
         VALUES (?,?,?)

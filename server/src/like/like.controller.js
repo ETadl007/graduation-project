@@ -34,7 +34,7 @@ export const addLike = async (req, res, next) => {
 
     const { for_id, type, user_id } = req.body;
 
-    const params = [for_id, type, user_id]
+    const params = [type, for_id, user_id]
 
     try {
         const result = await likeService.addLike(params);
@@ -58,7 +58,7 @@ export const cancelLike = async (req, res, next) => {
 
     const { for_id, type, user_id } = req.body;
 
-    const params = [for_id, type, user_id]
+    const params = [type, for_id, user_id]
 
     try {
         const result = await likeService.cancelLike(params);

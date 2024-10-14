@@ -3,7 +3,6 @@ import crypto from 'crypto';
 import path from 'path';
 import fs from 'fs';
 import sharp from'sharp';
-import express from 'express';
 import { fileURLToPath } from 'url';
 
 const RandomFilename = (originalname) => {

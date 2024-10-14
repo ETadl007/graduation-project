@@ -24,10 +24,11 @@ const pagination = (page) => {
 const getArchives = async () => {
   try {
     let res = await blogTimelineGetArticleList(param.current, param.size);
+    
     if (res.status == 0) {
       const { total, list } = res.data;
       archives.value = list;
-      archivesTotal.value = total;
+      archivesTotal.value = total - 1;
     }
   } finally {
     loading.value = false;
