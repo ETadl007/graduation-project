@@ -1,6 +1,7 @@
 import express from 'express';
 import * as commentController from './comment.controller.js';
 import { filterSensitiveMiddleware } from './comment.middleware.js';
+import { authGuard } from '../auth/auth.middleware.js'
 
 const router = express.Router({
     prefixKey: '/comment'
@@ -25,29 +26,29 @@ router.post('/api/comment/frontGetChildrenComment', commentController.getChildCo
  * 添加评论
  */
 
-router.post('/api/comment/add', commentController.addComment);
+router.post('/api/comment/add', authGuard, filterSensitiveMiddleware, commentController.addComment);
 
 /**
  * 添加回复评论
  */
 
-router.post('/api/comment/apply', filterSensitiveMiddleware, commentController.addReplyComment);
+router.post('/api/comment/apply', authGuard, filterSensitiveMiddleware, commentController.addReplyComment);
 
 
 /**
  * 点赞评论
  */
-router.put('/api/comment/thumbUp/:id', commentController.likeComment)
+router.put('/api/comment/thumbUp/:id', authGuard, commentController.likeComment)
 
 /**
  * 取消点赞评论
  */
-router.put('/api/comment/cancelThumbUp/:id', commentController.cancelLikeComment)
+router.put('/api/comment/cancelThumbUp/:id', authGuard, commentController.cancelLikeComment)
 
 /**
  * 删除评论
  */
-router.delete('/api/comment/delete/:id/:parent_id', commentController.deleteComment)
+router.delete('/api/comment/delete/:id/:parent_id', authGuard, commentController.deleteComment)
 
 
 /**

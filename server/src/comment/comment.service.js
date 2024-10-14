@@ -273,3 +273,31 @@ export const deleteComment = async (id, parent_id) => {
         throw error;
     }
 }
+
+/**
+ * 通过用户id查询用户信息
+ */
+
+export const getUserInfoByUserId = async (userId) => {
+    const sql = `
+    SELECT
+        thumbs_up,
+        id,
+        type,
+        for_id,
+        from_id,
+        from_name,
+        from_avatar,
+        content,
+        ip,
+        updatedAt,
+        createdAt
+    FROM
+        blog_comment
+    WHERE
+        from_id = ?
+    `;
+
+    const [data] = await connecttion.promise().query(sql, [userId]);
+    return data[0];
+}

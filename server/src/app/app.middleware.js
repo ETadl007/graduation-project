@@ -57,7 +57,7 @@ export const defaultErrorHandler = (err, req, res, next) => {
             break;
         case 'UNAUTHORIZED':
             statusCode = 401;
-            message = '未授权';
+            message = '未授权，请登录后重试';
             break;
         case 'TokenExpiredError':
             statusCode = 401;

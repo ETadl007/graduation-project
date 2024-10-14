@@ -105,11 +105,13 @@ export const addComment = async (req, res, next) => {
     const params = [type, for_id, from_id, from_name, from_avatar, content]
     try {
         const result = await commentService.blogCommentAddService(params);
-        
+        const userinfo = await commentService.getUserInfoByUserId(from_id);
         res.send({
             status: 0,
             msg: '添加评论成功',
-            data: result
+            data: {
+                res: userinfo
+            }
         });
     } catch (error) {
         console.log(error);

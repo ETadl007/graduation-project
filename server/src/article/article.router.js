@@ -1,6 +1,8 @@
 import express from 'express';
 import * as articleController from './article.controller.js';
 import * as likeControllerfrom from '../like/like.controller.js';
+import { authGuard } from '../auth/auth.middleware.js'
+
 const router = express.Router({
     prefixKey: '/article'
 });
@@ -54,13 +56,13 @@ router.get('/api/article/getArticleListByContent/:content', articleController.ge
 /**
  * 文章点赞
  */
-router.post('api/like/addLike', likeControllerfrom.addLike)
+router.post('api/like/addLike', authGuard, likeControllerfrom.addLike)
 
 
 /**
  * 取消点赞
  */
-router.post('/api/like/cancelLike', likeControllerfrom.cancelLike)
+router.post('/api/like/cancelLike', authGuard, likeControllerfrom.cancelLike)
 
 /**
  * 导出路由
