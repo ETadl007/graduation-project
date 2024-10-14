@@ -25,9 +25,6 @@ dist-ssr
 
 test.js
 
-/yarn.lock
-/.gitignore
-
 # 忽略环境变量
 .env
 
