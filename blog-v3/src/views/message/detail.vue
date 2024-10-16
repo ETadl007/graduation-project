@@ -8,7 +8,6 @@ import { reactive, onMounted, h } from "vue";
 import { storeToRefs } from "pinia";
 
 import { returnTime, _getLocalItem, _setLocalItem, containHTML } from "@/utils/tool";
-import { likeMessage, cancelLikeMessage } from "@/api/message";
 import { addLike, cancelLike } from "@/api/like";
 import { user } from "@/store/index";
 
@@ -36,10 +35,8 @@ const message = reactive({
 const like = async (item) => {
   // 取消点赞
   if (item.is_like) {
-    const res = await cancelLikeMessage(item.id);
-    if (res.code == 0) {
-      // 记录留言取消点赞
-      await cancelLike({ for_id: item.id, type: 3, user_id: getUserInfo.value.id });
+    const res = await cancelLike({ for_id: item.id, type: 3, user_id: getUserInfo.value.id });
+    if (res.status == 0) {
       item.like_times--;
       item.is_like = false;
       ElNotification({
@@ -51,10 +48,8 @@ const like = async (item) => {
   }
   // 点赞
   else {
-    const res = await likeMessage(item.id);
-    if (res.code == 0) {
-      // 记录留言点赞
-      await addLike({ for_id: item.id, type: 3, user_id: getUserInfo.value.id });
+    const res = await addLike(item.id);
+    if (res.status == 0) {
       item.like_times++;
       item.is_like = true;
       ElNotification({
