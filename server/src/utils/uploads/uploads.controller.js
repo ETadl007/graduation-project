@@ -6,9 +6,6 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// 本地上传路径
-const local = 'http://localhost:8888/images/'
-
 export const upload = async (req, res, next) => {
     try {
         
