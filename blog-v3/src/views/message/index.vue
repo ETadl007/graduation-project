@@ -11,8 +11,6 @@ import { gsapTransXScale } from "@/utils/transform";
 
 import {
   getMessageList,
-  likeMessage,
-  cancelLikeMessage,
   deleteMessage,
   getMessageTag,
 } from "@/api/message";
@@ -91,11 +89,14 @@ const pageGetMessageList = async () => {
     let res = await getMessageList(param);
     if (res.status == 0) {
       const { list } = res.data;
+
       messageList.value =
         param.current == 1 ? res.data.list : messageList.value.concat(res.data.list);
+      
       let classList = res.data.list.map((item, index) => {
         return ".message" + (messageList.value.length - list.length + index);
       });
+      
       total.value = res.data.total;
       nextTick(() => {
         gsapTransXScale(classList, 0, 1.2);
@@ -108,14 +109,15 @@ const pageGetMessageList = async () => {
 };
 
 const like = async (item, index) => {
+
   // 取消点赞
   if (item.is_like) {
-    const res = await cancelLikeMessage(item.id);
-    if (res.code == 0) {
-      // 记录留言取消点赞
-      if (getUserInfo.value.id) {
-        await cancelLike({ for_id: item.id, type: 3, user_id: getUserInfo.value.id });
-      }
+    const res = await cancelLike({
+      for_id: item.id,
+      type: 3,
+      user_id: getUserInfo.value.id,
+    });
+    if (res.status == 0) {
       messageList.value[index].like_times--;
       messageList.value[index].is_like = false;
       ElNotification({
@@ -127,12 +129,8 @@ const like = async (item, index) => {
   }
   // 点赞
   else {
-    const res = await likeMessage(item.id);
-    if (res.code == 0) {
-      // 记录留言点赞
-      if (getUserInfo.value.id) {
-        await addLike({ for_id: item.id, type: 3, user_id: getUserInfo.value.id });
-      }
+    let res = await addLike({ for_id: item.id, type: 3, user_id: getUserInfo.value.id })
+    if (res.status == 0) {
       messageList.value[index].like_times++;
       messageList.value[index].is_like = true;
       ElNotification({
@@ -168,7 +166,7 @@ const handleDeleteMessage = (item) => {
     cancelButtonText: "取消",
   }).then(async () => {
     const res = await deleteMessage(item.id);
-    if (res && res.code == 0) {
+    if (res && res.status == 0) {
       ElNotification({
         offset: 60,
         title: "提示",

@@ -16,9 +16,9 @@ export const upload = async (req, res, next) => {
             })
         }
         const file = req.file
-        const { id } = req.username
+        const user_id = req.username ? req.username.id : null
 
-        const result = await uploadService.uploadFile(file, id)
+        const result = await uploadService.uploadFile(file, user_id)
 
         const fileUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
 

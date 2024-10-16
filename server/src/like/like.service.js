@@ -22,15 +22,15 @@ export const isLike = async (params) => {
 /**
  * 点赞
  */
-export const addLike = async (params) => {
+export const addLike = async ({ for_id, type, user_id }) => {  
     
     const statement = `
         INSERT INTO blog_like (type, for_id, user_id)
         VALUES (?,?,?)
     `;
-    const [data] = await connecttion.promise().query(statement, params);
+    const [data] = await connecttion.promise().query(statement, [type, for_id, user_id]);
 
-    if (params[1] == 1) {
+    if (type == 1) {
         // 文章
         const ArticleThumbsUpSql = `
         UPDATE 
@@ -40,10 +40,10 @@ export const addLike = async (params) => {
         WHERE
             id = ?
         `;
-        const [ArticleThumbsUpResult] = await connecttion.promise().query(ArticleThumbsUpSql, params[0]);
+        const [ArticleThumbsUpResult] = await connecttion.promise().query(ArticleThumbsUpSql, [for_id]);
 
         return ArticleThumbsUpResult.affectedRows > 0 ? true : false;
-    }else if (params[1] == 2) {
+    }else if (type == 2) {
         // 说说
         const talkSql = `
         UPDATE 
@@ -53,12 +53,21 @@ export const addLike = async (params) => {
         WHERE 
             id = ?
         `;
-        const [data] = await connecttion.promise().query(talkSql, params[0]);
+        const [data] = await connecttion.promise().query(talkSql, [for_id]);
         return data.affectedRows > 0;
         
-    } else if (params[1] == 3) {
+    } else if (type == 3) {
         // 留言
-        console.log(1);
+        const addMessageLikeSql = `
+        UPDATE 
+            blog_message 
+        SET 
+            like_times = like_times + 1 
+        WHERE 
+            id = ?
+        `;
+        const [data] = await connecttion.promise().query(addMessageLikeSql, [for_id]);
+        return data.affectedRows > 0;
         
     }
     return data.affectedRows === 1;
@@ -67,12 +76,18 @@ export const addLike = async (params) => {
 /**
  * 取消点赞
  */
-export const cancelLike = async (params) => {
+export const cancelLike = async ({ for_id, type, user_id }) => {
+    console.log();
+    
+    
     const statement = `
-        DELETE FROM blog_like
-        WHERE type = ? AND for_id = ? AND user_id = ?
+    DELETE FROM blog_like
+    WHERE type = ? AND for_id = ? AND user_id = ?
     `;
-    if (params[1] == 1) {
+
+    const [data] = await connecttion.promise().query(statement, [type, for_id, user_id]);
+
+    if (type == 1) {
         // 文章
         const ArticleCancelThumbsUpSql = `
         UPDATE 
@@ -82,9 +97,9 @@ export const cancelLike = async (params) => {
         WHERE
             id = ?
         `;
-        const [ArticleCancelThumbsUpResult] = await connecttion.promise().query(ArticleCancelThumbsUpSql, params[0]);
+        const [ArticleCancelThumbsUpResult] = await connecttion.promise().query(ArticleCancelThumbsUpSql, [for_id]);
         return ArticleCancelThumbsUpResult.affectedRows > 0 ? true : false;
-    }else if (params[1] == 2) {
+    }else if (type == 2) {
         // 说说
         const talkSql = `
         UPDATE 
@@ -94,14 +109,22 @@ export const cancelLike = async (params) => {
         WHERE 
             id = ?
         `;
-        const [data] = await connecttion.promise().query(talkSql, params[0]);
+        const [data] = await connecttion.promise().query(talkSql, [for_id]);
         return data.affectedRows > 0;
         
-    } else if (params[1] == 3) {
+    } else if (type == 3) {
         // 留言
-        console.log(1);
+        const addMessageCancelLikeSql = `
+        UPDATE 
+            blog_message 
+        SET 
+            like_times = like_times - 1 
+        WHERE 
+            id = ?
+        `;
+        const [data] = await connecttion.promise().query(addMessageCancelLikeSql, [for_id]);
+        return data.affectedRows > 0;
         
     }
-    const [data] = await connecttion.promise().query(statement, params);
     return data.affectedRows === 1;
 }

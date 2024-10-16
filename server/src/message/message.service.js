@@ -5,6 +5,7 @@ import { connecttion } from "../app/database/mysql.js";
  */
 
 export const getMessageList = async (params) => {
+    
     const messageSql = `
     SELECT 
         m.id,
@@ -44,6 +45,7 @@ export const getMessageList = async (params) => {
  */
 
 export const getMessageHotTags = async () => {
+
     const messageHotSql = `
     SELECT 
         tag, 
@@ -66,6 +68,7 @@ export const getMessageHotTags = async () => {
  */
 
 export const getMessageTotal = async () => {
+
     const messageTotalSql = `
     SELECT 
         COUNT(*) AS total
@@ -73,4 +76,55 @@ export const getMessageTotal = async () => {
         blog_message;`;
     const [data] = await connecttion.promise().query(messageTotalSql);
     return data[0].total;
+}
+
+/**
+ * 发布留言
+ */
+
+export const addMessage = async (params) => {
+
+    const createMessageSql = `
+    INSERT INTO 
+        blog_message (message, nick_name, user_id, color, font_size, font_weight, bg_color, bg_url, tag)
+    VALUES 
+        (?, ?, ?, ?, ?, ?, ?, ?, ?);`; 
+    const [data] = await connecttion.promise().query(createMessageSql, params);
+    return data.affectedRows > 0 ? true : false;
+}
+
+/**
+ * 删除留言
+ */
+export const deleteMessage = async (id) => {
+
+    const deleteMessageSql = `
+    DELETE FROM 
+        blog_message
+    WHERE 
+        id = ?;`;
+    const [data] = await connecttion.promise().query(deleteMessageSql, [id]);
+    return data.affectedRows > 0 ? true : false;
+}
+
+/**
+ * 编辑留言
+ */
+export const updateMessage = async (params) => {
+
+    const updateMessageSql = `
+    UPDATE 
+        blog_message
+    SET 
+        message = ?,
+        color = ?,
+        font_size = ?,
+        font_weight = ?,
+        bg_color = ?,
+        bg_url = ?,
+        tag = ?
+    WHERE 
+        id = ?;`;
+    const [data] = await connecttion.promise().query(updateMessageSql, params);
+    return data.affectedRows > 0 ? true : false;
 }
