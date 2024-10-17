@@ -14,7 +14,7 @@ export const store = async (req, res, next) => {
     nick_name = await filterSensitive(nick_name);
 
     // 随机生成昵称
-    nick_name = nick_name ? nick_name : randomNickname("小炮的小迷弟");
+    nick_name = nick_name ? nick_name : randomNickname("007的小迷弟");
 
     
     const params = [username, password, role, nick_name]

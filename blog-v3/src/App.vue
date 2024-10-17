@@ -59,7 +59,7 @@ const welcome = () => {
   // 欢迎
   let msg = getWelcomeSay(getUserInfo.value.nick_name);
   if (getUserInfo.value.id == 3) {
-    msg = "欢迎来到只会弱口令的博客～";
+    msg = "欢迎来到007的博客～";
   }
   ElNotification({
     offset: 60,

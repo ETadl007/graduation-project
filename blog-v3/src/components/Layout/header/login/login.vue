@@ -84,7 +84,7 @@ const welcome = (id, nick_name) => {
   // 欢迎
   let msg = getWelcomeSay(nick_name);
   if (id == 3) {
-    msg = "欢迎来到只会弱口令的博客～";
+    msg = "欢迎来到007的博客～";
   }
   ElNotification({
     offset: 60,
