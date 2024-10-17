@@ -25,9 +25,9 @@ const goToArticleList = (item) => {
 const getTagList = async () => {
   loading.value = true;
   let res = await getAllTag();
-  if (res.code == 0) {
-    total.value = res.result.length;
-    tagList.value = res.result.map((tag) => {
+  if (res.status == 0) {
+    total.value = res.data.length;
+    tagList.value = res.data.map((tag) => {
       return {
         id: tag.id,
         tag_name: tag.tag_name,
