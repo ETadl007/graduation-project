@@ -10,6 +10,7 @@ const connecttion = mysql.createConnection({
     user: MYSQL_USER,
     password: MYSQL_PASSWORD,
     database: MYSQL_DATABASE,
+    charset: 'utf8mb4'
 });
 
 export { connecttion };

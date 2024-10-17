@@ -202,7 +202,7 @@ CREATE TABLE `blog_message` (
 DROP TABLE IF EXISTS `blog_notify`;
 CREATE TABLE `blog_notify` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `message` varchar(555) DEFAULT NULL COMMENT '通知内容',
+  `message` varchar(555) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '通知内容',
   `user_id` int DEFAULT NULL COMMENT '通知给谁',
   `type` int DEFAULT NULL COMMENT '通知类型 1 文章 2 说说 3 留言 4 友链',
   `to_id` int DEFAULT NULL COMMENT '说说或者是文章的id 用于跳转',

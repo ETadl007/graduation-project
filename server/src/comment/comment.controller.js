@@ -1,6 +1,11 @@
 import * as commentService from './comment.service.js';
 import { PARENT_COMMENT_PAGE_SIZE } from '../app/app.config.js';
 import { sqlFragment } from './comment.provider.js';
+import { addNotify } from "../notify/notify.controller.js";
+import { filterSensitive } from "../utils/sensitive.js";
+import { connecttion } from "../app/database/mysql.js";
+
+
 
 /**
  * 获取评论总数
@@ -101,7 +106,7 @@ export const getChildCommentList = async (req, res, next) => {
 
 export const addComment = async (req, res, next) => {
     const { type, for_id, from_id, from_name, from_avatar, content } = req.body;
-
+    
     const params = [type, for_id, from_id, from_name, from_avatar, content]
     try {
         const result = await commentService.blogCommentAddService(params);
@@ -123,8 +128,26 @@ export const addComment = async (req, res, next) => {
  * 添加回复评论
  */
 export const addReplyComment = async (req, res, next) => {
+
     try {
-        const result = await commentService.applyCommentHandler(req, res)
+
+        const ip = req.headers['x-real-ip'] || req.headers['x-forwarded-for'] || req.ip;
+        req.body.content = await filterSensitive(req.body.content);
+    
+        const comment = { ...req.body, ip: ip.split(':').pop() };
+    
+        const { type, for_id, from_name, content, from_id, to_id } = req.body;
+
+        const result = await commentService.applyComment(comment)
+
+        if (from_id !== to_id) {
+            await addNotify({
+                user_id: to_id,
+                type: type,
+                to_id: for_id,
+                message: `您收到了来自 ${from_name} 的评论回复: ${content}！`,
+            });
+        }
 
         res.send({
             status: 0,
@@ -133,6 +156,7 @@ export const addReplyComment = async (req, res, next) => {
                 res: result
             }
         });
+
     } catch (error) {
         console.log(error);
         next(new Error('ADDREPLYCOMMENTERROR'));

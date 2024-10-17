@@ -1,6 +1,4 @@
 import { connecttion } from "../app/database/mysql.js";
-import { filterSensitive } from "../utils/sensitive.js";
-import { addNotify } from "../notify/notify.controller.js";
 
 /**
  * 获取评论总数
@@ -158,7 +156,7 @@ export const blogCommentCancelThumbsUpService = async (params) => {
  * 添加回复评论
  */
 
-const applyComment = async (comment) => {
+export const applyComment = async (comment) => {
 
     const { parent_id, type, for_id, from_id, from_avatar, from_name, to_id, to_name, to_avatar, content, ip } = comment;
     const commentAddSql = `
@@ -217,32 +215,9 @@ const applyComment = async (comment) => {
 
         return userInfo[0];
     } catch (error) {
-        console.log(error);
+        throw error
     }
 
-
-
-}
-
-export const applyCommentHandler = async (req, res) => {
-    const ip = req.headers['x-real-ip'] || req.headers['x-forwarded-for'] || req.ip;
-    req.body.content = await filterSensitive(req.body.content);
-
-    const comment = { ...req.body, ip: ip.split(':').pop() };
-
-    const { type, for_id, from_name, content, from_id, to_id } = req.body;
-
-    const result = await applyComment(comment);
-
-    if (from_id !== to_id) {
-        await addNotify({
-            user_id: to_id,
-            type: type,
-            to_id: for_id,
-            message: `您收到了来自 ${from_name} 的评论回复: ${content}！`,
-        });
-    }
-    return result;
 }
 
 /**
