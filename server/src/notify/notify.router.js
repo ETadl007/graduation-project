@@ -9,7 +9,7 @@ const router = express.Router({
 /**
  * 分页获取消息列表
  */
-router.post('/api/notify/getNotifyList', authGuard, notifyController.getNotifyList);
+router.post('/api/notify/getNotifyList', notifyController.getNotifyList);
 
 /**
  * 阅读消息列表

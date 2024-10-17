@@ -150,15 +150,15 @@ export const getArticleByTagId = async (req, res, next) => {
         const total = await articleService.blogArticleByTagIdTotalService(id);
         // 如果文章不存在，直接返回失败响应
         if (!articleByTagId.length) {
-            return res.status(500).send({
+            return res.status(400).send({
                 status: 1,
-                message: "根据标签获取文章列表失败"
+                message: "标签获取文章列表失败"
             });
         }
 
         res.status(200).send({
             status: 0,
-            message: "根据标签获取文章列表成功",
+            message: "标签获取文章列表成功",
             data: {
                 current,
                 size,
@@ -194,14 +194,14 @@ export const getArticleByCategoryId = async (req, res, next) => {
 
         // 如果文章不存在，直接返回失败响应
         if (!articleByCategoryId.length) {
-            return res.status(500).send({
+            return res.status(400).send({
                 status: 1,
-                message: "根据分类获取文章列表失败"
+                message: "分类获取文章列表失败"
             });
         }
         res.status(200).send({
             status: 0,
-            message: "根据分类获取文章列表成功",
+            message: "分类获取文章列表成功",
             data: {
                 current,
                 size,
