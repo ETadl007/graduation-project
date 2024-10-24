@@ -69,6 +69,18 @@ export const addLike = async ({ for_id, type, user_id }) => {
         const [data] = await connecttion.promise().query(addMessageLikeSql, [for_id]);
         return data.affectedRows > 0;
         
+    }else if (type == 4){
+        // 评论
+        const addMessageLikeSql = `
+        UPDATE 
+            blog_comment 
+        SET 
+            thumbs_up = thumbs_up + 1 
+        WHERE 
+            id = ?
+        `;
+        const [data] = await connecttion.promise().query(addMessageLikeSql, [for_id]);
+        return data.affectedRows > 0;
     }
     return data.affectedRows === 1;
 }
@@ -127,4 +139,30 @@ export const cancelLike = async ({ for_id, type, user_id }) => {
         
     }
     return data.affectedRows === 1;
+}
+
+
+/**
+ * 获取当前用户对当前文章/说说/留言 是否点赞
+ */
+
+export const getIsLikeByIdAndType = async ({ for_id, type, user_id }) => {
+    try {
+
+        const getIsLikeByIdAndTypeSql = `
+        SELECT
+            *
+        FROM
+            blog_like
+        WHERE
+            for_id = ? AND type = ? AND user_id = ?
+        `;
+
+        const [rows] = await connecttion.promise().query(getIsLikeByIdAndTypeSql, [for_id, type, user_id]);
+    
+        return rows.length > 0;
+      } catch (error) {
+        console.error('获取点赞状态时发生错误:', error);
+        throw error;
+      }
 }

@@ -1,10 +1,50 @@
 import { connecttion } from "../app/database/mysql.js";
+import { getIsLikeByIdAndType } from "../like/like.service.js"
+
+/**
+ * 获取父/字级评论总数
+ */
+
+export const blogCommentService = async (for_id, type, parent_id) => {
+
+    try {
+         // 构建查询条件
+    let condition;
+    let params;
+
+    if (parent_id === undefined) {
+      // 查询父级评论总数
+      condition = 'parent_id IS NULL';
+      params = [for_id, type];
+    } else {
+      // 查询特定父级评论的子评论总数
+      condition = 'parent_id = ?';
+      params = [for_id, type, parent_id];
+    }
+
+    const commentTotalSql = `
+    SELECT 
+        count(*) AS count 
+    FROM 
+        blog_comment  
+    WHERE 
+        for_id = ? AND type = ? AND ${condition};
+    `;
+    const [data] = await connecttion.promise().query(commentTotalSql, params);
+    return data[0]["count"];
+    } catch (error) {
+        console.log(error);
+        throw error
+    }
+}
 
 /**
  * 获取评论总数
  */
+export const blogCommentTotalService = async (for_id, type) => {
 
-export const blogCommentTotalService = async (params, type) => {
+    try {
+
     const commentTotalSql = `
     SELECT 
         count(*) AS count 
@@ -13,17 +53,23 @@ export const blogCommentTotalService = async (params, type) => {
     WHERE 
         for_id = ? AND type = ?;
     `;
-    const [data] = await connecttion.promise().query(commentTotalSql, [params, type, params, type]);
+    const [data] = await connecttion.promise().query(commentTotalSql, [for_id, type]);
     return data[0]["count"];
+    } catch (error) {
+        console.log(error);
+        throw error
+    }
 }
+
 
 /**
  * 分页获取父级评论列表
  */
 
-export const blogCommentParentListService = async (params) => {
+export const blogCommentParentListService = async ({ for_id, type, limit, offset, orderArr, user_id }) => {
 
-    const commentParentListSql = `
+    try {
+        const commentParentListSql = `
     SELECT
         id,
         parent_id,
@@ -45,20 +91,36 @@ export const blogCommentParentListService = async (params) => {
     WHERE
         for_id = ? AND type = ? AND parent_id IS NULL
     ORDER BY
-        ${params[4]}
+        ${orderArr}
     LIMIT ?
     OFFSET ?
     `;
-    const [data] = await connecttion.promise().query(commentParentListSql, params);
+        const [data] = await connecttion.promise().query(commentParentListSql, [for_id, type, limit, offset]);
 
-    return data;
+        // 判断当前登录的用户是否以点赞
+        const isLikePromises = data.map(async (item) => {
+            return getIsLikeByIdAndType({ for_id: item.id, type: 4, user_id: user_id || item.ip });
+        });
+
+        const likeResults = await Promise.all(isLikePromises);
+        data.forEach((item, index) => {
+            item.is_like = likeResults[index];
+        });
+
+        return data;
+    } catch (error) {
+        console.log(error);
+
+        throw error
+    }
+
 }
 
 /**
  * 分页获取子级评论列表
  */
 
-export const blogCommentChildrenListService = async (params) => {
+export const blogCommentChildrenListService = async ({parent_id, limit, offset, user_id}) => {
     const commentChildrenListSql = `
     SELECT
         id,
@@ -88,10 +150,19 @@ export const blogCommentChildrenListService = async (params) => {
     OFFSET ?
     `;
 
-    const [data] = await connecttion.promise().query(commentChildrenListSql, params);
+    const [data] = await connecttion.promise().query(commentChildrenListSql, [parent_id, limit, offset]);
+
+    // 判断当前登录的用户是否以点赞
+    const isLikePromises = data.map(async (item) => {
+        return getIsLikeByIdAndType({ for_id: item.id, type: 4, user_id: user_id || item.ip });
+    });
+
+    const likeResults = await Promise.all(isLikePromises);
+    data.forEach((item, index) => {
+        item.is_like = likeResults[index];
+    });
 
     return data;
-
 }
 
 /**

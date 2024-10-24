@@ -64,6 +64,11 @@ router.post('api/like/addLike', likeControllerfrom.addLike)
 router.post('/api/like/cancelLike', likeControllerfrom.cancelLike)
 
 /**
+ *文章增加阅读时长 
+ */
+router.put('/api/article/addReadingDuration/:id/:duration', articleController.addReadingDuration)
+
+/**
  * 导出路由
  */
 export default router;

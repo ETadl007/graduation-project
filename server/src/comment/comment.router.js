@@ -2,6 +2,7 @@ import express from 'express';
 import * as commentController from './comment.controller.js';
 import { filterSensitiveMiddleware } from './comment.middleware.js';
 import { authGuard } from '../auth/auth.middleware.js'
+import * as likeService from '../like/like.controller.js'
 
 const router = express.Router({
     prefixKey: '/comment'
@@ -38,12 +39,12 @@ router.post('/api/comment/apply', authGuard, filterSensitiveMiddleware, commentC
 /**
  * 点赞评论
  */
-router.put('/api/comment/thumbUp/:id', authGuard, commentController.likeComment)
+router.post('/api/like/addLike', authGuard, likeService.addLike)
 
 /**
  * 取消点赞评论
  */
-router.put('/api/comment/cancelThumbUp/:id', authGuard, commentController.cancelLikeComment)
+router.post('/api/like/cancelLike', authGuard, likeService.cancelLike)
 
 /**
  * 删除评论

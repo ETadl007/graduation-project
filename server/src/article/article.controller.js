@@ -81,6 +81,7 @@ export const getArticleTimeLineList = async (req, res, next) => {
 
 export const getArticleDetail = async (req, res, next) => {
     const { id } = req.params;
+    
     try {
         const articleDetail = await articleService.blogArticleByIdService(id);
         // 如果文章不存在，直接返回失败响应
@@ -309,4 +310,29 @@ export const getArticleBySearch = async (req, res, next) => {
      }catch (err) {
          next(err);
      }
+ }
+
+ /**
+  * 文章增加阅读时长
+  */
+
+ export const addReadingDuration = async (req, res, next) => {
+    try {
+        const { id, duration } = req.params
+
+        if (!id && !duration){
+            return res.status(400).json({ error: '错误' });
+        }
+
+        const result = await articleService.addReadingDuration(id, duration);
+
+        res.send({
+            status: 0,
+            msg: '增加阅读时长成功',
+            data: result
+        })
+
+    } catch (err) {
+        next(err)
+    }
  }

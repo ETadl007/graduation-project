@@ -86,11 +86,37 @@ const getAllTags = async () => {
 // 计算出网站运行天数
 const calcRuntimeDays = (time) => {
   if (time) {
-    // eslint-disable-next-line
-    time = time.replace(/\-/g, "/"); // 解决ios系统上格式化时间出现NAN的bug
+    // 解决 iOS 系统上格式化时间出现 NaN 的 bug
+    time = time.replace(/-/g, '/'); 
+
+    // 解析时间字符串
     const now = new Date().getTime();
-    const created = new Date(time).getTime();
+    let created;
+
+    // 尝试解析 ISO 8601 格式的日期时间
+    if (time.includes('T')) {
+      // 去掉 'Z' 并手动拆分日期和时间
+      const [datePart, timePart] = time.replace('Z', '').split('T');
+      const [year, month, day] = datePart.split('/');
+      const [hours, minutes, seconds] = timePart.split(':');
+      const milliseconds = seconds.split('.')[1] || '000';
+
+      created = new Date(year, month - 1, day, hours, minutes, seconds.split('.')[0], milliseconds).getTime();
+    } else {
+      // 普通的日期时间格式
+      created = new Date(time).getTime();
+    }
+
+    // 检查解析是否成功
+    if (isNaN(created)) {
+      console.error('Invalid date format:', time);
+      return;
+    }
+
+    // 计算天数差
     const days = Math.floor((now - created) / 8.64e7);
+
+    // 假设 runtime 是一个响应式变量
     runtime.value = days;
   }
 };
@@ -113,7 +139,7 @@ const observeMobileBox = () => {
 
 onMounted(async () => {
   await init();
-  await observeMobileBox();
+  observeMobileBox();
 });
 </script>
 

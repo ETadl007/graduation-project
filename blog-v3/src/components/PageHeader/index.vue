@@ -4,6 +4,7 @@ import { useRoute } from "vue-router";
 import { staticData } from "@/store/index.js";
 import { storeToRefs } from "pinia";
 
+import { convertDateIfNecessary } from '@/utils/tool'
 import { numberFormate } from "@/utils/tool";
 import { gsapTransFont } from "@/utils/transform";
 
@@ -117,12 +118,12 @@ watch(
         <span class="to_pointer">
           <i class="iconfont icon-calendar2"></i>
           <span class="meta-label">发表于</span>
-          <span class="meta-value">{{ article.createdAt }}</span>
+          <span class="meta-value">{{ convertDateIfNecessary(article.createdAt) }}</span>
         </span>
         <span class="to_pointer">
           <i class="iconfont icon-schedule"></i>
           <span class="meta-label">更新于</span>
-          <span class="meta-value">{{ article.updatedAt }}</span>
+          <span class="meta-value">{{ convertDateIfNecessary(article.updatedAt) }}</span>
         </span>
         <span class="meta-separator"></span>
         <span class="to_pointer">

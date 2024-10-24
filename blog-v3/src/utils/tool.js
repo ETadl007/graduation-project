@@ -167,6 +167,33 @@ export function numberFormate(number) {
   return res;
 }
 
+// 时间转换
+export const convertDateIfNecessary = (dateStr) => {
+  // 检查是否已经是目标格式
+  const targetFormatRegex = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
+  if (targetFormatRegex.test(dateStr)) {
+    // 已经是目标格式，无需转换
+    return dateStr;
+  }
+
+  // 尝试解析日期
+  let date = new Date(dateStr);
+
+  if (!(date instanceof Date) || isNaN(date.getTime())) {
+    console.error('Invalid date:', dateStr);
+    return null;
+  }
+
+  // 格式化日期
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+};
 /**
  * 根据时间欢迎
  * @param {*} nickName 昵称

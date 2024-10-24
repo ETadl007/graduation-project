@@ -79,8 +79,8 @@ const operate = (op, val) => {
       class="git-ee__item button-animated"
       @click="operate('openLink', configDetail.git_ee_link)"
     >
-      <i class="iconfont icon-gitee2"> </i>
-      <span class="git-ee__item-text"> My Gitee</span>
+      <i class="iconfont icon-github"> </i>
+      <span class="git-ee__item-text"> My Gtihub</span>
     </span>
   </div>
   <div class="personal-link flex_r_around">

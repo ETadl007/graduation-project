@@ -3,11 +3,11 @@ import { reactive, ref, watch, h } from "vue";
 import {
   frontGetChildrenComment,
   applyComment,
-  thumbUpComment,
-  cancelThumbUp,
   deleteComment,
 } from "@/api/comment";
 import { ElNotification, ElMessageBox } from "element-plus";
+
+import { convertDateIfNecessary } from '@/utils/tool'
 
 import Pagination from "@/components/Pagination/pagination.vue";
 import CommentInput from "./CommentInput.vue";
@@ -58,6 +58,8 @@ const commentTotal = ref(0);
 const currentCommentIndex = ref(0); // 当前回复的comment下标
 
 const showApplyInput = ref(false); // 是否展示回复框
+const likePending = ref(false);
+
 const commentTo = reactive({
   to_name: "",
   to_avatar: "",
@@ -90,6 +92,8 @@ const getComment = async (type) => {
     const { list, total } = res.data;
     commentList.value = list;
     commentTotal.value = total - 0;
+    console.log(commentTotal.value);
+    
   } else {
     ElNotification({
       offset: 60,
@@ -103,13 +107,16 @@ const getComment = async (type) => {
 // 点赞
 const like = async (item, index) => {
   let res;
+  if (likePending.value) return;
+  likePending.value = true;
   // 查看点赞了没有，点赞了就进行取消点赞
   if (item.is_like) {
-    res = await cancelThumbUp(item.id);
-    await cancelLike({ for_id: item.id, type: 4, user_id: userStore.getUserInfo.id });
+    res = await cancelLike({ for_id: item.id, type: 4, user_id: userStore.getUserInfo.id });
     if (res && res.status == 0) {
       commentList.value[index].is_like = false;
       commentList.value[index].thumbs_up--;
+      likePending.value = false;
+
       ElNotification({
         offset: 60,
         title: "提示",
@@ -117,11 +124,12 @@ const like = async (item, index) => {
       });
     }
   } else {
-    res = await thumbUpComment(item.id);
-    await addLike({ for_id: item.id, type: 4, user_id: userStore.getUserInfo.id });
+    res = await addLike({ for_id: item.id, type: 4, user_id: userStore.getUserInfo.id });
     if (res && res.status == 0) {
       commentList.value[index].is_like = true;
       commentList.value[index].thumbs_up++;
+      likePending.value = false;
+
       ElNotification({
         offset: 60,
         title: "提示",
@@ -312,7 +320,7 @@ defineExpose({
               >删除</span
             >
           </div>
-          <div class="!mt-[0.5rem]">{{ comment.createdAt }}</div>
+          <div class="!mt-[0.5rem]">{{ convertDateIfNecessary(comment.createdAt) }}</div>
         </div>
       </div>
     </div>
@@ -330,7 +338,7 @@ defineExpose({
     </template>
     <Pagination
       class="animate__animated animate__fadeIn"
-      v-if="commentTotal > 0"
+      v-if="commentTotal > 5"
       :size="params.size"
       :current="params.current"
       layout="prev, pager, next"

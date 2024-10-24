@@ -3,7 +3,6 @@ import { PARENT_COMMENT_PAGE_SIZE } from '../app/app.config.js';
 import { sqlFragment } from './comment.provider.js';
 import { addNotify } from "../notify/notify.controller.js";
 import { filterSensitive } from "../utils/sensitive.js";
-import { connecttion } from "../app/database/mysql.js";
 
 
 
@@ -34,7 +33,7 @@ export const getCommentTotal = async (req, res, next) => {
 
 export const getParentCommentList = async (req, res, next) => {
     // 当前页码
-    let { current, size, for_id, order, type } = req.body;
+    let { current, size, for_id, order, type, user_id } = req.body;
 
     // 每页评论数量
     const limit = parseInt(PARENT_COMMENT_PAGE_SIZE, 10) || 3;
@@ -43,16 +42,14 @@ export const getParentCommentList = async (req, res, next) => {
     const offset = (current - 1) * limit;
 
     // 排序方式
-    const orderArr = order == 'new' ? sqlFragment.commentOrderNew :sqlFragment.commentOrderHot
-
-    const params = [for_id, type, limit, offset, orderArr]
+    const orderArr = order == 'new' ? sqlFragment.commentOrderNew : sqlFragment.commentOrderHot
 
     try {
-        const list = await commentService.blogCommentParentListService(params);
-        const total = await commentService.blogCommentTotalService(for_id, type);
+        const list = await commentService.blogCommentParentListService({ for_id, type, orderArr, limit, offset, user_id });
+        const total = await commentService.blogCommentService(for_id, type);
         res.send({
             status: 0,
-            msg: '分页查找评论成功',
+            msg: '分页查找父评论成功',
             data: {
                 current,
                 size,
@@ -72,29 +69,28 @@ export const getParentCommentList = async (req, res, next) => {
  */
 
 export const getChildCommentList = async (req, res, next) => {
-
-    const { current, size, type, for_id, user_id, parent_id } = req.body;
-
-     // 每页内容数量
-     const limit = parseInt(PARENT_COMMENT_PAGE_SIZE, 10) || 3;
- 
-     // 偏移量
-     const offset = (current - 1) * limit;
- 
-     const params = [parent_id, limit, offset]
-
     try {
-        const list = await commentService.blogCommentChildrenListService(params);
+        const { current, size, type, for_id, user_id, parent_id } = req.body;
+
+        // 每页内容数量
+        const limit = parseInt(PARENT_COMMENT_PAGE_SIZE, 10) || 3;
+
+        // 偏移量
+        const offset = (current - 1) * limit;
+        
+        const list = await commentService.blogCommentChildrenListService({parent_id, limit, offset, user_id});
+        const total = await commentService.blogCommentService(for_id, type, parent_id);
         res.send({
             status: 0,
             msg: '分页查找子评论成功',
             data: {
                 current,
                 size,
+                total,
                 list
             }
         });
-        
+
     } catch (error) {
         next(error);
     }
@@ -106,7 +102,7 @@ export const getChildCommentList = async (req, res, next) => {
 
 export const addComment = async (req, res, next) => {
     const { type, for_id, from_id, from_name, from_avatar, content } = req.body;
-    
+
     const params = [type, for_id, from_id, from_name, from_avatar, content]
     try {
         const result = await commentService.blogCommentAddService(params);
@@ -133,9 +129,9 @@ export const addReplyComment = async (req, res, next) => {
 
         const ip = req.headers['x-real-ip'] || req.headers['x-forwarded-for'] || req.ip;
         req.body.content = await filterSensitive(req.body.content);
-    
+
         const comment = { ...req.body, ip: ip.split(':').pop() };
-    
+
         const { type, for_id, from_name, content, from_id, to_id } = req.body;
 
         const result = await commentService.applyComment(comment)
@@ -174,7 +170,7 @@ export const likeComment = async (req, res, next) => {
         res.send({
             status: 0,
             message: "点赞成功",
-            data:{
+            data: {
                 res: result
             }
         });
@@ -195,7 +191,7 @@ export const cancelLikeComment = async (req, res, next) => {
         res.send({
             status: 0,
             message: "取消点赞成功",
-            data:{
+            data: {
                 res: result
             }
         });
@@ -209,15 +205,15 @@ export const cancelLikeComment = async (req, res, next) => {
  * 删除评论
  */
 
- export const deleteComment = async (req, res, next) => {
-     const { id, parent_id } = req.params;
+export const deleteComment = async (req, res, next) => {
+    const { id, parent_id } = req.params;
 
     try {
         const result = await commentService.deleteComment(id, parent_id);
         res.send({
             status: 0,
             message: "删除评论成功",
-            data:{
+            data: {
                 res: result
             }
         });
@@ -226,4 +222,4 @@ export const cancelLikeComment = async (req, res, next) => {
         next(new Error('DELETECOMMENTERROR'));
     }
 
- }
+}

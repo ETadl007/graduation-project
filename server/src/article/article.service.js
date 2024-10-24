@@ -110,6 +110,19 @@ export const blogArticleTotalService = async (params) => {
 }
 
 /**
+ * 增加文章的浏览次数
+ */
+const increaseViewTimes = async (id) => {
+    try {
+      const [result] = await connecttion.promise().query('UPDATE blog_article SET view_times = view_times + 1 WHERE id = ?', [id]);
+      return result.affectedRows > 0;
+    } catch (error) {
+      console.error('增加浏览次数时发生错误:', error);
+      throw error;
+    }
+};
+
+/**
  * 根据文章id获取文章详情
  */
 
@@ -149,7 +162,17 @@ export const blogArticleByIdService = async (params) => {
             a.id
         `
     const [articleByIdResult] = await connecttion.promise().query(articleByIdSql, params);
-    return articleByIdResult[0]
+
+    const article = articleByIdResult[0];
+
+    if (!article) {
+      return null; // 文章不存在，返回 null
+    }
+
+    // 增加文章的浏览次数
+    await increaseViewTimes(params[0]);
+
+    return article;
 }
 
 /**
@@ -379,4 +402,29 @@ export const blogArticleCancelThumbsUpService = async (id) => {
     `;
     const [ArticleCancelThumbsUpResult] = await connecttion.promise().query(ArticleCancelThumbsUpSql, id);
     return ArticleCancelThumbsUpResult.affectedRows > 0 ? true : false;
+}
+
+/**
+ * 文章增加阅读时长
+ */
+
+export const addReadingDuration = async (id, duration) => {
+    const addReadingDurationSql = `
+    UPDATE
+        blog_article
+    SET
+        reading_duration = reading_duration + ?
+    WHERE
+        id = ?
+    
+    `;
+
+    const rows = blogArticleExistService(id)
+
+    if (rows) {
+        const [result] = await connecttion.promise().query(addReadingDurationSql, [duration, id]);
+        return result.affectedRows > 0;
+    }
+
+    return false
 }

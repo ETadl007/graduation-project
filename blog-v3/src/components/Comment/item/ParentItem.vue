@@ -1,12 +1,6 @@
 <script setup>
 import { reactive, ref, watch, h } from "vue";
-import {
-  frontGetParentComment,
-  applyComment,
-  thumbUpComment,
-  cancelThumbUp,
-  deleteComment,
-} from "@/api/comment";
+import { frontGetParentComment, applyComment, deleteComment } from "@/api/comment";
 import TextOverflow from "@/components/TextOverflow/index.vue";
 import ChildrenItem from "./ChildrenItem.vue";
 import Loading from "@/components/Loading/Loading.vue";
@@ -15,6 +9,7 @@ import { ElMessageBox, ElNotification } from "element-plus";
 import { getCurrentType } from "../tool";
 import { addLike, cancelLike } from "@/api/like";
 import { containHTML } from "@/utils/tool";
+import { convertDateIfNecessary } from "@/utils/tool"
 
 const userStore = user();
 
@@ -56,6 +51,7 @@ const params = reactive({
 // 父级评论列表
 const commentList = ref([]);
 const commentTotal = ref(0);
+const likePending = ref(false);
 // 获取父级评论
 const getComment = async (type) => {
   params.loading = true;
@@ -70,7 +66,7 @@ const getComment = async (type) => {
       l.showApplyInput = false;
     });
     commentList.value = params.current == 1 ? list : commentList.value.concat(list);
-    commentTotal.value = total - 2;
+    commentTotal.value = total - 0;
   } else {
     ElNotification({
       offset: 60,
@@ -92,13 +88,16 @@ const currentApplyIndex = ref(0);
 // 点赞
 const like = async (item, index) => {
   let res;
+  if (likePending.value) return;
+  likePending.value = true;
   // 查看点赞了没有，点赞了就进行取消点赞
   if (item.is_like) {
-    res = await cancelThumbUp(item.id);
-    await cancelLike({ for_id: item.id, type: 4, user_id: userStore.getUserInfo.id });
+    res = await cancelLike({ for_id: item.id, type: 4, user_id: userStore.getUserInfo.id });
     if (res && res.status == 0) {
       commentList.value[index].is_like = false;
       commentList.value[index].thumbs_up--;
+      likePending.value = false;
+
       ElNotification({
         offset: 60,
         title: "提示",
@@ -106,11 +105,12 @@ const like = async (item, index) => {
       });
     }
   } else {
-    res = await thumbUpComment(item.id);
-    await addLike({ for_id: item.id, type: 4, user_id: userStore.getUserInfo.id });
+    res = await addLike({ for_id: item.id, type: 4, user_id: userStore.getUserInfo.id });
     if (res && res.status == 0) {
       commentList.value[index].is_like = true;
       commentList.value[index].thumbs_up++;
+      likePending.value = false;
+
       ElNotification({
         offset: 60,
         title: "提示",
@@ -273,6 +273,7 @@ defineExpose({
               <TextOverflow
                 v-else
                 class="content"
+                :key="comment.id"
                 :text="comment.content"
                 :maxLines="3"
                 :font-size="16"
@@ -316,7 +317,7 @@ defineExpose({
                 >删除</span
               >
             </div>
-            <div class="!mt-[0.5rem]">{{ comment.createdAt }}</div>
+            <div class="!mt-[0.5rem]">{{ convertDateIfNecessary(comment.createdAt) }}</div>
             <ChildrenItem
               class="!mt-[1.5rem]"
               ref="childrenRef"
@@ -415,7 +416,6 @@ defineExpose({
 }
 
 .btn {
-  margin-left: 3px;
   color: var(--primary);
   cursor: pointer;
 }

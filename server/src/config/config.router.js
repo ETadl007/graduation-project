@@ -10,6 +10,12 @@ const router = express.Router({
  */
 router.get('/api/config', configController.storeWebConfig);
 
+
+/**
+ * 更新访问量
+ */
+router.put('/api/config/addView', configController.addView)
+
 /**
  * 导出路由
  */

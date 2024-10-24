@@ -2,6 +2,8 @@
 import { ref, reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
+import { convertDateIfNecessary } from '@/utils/tool'
+
 import { getArticleListByTagId, getArticleListByCategoryId } from "@/api/article";
 
 import SkeletonItem from "@/components/SkeletonItem/skeleton-item.vue";
@@ -97,7 +99,7 @@ onMounted(() => {
               </div>
               <div class="article-title">
                 <Tooltip :name="item.article_title" size="1.2rem" color="#676767" />
-                <Tooltip :name="item.createdAt" size="1rem" color="#676767" />
+                <Tooltip :name="convertDateIfNecessary(item.createdAt)" size="1rem" color="#676767" />
               </div>
             </el-card>
           </el-col>

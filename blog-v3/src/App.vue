@@ -70,7 +70,7 @@ const welcome = () => {
 
 onMounted(async () => {
   // 上传访问量
-  // await addView();
+  await addView();
   if (window.name == "") {
     // 获取背景图片
     // getAllPageHeaderBg();
